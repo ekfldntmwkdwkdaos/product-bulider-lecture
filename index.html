@@ -9,23 +9,48 @@
         header { background-color: #fffde7; padding: 20px; text-align: center; border-bottom: 2px solid #e0f2f1; }
         header h1 { color: #ffca28; margin: 0; font-size: 3em; }
         header p { color: #4db6ac; font-size: 1.2em; margin-top: 5px; }
-        .container { width: 80%; margin: 20px auto; padding: 20px; }
-        .ranking-preview { 
-            background-color: #fff; padding: 30px; border-radius: 10px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; 
-            max-width: 400px; margin: 0 auto;
+        .container { width: 90%; max-width: 800px; margin: 20px auto; padding: 20px; }
+        
+        /* 메인 카드 스타일 */
+        .card { 
+            background-color: #fff; padding: 30px; border-radius: 15px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center; 
+            margin-bottom: 20px;
         }
-        .ranking-preview h2 { color: #333; margin-bottom: 20px; }
-        .dog-photo {
-            width: 150px; height: 150px; border-radius: 50%; 
+
+        /* 1등 후보 프리뷰 */
+        .ranking-preview { display: block; }
+        .dog-photo-main {
+            width: 180px; height: 180px; border-radius: 50%; 
             margin: 0 auto 15px; border: 5px solid #ffca28; object-fit: cover;
         }
-        .btn-vote {
+
+        /* 투표 섹션 (기본 숨김) */
+        #voteSection { display: none; }
+        .vote-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .vote-item {
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 2px solid transparent;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        .vote-item:hover { transform: translateY(-5px); background-color: #fff9c4; border-color: #ffca28; }
+        .vote-item img { width: 100%; aspect-ratio: 1/1; border-radius: 10px; object-fit: cover; margin-bottom: 10px; }
+        .vote-item h4 { margin: 5px 0; }
+
+        .btn-main {
             background-color: #ffca28; color: white; border: none; padding: 15px 30px;
             font-size: 1.2em; border-radius: 50px; font-weight: bold; cursor: pointer;
             transition: transform 0.2s, background-color 0.3s; width: 100%; margin-top: 20px;
         }
-        .btn-vote:hover { background-color: #fbc02d; transform: scale(1.05); }
+        .btn-main:hover { background-color: #fbc02d; transform: scale(1.02); }
+
         .result-message {
             display: none; margin-top: 20px; padding: 15px; background-color: #e8f5e9;
             color: #2e7d32; border-radius: 10px; font-weight: bold; font-size: 1.1em;
@@ -42,43 +67,66 @@
     </header>
 
     <div class="container">
-        <section class="ranking-preview" id="rankingCard">
+        <!-- 1. 초기 랭킹 프리뷰 카드 -->
+        <section class="card" id="previewSection">
             <h2>🔥 이번 주 1등 후보</h2>
-            <img src="https://images.unsplash.com/photo-1517849845537-4d257902454a?w=150&h=150&fit=crop" alt="진구 사진" class="dog-photo" id="dogImage">
-            
-            <h3 id="dogName">진구 (3세, 푸들)</h3>
+            <img src="https://images.unsplash.com/photo-1517849845537-4d257902454a?w=200&h=200&fit=crop" alt="진구 사진" class="dog-photo-main">
+            <h3>진구 (3세, 푸들)</h3>
             <p>"우리 진구 너무 귀엽죠? 투표 부탁드려요!"</p>
-            <p id="likeCount">❤️ 현재 좋아요 1,234개</p>
+            <button class="btn-main" onclick="showVoteOptions()">👍 주간 랭킹 투표하기</button>
+        </section>
 
-            <button class="btn-vote" id="voteBtn" onclick="giveVote()">👍 주간 랭킹 투표하기</button>
-            
-            <div class="result-message" id="resultMsg">
-                🎉 축하합니다!<br>진구가 압도적인 표 차이로 1등이 되었습니다!<br>🍗 이번 주 '치킨 기프티콘' 당첨!
+        <!-- 2. 실제 투표 섹션 (버튼 클릭 시 등장) -->
+        <section class="card" id="voteSection">
+            <h2>🏆 이번 주 랭킹 투표</h2>
+            <p>가장 마음에 드는 아이를 선택해주세요!</p>
+            <div class="vote-grid">
+                <!-- 후보 1 -->
+                <div class="vote-item" onclick="submitVote('진구')">
+                    <img src="https://images.unsplash.com/photo-1517849845537-4d257902454a?w=150&h=150&fit=crop" alt="진구">
+                    <h4>1. 진구</h4>
+                    <small>푸들 / 3세</small>
+                </div>
+                <!-- 후보 2 -->
+                <div class="vote-item" onclick="submitVote('초코')">
+                    <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=150&h=150&fit=crop" alt="초코">
+                    <h4>2. 초코</h4>
+                    <small>비글 / 2세</small>
+                </div>
+                <!-- 후보 3 -->
+                <div class="vote-item" onclick="submitVote('밀크')">
+                    <img src="https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?w=150&h=150&fit=crop" alt="밀크">
+                    <h4>3. 밀크</h4>
+                    <small>말티즈 / 1세</small>
+                </div>
             </div>
+            <div class="result-message" id="resultMsg"></div>
         </section>
     </div>
 
     <script>
-        // 버튼을 눌렀을 때 실행되는 마법의 코드 (JavaScript)
-        function giveVote() {
-            // 1. 버튼 숨기기
-            document.getElementById('voteBtn').style.display = 'none';
+        // 투표 옵션 보여주기
+        function showVoteOptions() {
+            document.getElementById('previewSection').style.display = 'none';
+            document.getElementById('voteSection').style.display = 'block';
+        }
+
+        // 투표 제출하기
+        function submitVote(name) {
+            const resultMsg = document.getElementById('resultMsg');
+            resultMsg.style.display = 'block';
+            resultMsg.innerHTML = `🎉 ${name}에게 투표 완료!<br>소중한 한 표 감사합니다. 랭킹 결과는 월요일에 발표됩니다!`;
             
-            // 2. 좋아요 숫자 올리기
-            document.getElementById('likeCount').innerHTML = '❤️ 현재 좋아요 9,999개 (1위 달성!)';
-            document.getElementById('likeCount').style.color = '#e91e63';
-            document.getElementById('likeCount').style.fontWeight = 'bold';
+            // 다른 후보들 클릭 방지
+            const items = document.querySelectorAll('.vote-item');
+            items.forEach(item => {
+                item.style.pointerEvents = 'none';
+                item.style.opacity = '0.7';
+            });
             
-            // 3. 테두리 색상 반짝이게 바꾸기
-            document.getElementById('dogImage').style.borderColor = '#e91e63';
-            
-            // 4. 숨겨둔 1등 당첨 메시지 보여주기
-            document.getElementById('resultMsg').style.display = 'block';
-            
-            // 5. 화면에 폭죽 알림창 띄우기
-            setTimeout(function() {
-                alert("알림: 진구 견주님께 치킨 기프티콘이 발송되었습니다! 🍗");
-            }, 500); // 0.5초 뒤에 알림창 띄우기
+            setTimeout(() => {
+                alert(`${name}에게 투표해주셔서 감사합니다! 🍗`);
+            }, 300);
         }
     </script>
 
