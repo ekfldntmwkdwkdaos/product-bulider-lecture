@@ -307,6 +307,7 @@
         let myChart = null;
         let prankCounter = 0;
         let unlocked = false;
+        let isModalActive = false; // 모달 활성화 상태 변수
 
         const prankMessages = [
             "더이상은 안되지롱 😜", "훗 넌 더이상 나아갈수 없어 🛡️", "또 누르시게요? 에베베~ 😝",
@@ -326,6 +327,11 @@
         }
 
         function showAlert(msg, title = "⚠️ 시스템 알림") {
+            if (isModalActive) return; // 이미 팝업이 떠 있으면 중복 호출 방지
+            
+            isModalActive = true;
+            document.activeElement.blur(); // 현재 입력 중인 필드의 포커스 해제 (키보드 입력 중단)
+            
             const modal = document.getElementById('customAlert');
             document.getElementById('modalTitle').innerText = title;
             document.getElementById('modalMsg').innerText = msg;
@@ -336,6 +342,8 @@
             
             if (prankCounter === 10 && !unlocked) {
                 setTimeout(() => {
+                    // 항복 선언 시 상태 초기화 후 다시 띄우기 위해 일시적으로 해제
+                    isModalActive = false; 
                     unlocked = true;
                     showAlert("아... 진짜 끈질기시네요. 제가 졌습니다! 🏳️\n딱 '자' 단위까지만 특별히 열어드릴게요. 이 정도면 만족하시죠?", "🏳️ 항복 선언");
                 }, 500);
@@ -345,7 +353,10 @@
         function closeAlert() {
             const modal = document.getElementById('customAlert');
             modal.classList.remove('active');
-            setTimeout(() => modal.style.display = 'none', 200);
+            setTimeout(() => {
+                modal.style.display = 'none';
+                isModalActive = false; // 팝업이 완전히 닫힌 후 상태 해제
+            }, 200);
         }
 
         function formatWithDots(num) {
@@ -353,6 +364,8 @@
         }
 
         function handleInput(el) {
+            if (isModalActive) return; // 팝업이 떠 있는 동안에는 모든 입력 처리 무시
+
             let value = el.value.replace(/[^0-9]/g, "");
             const limit = unlocked ? 28 : 24;
             
@@ -363,6 +376,7 @@
                     const msg = prankMessages[Math.floor(Math.random() * prankMessages.length)];
                     showAlert(msg);
                 }
+                // 제한 길이까지만 자르기
                 value = value.substring(0, limit);
             }
             
@@ -375,7 +389,7 @@
             if (num < 10000) return '₩ ' + formatWithDots(num);
 
             const units = ['', '만', '억', '조', '경', '해', '자', '양'];
-            let tempNum = num; // 큰 수 처리를 위해 Math.floor 제거(BigInt 대신 사용)
+            let tempNum = num; 
             let unitIdx = 0;
 
             const parts = [];
@@ -412,8 +426,11 @@
         }
 
         function calculate() {
-            const P = parseFloat(document.getElementById('principal').value.replace(/\./g, "")) || 0;
-            const PMT = parseFloat(document.getElementById('monthly').value.replace(/\./g, "")) || 0;
+            const principalRaw = document.getElementById('principal').value.replace(/\./g, "");
+            const monthlyRaw = document.getElementById('monthly').value.replace(/\./g, "");
+            
+            const P = parseFloat(principalRaw) || 0;
+            const PMT = parseFloat(monthlyRaw) || 0;
             const annualRate = (parseFloat(document.getElementById('rate').value) || 0) / 100;
             const years = parseInt(document.getElementById('years').value) || 0;
             const inflationRate = (parseFloat(document.getElementById('inflation').value) || 0) / 100;
