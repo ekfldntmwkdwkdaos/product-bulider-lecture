@@ -220,10 +220,9 @@
             myChart = new Chart(ctx, { type: 'line', data: { labels, datasets: [{ label: '명목 자산', data: nominal, borderColor: '#2563eb', backgroundColor: 'rgba(37, 99, 235, 0.1)', fill: true, tension: 0.3 }, { label: '실질 가치', data: real, borderColor: '#db2777', borderDash: [5, 5], tension: 0.3 }, { label: '투자 원금', data: principal, borderColor: useLightText ? '#94a3b8' : '#9ca3af', borderWidth: 2, tension: 0 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: tCol, font: { weight: 'bold' } } }, tooltip: { callbacks: { label: c => (c.dataset.label + ': ' + formatCurrency(c.parsed.y)) } } }, scales: { x: { grid: { color: gCol }, ticks: { color: tCol } }, y: { grid: { color: gCol }, ticks: { color: tCol, callback: v => v >= 1e12 ? (v / 1e12).toFixed(1) + '조' : v >= 1e8 ? (v / 1e8).toFixed(1) + '억' : v >= 1e4 ? (v / 1e4).toFixed(1) + '만' : v } } }, interaction: { intersect: false, mode: 'index' } } });
         }
         
-        // 깜짝 메시지 실행 및 환율 업데이트
+        // 환율 업데이트
         window.onload = () => {
             updateExchangeRate();
-            setTimeout(() => showAlert("종웅 ♥ 윤정", "❤️ 깜짝 메시지"), 1000);
         };
     </script>
 </body>
