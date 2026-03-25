@@ -124,9 +124,73 @@
 
         .tax-info { font-size: 0.8em; color: var(--text-secondary); margin-top: 15px; background: #fffbeb; padding: 10px; border-radius: 8px; border: 1px solid #fef3c7; color: #92400e; }
         body.dark-mode .tax-info { background: #451a03; color: #fde68a; border-color: #78350f; }
+
+        /* 커스텀 모달 스타일 */
+        #customAlert {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+        .modal-content {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            max-width: 400px;
+            width: 80%;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transform: scale(0.9);
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+        }
+        #customAlert.active .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+        .modal-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #ef4444;
+            margin-bottom: 15px;
+        }
+        .modal-msg {
+            color: var(--text-primary);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        .btn-modal {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-modal:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+        }
     </style>
 </head>
 <body>
+
+    <!-- 커스텀 모달 구조 -->
+    <div id="customAlert">
+        <div class="modal-content">
+            <div class="modal-title">⚠️ 시스템 알림</div>
+            <div class="modal-msg" id="modalMsg">메시지 내용이 이곳에 표시됩니다.</div>
+            <button class="btn-modal" onclick="closeAlert()">확인</button>
+        </div>
+    </div>
 
     <header>
         <button class="mode-toggle" id="modeBtn" onclick="toggleMode()">🌙 Dark Mode</button>
@@ -226,6 +290,20 @@
             calculate(); // 차트 색상 갱신을 위해 재계산
         }
 
+        // 커스텀 알림창 함수
+        function showAlert(msg) {
+            const modal = document.getElementById('customAlert');
+            document.getElementById('modalMsg').innerText = msg;
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('active'), 10);
+        }
+
+        function closeAlert() {
+            const modal = document.getElementById('customAlert');
+            modal.classList.remove('active');
+            setTimeout(() => modal.style.display = 'none', 200);
+        }
+
         // 숫자에 점을 찍는 함수
         function formatWithDots(num) {
             return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -237,7 +315,7 @@
             
             // 해 단위 초과 체크 (10^24 미만으로 제한)
             if (value.length > 24) {
-                alert("해 단위를 초과하는 금액은 입력할 수 없습니다.");
+                showAlert("해 단위를 초과하는 금액은 입력할 수 없습니다.");
                 value = value.substring(0, 24);
             }
             
@@ -287,7 +365,7 @@
 
             // 입력값 자체 제한
             if (P >= 1e24 || PMT >= 1e24) {
-                alert("해 단위를 초과하는 금액은 입력할 수 없습니다.");
+                showAlert("해 단위를 초과하는 금액은 입력할 수 없습니다.");
                 return;
             }
 
@@ -319,7 +397,7 @@
 
                     // 계산 중 해 단위 초과 체크
                     if (currentAsset >= 1e24) {
-                        alert("복리 계산 결과가 해 단위를 초과하여 시뮬레이션을 중단합니다.");
+                        showAlert("복리 계산 결과가 해 단위를 초과하여 시뮬레이션을 중단합니다.");
                         return;
                     }
                 }
@@ -427,4 +505,3 @@
     </script>
 </body>
 </html>
-
