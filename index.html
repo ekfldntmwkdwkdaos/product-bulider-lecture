@@ -3,174 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>펫플 (Petple) - 우리 아이 자랑하고 치킨 받자!</title>
+    <title>FortuneCalc - 복리 효과 계산기</title>
     <style>
-        /* CSS 변수 설정 (기본은 화이트 모드) */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700&family=Pretendard:wght@400;600&display=swap');
+
         :root {
-            --bg-color: #fdfdfd;
-            --header-bg: #fffde7;
+            --bg-color: #f8f9fa;
+            --header-bg: #ffffff;
             --card-bg: #ffffff;
-            --text-color: #333333;
-            --sub-text: #666666;
-            --shadow: rgba(0,0,0,0.08);
-            --border-color: #e0f2f1;
+            --text-primary: #1a1a1a;
+            --text-secondary: #666666;
+            --accent-color: #007aff;
+            --border-color: #eeeeee;
+            --input-bg: #ffffff;
+            --shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
-        /* 다크 모드 변수 설정 */
         body.dark-mode {
-            --bg-color: #121212;
-            --header-bg: #1a1a1a;
-            --card-bg: #1e1e1e;
-            --text-color: #e0e0e0;
-            --sub-text: #aaaaaa;
-            --shadow: rgba(0,0,0,0.5);
-            --border-color: #333333;
+            --bg-color: #0f172a;
+            --header-bg: #1e293b;
+            --card-bg: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-color: #38bdf8;
+            --border-color: #334155;
+            --input-bg: #0f172a;
+            --shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        body { font-family: 'NanumGothic', sans-serif; margin: 0; padding: 0; background-color: var(--bg-color); color: var(--text-color); transition: background-color 0.3s, color 0.3s; }
-        
-        header { background-color: var(--header-bg); padding: 20px; text-align: center; border-bottom: 2px solid var(--border-color); position: relative; }
-        header h1 { color: #ffca28; margin: 0; font-size: 3em; }
-        header p { color: #4db6ac; font-size: 1.2em; margin-top: 5px; }
+        body { 
+            font-family: 'Pretendard', sans-serif; 
+            margin: 0; padding: 0; 
+            background-color: var(--bg-color); 
+            color: var(--text-primary); 
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
 
-        /* 모드 전환 버튼 스타일 */
+        header { 
+            background-color: var(--header-bg); 
+            padding: 40px 20px; 
+            text-align: center; 
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        header h1 { 
+            font-family: 'Noto Serif KR', serif;
+            margin: 0; font-size: 2.5em; 
+            letter-spacing: -1px;
+            color: var(--accent-color);
+        }
+
+        header p { color: var(--text-secondary); margin-top: 10px; font-size: 1.1em; }
+
         .mode-toggle {
             position: absolute; top: 20px; right: 20px;
-            background-color: #ffca28; border: none; padding: 10px 15px;
-            border-radius: 20px; cursor: pointer; font-weight: bold; color: white;
-            box-shadow: 0 2px 5px var(--shadow);
+            background: none; border: 1px solid var(--border-color); 
+            padding: 8px 15px; border-radius: 8px; cursor: pointer;
+            color: var(--text-primary); font-size: 0.9em;
         }
 
-        .container { width: 90%; max-width: 800px; margin: 20px auto; padding: 20px; }
-        
-        /* 메인 카드 스타일 */
+        .container { width: 95%; max-width: 900px; margin: -40px auto 60px; padding: 20px; }
+
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+
         .card { 
-            background-color: var(--card-bg); padding: 30px; border-radius: 15px; 
-            box-shadow: 0 4px 20px var(--shadow); text-align: center; 
-            margin-bottom: 20px; transition: background-color 0.3s, box-shadow 0.3s;
+            background-color: var(--card-bg); 
+            padding: 40px; 
+            border-radius: 24px; 
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
         }
 
-        .dog-photo-main {
-            width: 180px; height: 180px; border-radius: 50%; 
-            margin: 0 auto 15px; border: 5px solid #ffca28; object-fit: cover;
+        .input-group { margin-bottom: 25px; }
+        .input-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9em; color: var(--text-secondary); }
+        .input-group input { 
+            width: 100%; padding: 15px; border-radius: 12px; 
+            border: 1px solid var(--border-color); 
+            background-color: var(--input-bg);
+            color: var(--text-primary);
+            font-size: 1.1em; box-sizing: border-box;
+            outline: none; transition: border-color 0.2s;
         }
+        .input-group input:focus { border-color: var(--accent-color); }
 
-        /* 투표 섹션 */
-        #voteSection { display: none; }
-        .vote-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-top: 20px;
+        .btn-calc {
+            width: 100%; background-color: var(--accent-color); color: white;
+            border: none; padding: 18px; border-radius: 12px; font-size: 1.1em;
+            font-weight: bold; cursor: pointer; transition: transform 0.2s, opacity 0.2s;
+            margin-top: 10px;
         }
-        .vote-item {
-            cursor: pointer;
-            transition: transform 0.2s;
-            border: 2px solid transparent;
-            padding: 10px;
-            border-radius: 10px;
-        }
-        .vote-item:hover { transform: translateY(-5px); background-color: var(--header-bg); border-color: #ffca28; }
-        .vote-item img { width: 100%; aspect-ratio: 1/1; border-radius: 10px; object-fit: cover; margin-bottom: 10px; }
-        .vote-item h4 { margin: 5px 0; color: var(--text-color); }
-        .vote-item small { color: var(--sub-text); }
+        .btn-calc:hover { transform: translateY(-2px); opacity: 0.9; }
 
-        .btn-main {
-            background-color: #ffca28; color: white; border: none; padding: 15px 30px;
-            font-size: 1.2em; border-radius: 50px; font-weight: bold; cursor: pointer;
-            transition: transform 0.2s, background-color 0.3s; width: 100%; margin-top: 20px;
-        }
-        .btn-main:hover { background-color: #fbc02d; transform: scale(1.02); }
+        .result-card { text-align: left; display: flex; flex-direction: column; justify-content: center; }
+        .result-label { color: var(--text-secondary); font-size: 1em; margin-bottom: 5px; }
+        .result-value { font-size: 2.8em; font-weight: 800; color: var(--accent-color); margin-bottom: 20px; word-break: break-all; }
+        
+        .stats { border-top: 1px solid var(--border-color); pt: 20px; margin-top: 20px; }
+        .stat-item { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.95em; }
+        .stat-label { color: var(--text-secondary); }
+        .stat-value { font-weight: 600; }
 
-        .result-message {
-            display: none; margin-top: 20px; padding: 15px; background-color: #e8f5e9;
-            color: #2e7d32; border-radius: 10px; font-weight: bold; font-size: 1.1em;
-            animation: popIn 0.5s ease-out forwards;
-        }
-        body.dark-mode .result-message { background-color: #1b5e20; color: #a5d6a7; }
-
-        @keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
+        .info-text { font-size: 0.85em; color: var(--text-secondary); margin-top: 20px; line-height: 1.5; }
     </style>
 </head>
 <body>
 
     <header>
-        <button class="mode-toggle" id="modeBtn" onclick="toggleMode()">🌙 다크 모드</button>
-        <h1>Petple</h1>
-        <p>반려동물과 사람이 모이는 곳, 펫플</p>
+        <button class="mode-toggle" id="modeBtn" onclick="toggleMode()">🌙 Dark Mode</button>
+        <h1>FortuneCalc</h1>
+        <p>시간과 이자가 만드는 부의 마법, 복리 계산기</p>
     </header>
 
     <div class="container">
-        <!-- 1. 초기 랭킹 프리뷰 카드 -->
-        <section class="card" id="previewSection">
-            <h2>🔥 이번 주 1등 후보</h2>
-            <img src="https://images.unsplash.com/photo-1517849845537-4d257902454a?w=200&h=200&fit=crop" alt="진구 사진" class="dog-photo-main">
-            <h3>진구 (3세, 푸들)</h3>
-            <p>"우리 진구 너무 귀엽죠? 투표 부탁드려요!"</p>
-            <button class="btn-main" onclick="showVoteOptions()">👍 주간 랭킹 투표하기</button>
-        </section>
+        <div class="grid">
+            <!-- 입력 섹션 -->
+            <section class="card">
+                <div class="input-group">
+                    <label>초기 투자 금액 (원)</label>
+                    <input type="number" id="principal" placeholder="예: 10000000" value="10000000">
+                </div>
+                <div class="input-group">
+                    <label>매월 추가 적립 (원)</label>
+                    <input type="number" id="monthly" placeholder="예: 1000000" value="1000000">
+                </div>
+                <div class="input-group">
+                    <label>연 수익률 (%)</label>
+                    <input type="number" id="rate" placeholder="예: 8" value="8">
+                </div>
+                <div class="input-group">
+                    <label>투자 기간 (년)</label>
+                    <input type="number" id="years" placeholder="예: 10" value="10">
+                </div>
+                <button class="btn-calc" onclick="calculate()">계산하기</button>
+            </section>
 
-        <!-- 2. 실제 투표 섹션 -->
-        <section class="card" id="voteSection">
-            <h2>🏆 이번 주 랭킹 투표</h2>
-            <p>가장 마음에 드는 아이를 선택해주세요!</p>
-            <div class="vote-grid">
-                <div class="vote-item" onclick="submitVote('진구')">
-                    <img src="https://images.unsplash.com/photo-1517849845537-4d257902454a?w=150&h=150&fit=crop" alt="진구">
-                    <h4>1. 진구</h4>
-                    <small>푸들 / 3세</small>
+            <!-- 결과 섹션 -->
+            <section class="card result-card" id="resultCard">
+                <div class="result-label">최종 예상 자산</div>
+                <div class="result-value" id="totalValue">₩ 0</div>
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-label">총 투자 원금</span>
+                        <span class="stat-value" id="totalPrincipal">₩ 0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">누적 이자 수익</span>
+                        <span class="stat-value" id="totalInterest">₩ 0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">수익률</span>
+                        <span class="stat-value" id="returnRate">0%</span>
+                    </div>
                 </div>
-                <div class="vote-item" onclick="submitVote('초코')">
-                    <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=150&h=150&fit=crop" alt="초코">
-                    <h4>2. 초코</h4>
-                    <small>비글 / 2세</small>
-                </div>
-                <div class="vote-item" onclick="submitVote('밀크')">
-                    <img src="https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?w=150&h=150&fit=crop" alt="밀크">
-                    <h4>3. 밀크</h4>
-                    <small>말티즈 / 1세</small>
-                </div>
-            </div>
-            <div class="result-message" id="resultMsg"></div>
-        </section>
+                
+                <p class="info-text">
+                    * 위 계산 결과는 세전 금액이며, 월 복리(Monthly Compounding) 기준입니다. 실제 투자 수익은 세금 및 거래 비용에 따라 달라질 수 있습니다.
+                </p>
+            </section>
+        </div>
     </div>
 
     <script>
-        // 다크모드 전환 함수
         function toggleMode() {
             const body = document.body;
             const btn = document.getElementById('modeBtn');
             body.classList.toggle('dark-mode');
-            
-            if (body.classList.contains('dark-mode')) {
-                btn.innerHTML = '☀️ 화이트 모드';
+            btn.innerHTML = body.classList.contains('dark-mode') ? '☀️ Light Mode' : '🌙 Dark Mode';
+        }
+
+        function formatCurrency(num) {
+            return new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(Math.floor(num));
+        }
+
+        function calculate() {
+            const P = parseFloat(document.getElementById('principal').value) || 0;
+            const PMT = parseFloat(document.getElementById('monthly').value) || 0;
+            const r = (parseFloat(document.getElementById('rate').value) || 0) / 100 / 12;
+            const n = (parseFloat(document.getElementById('years').value) || 0) * 12;
+
+            if (n <= 0) return;
+
+            // 복리 계산 공식 (매월 적립 포함)
+            // A = P(1+r)^n + PMT * [((1+r)^n - 1) / r]
+            let futureValue;
+            if (r === 0) {
+                futureValue = P + (PMT * n);
             } else {
-                btn.innerHTML = '🌙 다크 모드';
+                const compoundFactor = Math.pow(1 + r, n);
+                futureValue = P * compoundFactor + PMT * ((compoundFactor - 1) / r);
             }
+
+            const totalPrincipal = P + (PMT * n);
+            const totalInterest = futureValue - totalPrincipal;
+            const returnRate = ((futureValue - totalPrincipal) / totalPrincipal) * 100;
+
+            // 결과 화면 업데이트
+            document.getElementById('totalValue').innerText = formatCurrency(futureValue);
+            document.getElementById('totalPrincipal').innerText = formatCurrency(totalPrincipal);
+            document.getElementById('totalInterest').innerText = formatCurrency(totalInterest);
+            document.getElementById('returnRate').innerText = returnRate.toFixed(1) + '%';
+            
+            // 애니메이션 효과
+            const card = document.getElementById('resultCard');
+            card.style.transform = 'scale(1.02)';
+            setTimeout(() => card.style.transform = 'scale(1)', 200);
         }
 
-        // 투표 옵션 보여주기
-        function showVoteOptions() {
-            document.getElementById('previewSection').style.display = 'none';
-            document.getElementById('voteSection').style.display = 'block';
-        }
-
-        // 투표 제출하기
-        function submitVote(name) {
-            const resultMsg = document.getElementById('resultMsg');
-            resultMsg.style.display = 'block';
-            resultMsg.innerHTML = `🎉 ${name}에게 투표 완료!<br>소중한 한 표 감사합니다. 랭킹 결과는 월요일에 발표됩니다!`;
-            
-            const items = document.querySelectorAll('.vote-item');
-            items.forEach(item => {
-                item.style.pointerEvents = 'none';
-                item.style.opacity = '0.5';
-            });
-            
-            setTimeout(() => {
-                alert(`${name}에게 투표해주셔서 감사합니다! 🍗`);
-            }, 300);
-        }
+        // 초기 계산 실행
+        calculate();
     </script>
 
 </body>
