@@ -8,13 +8,13 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700&family=Pretendard:wght@400;600;700&display=swap');
         :root {
-            --bg-color: #f3f4f6; --header-bg: #ffffff; --card-bg: #ffffff;
+            --bg-color: #f3f4f6; --header-bg: rgba(255, 255, 255, 0.7); --card-bg: #ffffff;
             --text-primary: #111827; --text-secondary: #4b5563;
             --accent-color: #2563eb; --real-value-color: #db2777;
             --border-color: #e5e7eb; --input-bg: #ffffff; --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
         }
         body.dark-mode {
-            --bg-color: #0f172a; --header-bg: #1e293b; --card-bg: #1e293b;
+            --bg-color: #0f172a; --header-bg: rgba(30, 41, 59, 0.7); --card-bg: #1e293b;
             --text-primary: #f8fafc; --text-secondary: #94a3b8;
             --accent-color: #38bdf8; --real-value-color: #f472b6;
             --border-color: #334155; --input-bg: #0f172a; --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
@@ -22,42 +22,48 @@
         body.theme-eok { background: linear-gradient(135deg, var(--bg-color) 0%, #e0f2fe 100%); }
         body.theme-jo { background: linear-gradient(135deg, #1e293b 0%, #4338ca 100%); color: #fff; }
         body.theme-jo .card { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); }
-        body.theme-jo .res-label, body.theme-jo label { color: #cbd5e1; }
         body.theme-jo input { color: #fff !important; background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.2); }
-        
         body.theme-ja { background: radial-gradient(circle at center, #1e1b4b 0%, #020617 100%); color: #fff; overflow-x: hidden; }
         body.theme-ja .card { background: rgba(255,255,255,0.05); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); }
-        body.theme-ja .res-label, body.theme-ja label { color: #94a3b8; }
         body.theme-ja input { color: #fff !important; background: rgba(0,0,0,0.3); border-color: rgba(255,255,255,0.1); }
         body.theme-ja::after { content: '✨'; position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.5; animation: spaceStars 10s infinite linear; font-size: 20px; }
         
         @keyframes spaceStars { from { transform: translateY(0); } to { transform: translateY(-100px); } }
 
-        body { font-family: 'Pretendard', sans-serif; margin: 0; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); line-height: 1.6; min-height: 100vh; color: var(--text-primary); }
-        header { background-color: var(--header-bg); padding: 30px 20px; text-align: center; border-bottom: 1px solid var(--border-color); position: relative; z-index: 10; }
-        header h1 { font-family: 'Noto Serif KR', serif; margin: 0; font-size: 2.2em; color: var(--accent-color); }
-        .mode-toggle { position: absolute; top: 20px; right: 20px; background: none; border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 8px; cursor: pointer; color: var(--text-primary); font-size: 0.85em; }
-        .container { width: 95%; max-width: 1100px; margin: 20px auto 60px; padding: 0 20px; position: relative; z-index: 5; }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; transition: all 0.5s; line-height: 1.6; min-height: 100vh; color: var(--text-primary); }
+        
+        /* 글라스모피즘 헤더 */
+        header { 
+            background-color: var(--header-bg); 
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px);
+            padding: 40px 20px; 
+            text-align: center; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2); 
+            position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        header::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotateBg 20s infinite linear; z-index: -1;
+        }
+        @keyframes rotateBg { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        header h1 { font-family: 'Noto Serif KR', serif; margin: 0; font-size: 2.5em; color: var(--accent-color); display: flex; align-items: center; justify-content: center; gap: 15px; text-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        #headerIcon { transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: inline-block; }
+        .mode-toggle { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.1); border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 12px; cursor: pointer; color: var(--text-primary); font-size: 0.85em; backdrop-filter: blur(5px); }
+        
+        .container { width: 95%; max-width: 1100px; margin: 30px auto 60px; padding: 0 20px; }
         .main-grid { display: grid; grid-template-columns: 350px 1fr; gap: 24px; }
         @media (max-width: 950px) { .main-grid { grid-template-columns: 1fr; } }
-        .card { background-color: var(--card-bg); padding: 24px; border-radius: 24px; box-shadow: var(--shadow); border: 1px solid var(--border-color); transition: all 0.3s; }
-        .input-group { margin-bottom: 16px; }
-        .input-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.85em; color: var(--text-secondary); }
-        .input-group input, .input-group select { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background-color: var(--input-bg); color: var(--text-primary); font-size: 1em; outline: none; transition: all 0.2s; }
+        .card { background-color: var(--card-bg); padding: 24px; border-radius: 28px; box-shadow: var(--shadow); border: 1px solid var(--border-color); transition: all 0.3s; }
         
-        .coffee-btn { width: 100%; background: #713f12; color: #fef3c7; border: none; padding: 10px; border-radius: 12px; font-weight: 600; cursor: pointer; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; }
-        .btn-calc { width: 100%; background-color: var(--accent-color); color: white; border: none; padding: 18px; border-radius: 16px; font-size: 1.1em; font-weight: 800; cursor: pointer; transition: all 0.3s; margin-top: 10px; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
-        
-        .res-box { padding: 20px; border-radius: 20px; background: rgba(0,0,0,0.03); border: 1px solid var(--border-color); }
-        .res-value { font-size: 1.8em; font-weight: 800; }
-        .chart-container { position: relative; height: 350px; width: 100%; margin-top: 20px; border-radius: 20px; overflow: hidden; }
+        .coffee-btn { width: 100%; background: linear-gradient(135deg, #713f12 0%, #451a03 100%); color: #fef3c7; border: none; padding: 12px; border-radius: 14px; font-weight: 700; cursor: pointer; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 10px rgba(69, 26, 3, 0.2); }
+        .btn-calc { width: 100%; background: linear-gradient(135deg, var(--accent-color) 0%, #1e40af 100%); color: white; border: none; padding: 18px; border-radius: 18px; font-size: 1.1em; font-weight: 800; cursor: pointer; transition: all 0.3s; margin-top: 10px; box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3); }
         
         #comparisonBanner { display: none; margin-top: 24px; padding: 25px; background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #78350f; border-radius: 20px; text-align: center; animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 10px 20px rgba(245, 158, 11, 0.2); border: 2px solid rgba(255,255,255,0.3); }
-        .banner-title { font-weight: 900; font-size: 1.3em; margin-bottom: 8px; }
-        .banner-desc { font-size: 1em; font-weight: 600; opacity: 0.9; }
-        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
-        /* 머니 샤워 애니메이션 */
         .money-particle { position: fixed; top: -50px; font-size: 24px; pointer-events: none; z-index: 9999; animation: fall linear forwards; }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
 
@@ -68,7 +74,13 @@
 </head>
 <body>
     <div id="customAlert"><div class="modal-content"><div class="modal-title" id="modalTitle">⚠️ 알림</div><div class="modal-msg" id="modalMsg"></div><button class="btn-modal" onclick="closeAlert()" style="background:var(--accent-color); color:#fff; border:none; padding:12px 40px; border-radius:12px; font-weight:700; cursor:pointer;">알겠어요!</button></div></div>
-    <header><button class="mode-toggle" id="modeBtn" onclick="toggleMode()">🌙 Dark Mode</button><h1>간편한 복리 계산기</h1><p>복리의 마법으로 당신의 미래를 시뮬레이션하세요</p></header>
+    
+    <header>
+        <button class="mode-toggle" id="modeBtn" onclick="toggleMode()">🌙 Dark Mode</button>
+        <h1><span id="headerIcon">🌱</span> 간편한 복리 계산기</h1>
+        <p style="opacity:0.8; font-weight:500;">복리의 마법으로 당신의 미래를 시뮬레이션하세요</p>
+    </header>
+
     <div class="container">
         <div class="main-grid">
             <aside class="card">
@@ -84,7 +96,7 @@
             <main class="card">
                 <div class="result-header">
                     <div class="res-box"><div class="res-label">최종 세후 명목 자산</div><div class="res-value val-nominal" id="totalValue">₩ 0</div><div id="rankBadge" style="display:none; padding:4px 12px; background:#fbbf24; color:#78350f; border-radius:20px; font-size:0.75em; font-weight:800; margin-top:8px;"></div></div>
-                    <div class="res-box" style="border-color: var(--real-value-color)"><div class="res-label">물가 반영 실질 구매력 (현재 가치)</div><div class="res-value val-real" id="realValue">₩ 0</div>
+                    <div class="res-box" style="border-color: var(--real-value-color)"><div class="res-label">물가 반영 실질 구매력</div><div class="res-value val-real" id="realValue">₩ 0</div>
                         <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-top:15px;">
                             <div style="padding:10px; background:rgba(0,0,0,0.05); border-radius:12px; text-align:center;"><span style="display:block; opacity:0.7; font-size:0.8em;">USD</span><span id="valUSD" style="font-weight:700;">$0</span></div>
                             <div style="padding:10px; background:rgba(0,0,0,0.05); border-radius:12px; text-align:center;"><span style="display:block; opacity:0.7; font-size:0.8em;">JPY</span><span id="valJPY" style="font-weight:700;">¥0</span></div>
@@ -100,16 +112,16 @@
     </div>
     <script>
         const $ = id => document.getElementById(id);
-        const els = { principal: $('principal'), monthly: $('monthly'), rate: $('rate'), years: $('years'), inflation: $('inflation'), taxType: $('taxType'), totalValue: $('totalValue'), realValue: $('realValue'), modal: $('customAlert'), modalTitle: $('modalTitle'), modalMsg: $('modalMsg'), banner: $('comparisonBanner'), quote: $('quoteBox'), rank: $('rankBadge'), valUSD: $('valUSD'), valJPY: $('valJPY'), valBTC: $('valBTC') };
+        const els = { principal: $('principal'), monthly: $('monthly'), rate: $('rate'), years: $('years'), inflation: $('inflation'), taxType: $('taxType'), totalValue: $('totalValue'), realValue: $('realValue'), modal: $('customAlert'), modalTitle: $('modalTitle'), modalMsg: $('modalMsg'), banner: $('comparisonBanner'), quote: $('quoteBox'), rank: $('rankBadge'), valUSD: $('valUSD'), valJPY: $('valJPY'), valBTC: $('valBTC'), hIcon: $('headerIcon') };
         let myChart = null, prankCounter = 0, unlocked = false, isModalActive = false, lastTier = '';
-        const prankMessages = ["더이상은 안되지롱 😜", "훗 넌 더이상 나아갈수 없어 🛡️", "또 누르시게요? 에베베~ 😝", "숫자가 너무 커서 서버가 울고 있어요.. 😭", "와우, 이 돈이면 화성도 사겠어요! 🚀"];
+        const prankMessages = ["더이상은 안되지롱 😜", "🛡️ 여기까지다!", "에베베~ 😝", "😭 서버가 울어요", "🚀 화성 갈 거니까!", "✋ 멈춰!"];
         const quotes = ["인내심은 부를 일구는 가장 강력한 도구다.", "복리는 세계 8대 불가사의다.", "투자의 제1원칙은 돈을 잃지 않는 것이다.", "오늘 심은 나무가 내일 그늘을 만들어준다.", "가장 좋은 투자 시기는 바로 '지금'이다."];
 
         function playCalc() { playCoinSound(); calculate(); }
         function playCoinSound() { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(), gain = ctx.createGain(); osc.type = 'triangle'; osc.frequency.setValueAtTime(880, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(1760, ctx.currentTime + 0.1); gain.gain.setValueAtTime(0.1, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3); osc.connect(gain); gain.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime + 0.3); } catch(e) {} }
-        function setCoffeeMiracle() { els.principal.value = "0"; els.monthly.value = "150.000"; els.rate.value = "10"; els.years.value = "30"; calculate(); showAlert("매일 커피 한 잔(5,000원)을 아껴 30년 투자하면 어떤 일이 벌어질까요?", "☕ 커피의 기적 설정 완료"); }
+        function setCoffeeMiracle() { els.principal.value = "0"; els.monthly.value = "150.000"; els.rate.value = "10"; els.years.value = "30"; calculate(); showAlert("매일 커피 한 잔을 아껴 30년 투자하면?", "☕ 커피의 기적 설정 완료"); }
         function toggleMode() { document.body.classList.toggle('dark-mode'); $('modeBtn').innerText = document.body.classList.contains('dark-mode') ? '☀️ Light Mode' : '🌙 Dark Mode'; calculate(); }
-        function showAlert(msg, title = "⚠️ 알림") { if (isModalActive) return; isModalActive = true; document.activeElement.blur(); els.modalTitle.innerText = title; els.modalMsg.innerText = msg; els.modal.style.display = 'flex'; setTimeout(() => els.modal.classList.add('active'), 10); if (!unlocked && ++prankCounter === 10) { setTimeout(() => { isModalActive = false; unlocked = true; showAlert("끈질기시네요! 제가 졌습니다. 🏳️ '자' 단위까지 허용해드릴게요.", "🏳️ 항복 선언"); }, 500); } }
+        function showAlert(msg, title = "⚠️ 알림") { if (isModalActive) return; isModalActive = true; document.activeElement.blur(); els.modalTitle.innerText = title; els.modalMsg.innerText = msg; els.modal.style.display = 'flex'; setTimeout(() => els.modal.classList.add('active'), 10); if (!unlocked && ++prankCounter === 10) { setTimeout(() => { isModalActive = false; unlocked = true; showAlert("🏳️ 항복! '자' 단위까지 열어드릴게요.", "🏳️ 항복 선언"); }, 500); } }
         function closeAlert() { els.modal.classList.remove('active'); setTimeout(() => { els.modal.style.display = 'none'; isModalActive = false; }, 200); }
         const fmtDots = n => Math.floor(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         const getVal = el => parseFloat(el.value.replace(/\./g, "")) || 0;
@@ -121,23 +133,22 @@
             for(let i=0; i<50; i++) {
                 setTimeout(() => {
                     const el = document.createElement('div');
-                    el.className = 'money-particle';
-                    el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-                    el.style.left = Math.random() * 100 + 'vw';
-                    el.style.animationDuration = (Math.random() * 2 + 1) + 's';
-                    el.style.opacity = Math.random();
-                    document.body.appendChild(el);
-                    setTimeout(() => el.remove(), 3000);
+                    el.className = 'money-particle'; el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                    el.style.left = Math.random() * 100 + 'vw'; el.style.animationDuration = (Math.random() * 2 + 1) + 's'; el.style.opacity = Math.random();
+                    document.body.appendChild(el); setTimeout(() => el.remove(), 3000);
                 }, i * 50);
             }
         }
 
         function updateTierTheme(val) {
-            let currentTier = '';
-            if (val >= 1e24) currentTier = 'theme-ja';
-            else if (val >= 1e12) currentTier = 'theme-jo';
-            else if (val >= 1e8) currentTier = 'theme-eok';
+            let currentTier = '', icon = '🌱';
+            if (val >= 1e24) { currentTier = 'theme-ja'; icon = '🪐'; }
+            else if (val >= 1e12) { currentTier = 'theme-jo'; icon = '🌍'; }
+            else if (val >= 1e8) { currentTier = 'theme-eok'; icon = '🏢'; }
+            else if (val >= 1e6) icon = '🐷';
+            else icon = '🌱';
             
+            els.hIcon.innerText = icon;
             if (currentTier !== lastTier) {
                 if ((currentTier === 'theme-jo' || currentTier === 'theme-ja') && lastTier !== '') triggerMoneyShower();
                 document.body.classList.remove('theme-eok', 'theme-jo', 'theme-ja');
@@ -153,7 +164,7 @@
             else if (val < 1000000) { t = "💪 차곡차곡 쌓이는 중!"; d = "십만 원이 백만 원 되고, 백만 원이 천만 원 됩니다. 응원해요!"; bg = "linear-gradient(135deg, #fef9c3 0%, #fde047 100%)"; }
             else if (val >= 1e24) { t = "🌌 우주 정거장 집주인"; d = `현재 자산으로 지구를 ${fmtDots(val / 1e18)}개 사고 달에 신도시를 건설할 수 있습니다.`; bg = "linear-gradient(135deg, #1e1b4b 0%, #4338ca 100%)"; els.banner.style.color = "#fff"; }
             else if (val >= 1e20) { t = "🌍 지구의 실질적 주인"; d = "전 세계 모든 국가의 GDP를 합친 것보다 많습니다. 당신이 곧 법입니다."; bg = "linear-gradient(135deg, #064e3b 0%, #10b981 100%)"; els.banner.style.color = "#fff"; }
-            else if (val >= 1e12) { t = "👑 대한민국 0.0001% 재벌"; d = "대기업 몇 개쯤은 쇼핑하듯 살 수 있는 엄청난 금액입니다."; bg = "linear-gradient(135deg, #4c1d95 0%, #8b5cf6 100%)"; els.banner.style.color = "#fff"; }
+            else if (val >= 1e12) { t = "👑 재벌 3세 저리가라"; d = "대기업 몇 개쯤은 쇼핑하듯 살 수 있는 엄청난 금액입니다."; bg = "linear-gradient(135deg, #4c1d95 0%, #8b5cf6 100%)"; els.banner.style.color = "#fff"; }
             else if (val >= 1e9) { t = "🏢 강남 건물주 등극!"; d = "축하합니다! 이제 강남 요지에 빌딩 한 채 정도는 가볍게 소유하시겠네요."; bg = "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)"; els.banner.style.color = "#78350f"; }
             else { els.banner.style.display = 'none'; return; }
             $('bannerTitle').innerText = t; $('bannerDesc').innerText = d;
@@ -167,18 +178,7 @@
             for (let y = 1; y <= years; y++) { for (let m = 1; m <= 12; m++) { let intr = cur * mRate, tax = intr * tRate; totalT += tax; cur += (intr - tax + PMT); totalP += PMT; if (cur >= limit) return showAlert("지구가 위험해요! 🌍"); } dNom.push(cur); dReal.push(cur / Math.pow(1 + getVal(els.inflation)/100, y)); dPriz.push(totalP); labels.push(y + '년'); }
             els.totalValue.innerText = formatCurrency(cur); els.realValue.innerText = formatCurrency(dReal[dReal.length-1]);
             els.valUSD.innerText = '$' + fmtDots(cur / 1350); els.valJPY.innerText = '¥' + fmtDots(cur / 9); els.valBTC.innerText = (cur / 95000000).toFixed(4) + '₿';
-            
-            // 랭킹 배지 (100만원 이상일 때만 표시)
-            if (cur >= 1000000) {
-                els.rank.style.display = 'inline-block';
-                if (cur >= 300e12) els.rank.innerText = "일론 머스크를 능가하는 우주 1위! 🚀"; 
-                else if (cur >= 150e12) els.rank.innerText = "워런 버핏과 어깨를 나란히! 🐢"; 
-                else if (cur >= 13e8) els.rank.innerText = "세계 상위 1% 부자 진입! 💎"; 
-                else els.rank.innerText = "대한민국 평균 이상의 저력! 👍";
-            } else {
-                els.rank.style.display = 'none';
-            }
-
+            if (cur >= 1000000) { els.rank.style.display = 'inline-block'; if (cur >= 300e12) els.rank.innerText = "일론 머스크 능가! 🚀"; else if (cur >= 150e12) els.rank.innerText = "워런 버핏급! 🐢"; else if (cur >= 13e8) els.rank.innerText = "상위 1% 부자! 💎"; else els.rank.innerText = "대한민국 저력! 👍"; } else { els.rank.style.display = 'none'; }
             els.quote.innerText = '"' + quotes[Math.floor(Math.random() * quotes.length)] + '"'; 
             updateTierTheme(cur); updateComparison(cur); updateChart(labels, dNom, dReal, dPriz);
         }
