@@ -125,6 +125,25 @@
         .tax-info { font-size: 0.8em; color: var(--text-secondary); margin-top: 15px; background: #fffbeb; padding: 10px; border-radius: 8px; border: 1px solid #fef3c7; color: #92400e; }
         body.dark-mode .tax-info { background: #451a03; color: #fde68a; border-color: #78350f; }
 
+        /* 비교 배너 스타일 */
+        #comparisonBanner {
+            display: none;
+            margin-top: 24px;
+            padding: 20px;
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            color: white;
+            border-radius: 16px;
+            text-align: center;
+            animation: slideUp 0.5s ease-out;
+        }
+        .banner-title { font-weight: 800; font-size: 1.1em; margin-bottom: 8px; }
+        .banner-desc { font-size: 0.9em; opacity: 0.9; }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
         /* 커스텀 모달 스타일 */
         #customAlert {
             display: none;
@@ -183,10 +202,9 @@
 </head>
 <body>
 
-    <!-- 커스텀 모달 구조 -->
     <div id="customAlert">
         <div class="modal-content">
-            <div class="modal-title">⚠️ 시스템 알림</div>
+            <div class="modal-title" id="modalTitle">⚠️ 시스템 알림</div>
             <div class="modal-msg" id="modalMsg">메시지 내용이 이곳에 표시됩니다.</div>
             <button class="btn-modal" onclick="closeAlert()">확인</button>
         </div>
@@ -276,6 +294,11 @@
                         <span class="value" id="statReturn">0%</span>
                     </div>
                 </div>
+
+                <div id="comparisonBanner">
+                    <div class="banner-title" id="bannerTitle">상상도 못한 금액!</div>
+                    <div class="banner-desc" id="bannerDesc">비교 데이터가 표시됩니다.</div>
+                </div>
             </main>
         </div>
     </div>
@@ -283,58 +306,16 @@
     <script>
         let myChart = null;
         let prankCounter = 0;
+        let unlocked = false;
 
         const prankMessages = [
-            "더이상은 안되지롱 😜",
-            "훗 넌 더이상 나아갈수 없어 🛡️",
-            "또 누르시게요? 에베베~ 😝",
-            "손가락이 근질근질하시죠? 🖐️",
-            "지구 정복이 꿈이신가요? 🌍",
-            "숫자가 너무 커서 서버가 울고 있어요.. 😭",
-            "이정도면 거의 신의 영역인데요? 😇",
-            "적당히 하세요, 현기증 난단 말이에요! 😵",
-            "숫자로 우주 만드시게요? 🌌",
-            "와우, 이 돈이면 화성도 사겠어요! 🚀",
-            "장난은 여기까지만~ 🙅",
-            "끈기가 대단하시네요! 👍",
-            "제 계산기가 파업 직전입니다. 🛠️",
-            "그만! 더 이상은 0이 부족해요. 🕳️",
-            "혹시 빌 게이츠세요? 💰",
-            "이 숫자는 저도 처음 봐요.. 🧐",
-            "멈춰! (정색) ✋",
-            "아직도 포기 안 하셨나요? 끈기왕! 👑",
-            "당신의 열정에 박수를 보냅니다. 👏",
-            "숫자랑 싸우시는 중인가요? 🥊",
-            "이제 그만 다른 걸 해보는 건 어때요? 🎨",
-            "화면이 뚫릴 것 같아요! 📱",
-            "쉿! 조용히 숫자를 줄여봐요. 🤫",
-            "어머어머, 너무 무리하시는 거 아니에요? 💃",
-            "삐-빅! 정상 범위가 아닙니다. 🚨",
-            "도대체 어디까지 가시려는 건가요? 🏃",
-            "이 숫자는 제 용량을 초과했습니다. 🧠",
-            "훗, 제법이군.. 하지만 여기까지다! 💥",
-            "무지개 반사! 더 이상은 안 들어가요. 🌈",
-            "숫자 수집가이신가요? Collector! 💎",
-            "그만 누르라고 전해라~ 🎤",
-            "아잇 참! 자꾸 그러시면 곤란해요. 😤",
-            "숫자가 너무 많아서 멀미나요.. 🤢",
-            "당신은 정말 대단한 장난꾸러기군요! 🤡",
-            "얍! 숫자 제한 마법에 걸리셨습니다. ✨",
-            "오호~ 계속 도전하시겠다? 🔥",
-            "자, 이제 심호흡 한번 하고 숫자를 줄여볼까요? 🧘",
-            "이 돈이면 나라 하나 세우겠어요! 🏰",
-            "숫자 폭격 금지! 💣",
-            "훠이~ 훠이~ 저리 가세요! 🧹",
-            "아직도 누르고 계신 건 아니죠? 🤨",
-            "와, 끝판왕 등장인가요? 👾",
-            "제 인내심을 테스트 중이신가요? ⏳",
-            "이제 손가락 쉴 시간이에요. 😴",
-            "메롱! 안되지롱~ 👅",
-            "숫자 장인의 길은 멀고도 험하답니다. 🏔️",
-            "여기서 멈추면 멋쟁이! 😎",
-            "자자, 진정하시고.. 🍵",
-            "우와~ 정말 끈기 대장이시네요! 🏅",
-            "마지막 경고입니다! (농담이에요 ㅎㅎ) 🤡"
+            "더이상은 안되지롱 😜", "훗 넌 더이상 나아갈수 없어 🛡️", "또 누르시게요? 에베베~ 😝",
+            "손가락이 근질근질하시죠? 🖐️", "지구 정복이 꿈이신가요? 🌍", "숫자가 너무 커서 서버가 울고 있어요.. 😭",
+            "이정도면 거의 신의 영역인데요? 😇", "적당히 하세요, 현기증 난단 말이에요! 😵",
+            "숫자로 우주 만드시게요? 🌌", "와우, 이 돈이면 화성도 사겠어요! 🚀",
+            "장난은 여기까지만~ 🙅", "끈기가 대단하시네요! 👍", "제 계산기가 파업 직전입니다. 🛠️",
+            "그만! 더 이상은 0이 부족해요. 🕳️", "혹시 빌 게이츠세요? 💰", "이 숫자는 저도 처음 봐요.. 🧐",
+            "멈춰! (정색) ✋", "아직도 포기 안 하셨나요? 끈기왕! 👑", "당신의 열정에 박수를 보냅니다. 👏"
         ];
 
         function toggleMode() {
@@ -344,23 +325,21 @@
             calculate(); 
         }
 
-        // 커스텀 알림창 함수 (장난 로직 포함)
-        function showAlert(baseMsg) {
+        function showAlert(msg, title = "⚠️ 시스템 알림") {
             const modal = document.getElementById('customAlert');
-            let finalMsg = baseMsg;
-
-            if (prankCounter > 0) {
-                // 두 번째부터는 랜덤 장난 문구 사용
-                finalMsg = prankMessages[Math.floor(Math.random() * prankMessages.length)];
-            } else {
-                // 처음에는 기존 문구 유지
-                finalMsg = "이런 장난꾸러기! " + baseMsg;
-            }
-
-            document.getElementById('modalMsg').innerText = finalMsg;
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalMsg').innerText = msg;
             modal.style.display = 'flex';
             setTimeout(() => modal.classList.add('active'), 10);
-            prankCounter++;
+            
+            if (!unlocked) prankCounter++;
+            
+            if (prankCounter === 10 && !unlocked) {
+                setTimeout(() => {
+                    unlocked = true;
+                    showAlert("아... 진짜 끈질기시네요. 제가 졌습니다! 🏳️\n딱 '자' 단위까지만 특별히 열어드릴게요. 이 정도면 만족하시죠?", "🏳️ 항복 선언");
+                }, 500);
+            }
         }
 
         function closeAlert() {
@@ -375,10 +354,16 @@
 
         function handleInput(el) {
             let value = el.value.replace(/[^0-9]/g, "");
+            const limit = unlocked ? 28 : 24;
             
-            if (value.length > 24) {
-                showAlert("해 단위를 초과하는 금액은 입력할 수 없습니다. 😉");
-                value = value.substring(0, 24);
+            if (value.length > limit) {
+                if (unlocked) {
+                    showAlert("훗... 넌 더 이상 나아갈 수 없어! '자' 단위도 부족하신가요? 🛑");
+                } else {
+                    const msg = prankMessages[Math.floor(Math.random() * prankMessages.length)];
+                    showAlert(msg);
+                }
+                value = value.substring(0, limit);
             }
             
             el.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -389,42 +374,54 @@
             if (num === 0) return '₩ 0';
             if (num < 10000) return '₩ ' + formatWithDots(num);
 
-            const units = ['', '만', '억', '조', '경', '해'];
-            let tempNum = Math.floor(num);
+            const units = ['', '만', '억', '조', '경', '해', '자', '양'];
+            let tempNum = num; // 큰 수 처리를 위해 Math.floor 제거(BigInt 대신 사용)
             let unitIdx = 0;
 
             const parts = [];
-            while (tempNum > 0 && unitIdx < units.length) {
-                const remainder = tempNum % 10000;
+            while (tempNum > 0.9 && unitIdx < units.length) {
+                const remainder = Math.floor(tempNum % 10000);
                 if (remainder > 0) {
                     parts.push(formatWithDots(remainder) + units[unitIdx]);
                 }
-                tempNum = Math.floor(tempNum / 10000);
+                tempNum = tempNum / 10000;
                 unitIdx++;
-            }
-
-            if (tempNum > 0) {
-                return "해 단위 초과 (계산 불가)";
             }
 
             const displayParts = parts.reverse().slice(0, 2);
             return displayParts.join(' ') + ' 원';
         }
 
+        function updateComparison(val) {
+            const banner = document.getElementById('comparisonBanner');
+            const title = document.getElementById('bannerTitle');
+            const desc = document.getElementById('bannerDesc');
+
+            if (val >= 1e20) {
+                banner.style.display = 'block';
+                if (val >= 1e24) {
+                    title.innerText = "🌌 우주를 지배하는 자!";
+                    desc.innerText = `현재 자산으로 지구(Earth)를 약 ${formatWithDots(val / 1e18)}개 살 수 있습니다. 전 우주에 치킨을 쏠 수 있는 금액이에요!`;
+                } else {
+                    title.innerText = "🌍 지구급 부의 탄생!";
+                    desc.innerText = `이 정도면 전 세계 모든 사람에게 아파트를 한 채씩 선물하고도 남는 금액입니다.`;
+                }
+            } else {
+                banner.style.display = 'none';
+            }
+        }
+
         function calculate() {
-            const principalRaw = document.getElementById('principal').value.replace(/\./g, "");
-            const monthlyRaw = document.getElementById('monthly').value.replace(/\./g, "");
-            
-            const P = parseFloat(principalRaw) || 0;
-            const PMT = parseFloat(monthlyRaw) || 0;
-            
+            const P = parseFloat(document.getElementById('principal').value.replace(/\./g, "")) || 0;
+            const PMT = parseFloat(document.getElementById('monthly').value.replace(/\./g, "")) || 0;
             const annualRate = (parseFloat(document.getElementById('rate').value) || 0) / 100;
             const years = parseInt(document.getElementById('years').value) || 0;
             const inflationRate = (parseFloat(document.getElementById('inflation').value) || 0) / 100;
             const taxType = document.getElementById('taxType').value;
 
-            if (P >= 1e24 || PMT >= 1e24) {
-                showAlert("해 단위를 초과하는 금액은 입력할 수 없습니다. 적당히 하세요~");
+            const limit = unlocked ? 1e28 : 1e24;
+            if (P >= limit || PMT >= limit) {
+                showAlert(unlocked ? "이제 그만하세요... 제 인내심이 바닥났어요! 😭" : "이런 장난꾸러기! 해 단위를 넘볼 순 없습니다.");
                 return;
             }
 
@@ -436,7 +433,6 @@
             let currentAsset = P;
             let totalPrincipal = P;
             let totalTaxPaid = 0;
-
             const monthlyRate = annualRate / 12;
             const taxRate = taxType === 'general' ? 0.154 : 0; 
 
@@ -450,18 +446,15 @@
                     const interest = currentAsset * monthlyRate;
                     const tax = interest * taxRate;
                     totalTaxPaid += tax;
-                    
                     currentAsset += (interest - tax + PMT);
                     totalPrincipal += PMT;
 
-                    if (currentAsset >= 1e24) {
-                        showAlert("복리 계산 결과가 해 단위를 초과하여 시뮬레이션을 중단합니다. 지구가 위험해요! 🌍");
+                    if (currentAsset >= limit) {
+                        showAlert(unlocked ? "자 단위도 돌파하다니... 당신의 끈기에 경의를 표합니다. 🫡" : "계산 결과가 해 단위를 초과하여 중단합니다. 지구가 위험해요! 🌍");
                         return;
                     }
                 }
-
                 const realValue = currentAsset / Math.pow(1 + inflationRate, year);
-                
                 labels.push(year + '년');
                 dataNominal.push(currentAsset);
                 dataReal.push(realValue);
@@ -476,6 +469,7 @@
             document.getElementById('statReturn').innerText = (((currentAsset - totalPrincipal) / totalPrincipal) * 100).toFixed(1) + '%';
 
             updateChart(labels, dataNominal, dataReal, dataPrincipal);
+            updateComparison(currentAsset);
         }
 
         function updateChart(labels, nominal, real, principal) {
@@ -483,39 +477,15 @@
             const isDark = document.body.classList.contains('dark-mode');
             const textColor = isDark ? '#94a3b8' : '#4b5563';
             const gridColor = isDark ? '#334155' : '#e5e7eb';
-
             if (myChart) myChart.destroy();
-
             myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: labels,
                     datasets: [
-                        {
-                            label: '명목 자산 (세후)',
-                            data: nominal,
-                            borderColor: '#2563eb',
-                            backgroundColor: 'rgba(37, 99, 235, 0.1)',
-                            fill: true,
-                            tension: 0.3
-                        },
-                        {
-                            label: '실질 가치 (물가반영)',
-                            data: real,
-                            borderColor: '#db2777',
-                            borderDash: [5, 5],
-                            fill: false,
-                            tension: 0.3
-                        },
-                        {
-                            label: '투자 원금',
-                            data: principal,
-                            borderColor: isDark ? '#64748b' : '#9ca3af',
-                            backgroundColor: 'transparent',
-                            fill: false,
-                            borderWidth: 2,
-                            tension: 0
-                        }
+                        { label: '명목 자산 (세후)', data: nominal, borderColor: '#2563eb', backgroundColor: 'rgba(37, 99, 235, 0.1)', fill: true, tension: 0.3 },
+                        { label: '실질 가치 (물가반영)', data: real, borderColor: '#db2777', borderDash: [5, 5], fill: false, tension: 0.3 },
+                        { label: '투자 원금', data: principal, borderColor: isDark ? '#64748b' : '#9ca3af', backgroundColor: 'transparent', fill: false, borderWidth: 2, tension: 0 }
                     ]
                 },
                 options: {
@@ -528,9 +498,7 @@
                                 label: function(context) {
                                     let label = context.dataset.label || '';
                                     if (label) label += ': ';
-                                    if (context.parsed.y !== null) {
-                                        label += formatCurrency(context.parsed.y);
-                                    }
+                                    if (context.parsed.y !== null) label += formatCurrency(context.parsed.y);
                                     return label;
                                 }
                             }
@@ -543,10 +511,11 @@
                             ticks: { 
                                 color: textColor,
                                 callback: function(value) { 
+                                    if (value >= 1e24) return (value / 1e24).toFixed(1) + '자';
+                                    if (value >= 1e20) return (value / 1e20).toFixed(1) + '해';
                                     if (value >= 1e16) return (value / 1e16).toFixed(1) + '경';
                                     if (value >= 1e12) return (value / 1e12).toFixed(1) + '조';
                                     if (value >= 1e8) return (value / 1e8).toFixed(1) + '억';
-                                    if (value >= 1e4) return (value / 1e4).toFixed(1) + '만';
                                     return value;
                                 }
                             }
@@ -556,7 +525,6 @@
                 }
             });
         }
-
         calculate();
     </script>
 </body>
