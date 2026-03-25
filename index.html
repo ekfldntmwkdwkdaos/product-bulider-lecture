@@ -234,6 +234,13 @@
         function handleInput(el) {
             // 숫자만 남기고 점 제거
             let value = el.value.replace(/[^0-9]/g, "");
+            
+            // 해 단위 초과 체크 (10^24 미만으로 제한)
+            if (value.length > 24) {
+                alert("해 단위를 초과하는 금액은 입력할 수 없습니다.");
+                value = value.substring(0, 24);
+            }
+            
             // 천 단위 점 찍기
             el.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             calculate();
@@ -244,11 +251,9 @@
             if (num < 10000) return '₩ ' + formatWithDots(num);
 
             const units = ['', '만', '억', '조', '경', '해'];
-            let result = '';
             let tempNum = Math.floor(num);
             let unitIdx = 0;
 
-            // 단위를 추출하기 위한 배열
             const parts = [];
             while (tempNum > 0 && unitIdx < units.length) {
                 const remainder = tempNum % 10000;
@@ -259,19 +264,32 @@
                 unitIdx++;
             }
 
-            // 상위 2개 단위만 표시 (가독성을 위해)
-            // 예: 1조 5.000억 원
+            // 해 단위를 넘어가는 경우 (자 단위 이상)
+            if (tempNum > 0) {
+                return "해 단위 초과 (계산 불가)";
+            }
+
             const displayParts = parts.reverse().slice(0, 2);
             return displayParts.join(' ') + ' 원';
         }
 
         function calculate() {
-            const P = parseFloat(document.getElementById('principal').value.replace(/\./g, "")) || 0;
-            const PMT = parseFloat(document.getElementById('monthly').value.replace(/\./g, "")) || 0;
+            const principalRaw = document.getElementById('principal').value.replace(/\./g, "");
+            const monthlyRaw = document.getElementById('monthly').value.replace(/\./g, "");
+            
+            const P = parseFloat(principalRaw) || 0;
+            const PMT = parseFloat(monthlyRaw) || 0;
+            
             const annualRate = (parseFloat(document.getElementById('rate').value) || 0) / 100;
             const years = parseInt(document.getElementById('years').value) || 0;
             const inflationRate = (parseFloat(document.getElementById('inflation').value) || 0) / 100;
             const taxType = document.getElementById('taxType').value;
+
+            // 입력값 자체 제한
+            if (P >= 1e24 || PMT >= 1e24) {
+                alert("해 단위를 초과하는 금액은 입력할 수 없습니다.");
+                return;
+            }
 
             const labels = [];
             const dataNominal = [];
@@ -292,15 +310,18 @@
 
             for (let year = 1; year <= years; year++) {
                 for (let month = 1; month <= 12; month++) {
-                    // 1. 월 수익 발생
                     const interest = currentAsset * monthlyRate;
-                    
-                    // 2. 세금 차감 (일반 과세일 경우 매월 수익에서 차감 가정)
                     const tax = interest * taxRate;
                     totalTaxPaid += tax;
                     
                     currentAsset += (interest - tax + PMT);
                     totalPrincipal += PMT;
+
+                    // 계산 중 해 단위 초과 체크
+                    if (currentAsset >= 1e24) {
+                        alert("복리 계산 결과가 해 단위를 초과하여 시뮬레이션을 중단합니다.");
+                        return;
+                    }
                 }
 
                 const realValue = currentAsset / Math.pow(1 + inflationRate, year);
@@ -406,3 +427,4 @@
     </script>
 </body>
 </html>
+
