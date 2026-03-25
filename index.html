@@ -5,27 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>펫플 (Petple) - 우리 아이 자랑하고 치킨 받자!</title>
     <style>
-        body { font-family: 'NanumGothic', sans-serif; margin: 0; padding: 0; background-color: #fdfdfd; color: #333; }
-        header { background-color: #fffde7; padding: 20px; text-align: center; border-bottom: 2px solid #e0f2f1; }
+        /* CSS 변수 설정 (기본은 화이트 모드) */
+        :root {
+            --bg-color: #fdfdfd;
+            --header-bg: #fffde7;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --sub-text: #666666;
+            --shadow: rgba(0,0,0,0.08);
+            --border-color: #e0f2f1;
+        }
+
+        /* 다크 모드 변수 설정 */
+        body.dark-mode {
+            --bg-color: #121212;
+            --header-bg: #1a1a1a;
+            --card-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --sub-text: #aaaaaa;
+            --shadow: rgba(0,0,0,0.5);
+            --border-color: #333333;
+        }
+
+        body { font-family: 'NanumGothic', sans-serif; margin: 0; padding: 0; background-color: var(--bg-color); color: var(--text-color); transition: background-color 0.3s, color 0.3s; }
+        
+        header { background-color: var(--header-bg); padding: 20px; text-align: center; border-bottom: 2px solid var(--border-color); position: relative; }
         header h1 { color: #ffca28; margin: 0; font-size: 3em; }
         header p { color: #4db6ac; font-size: 1.2em; margin-top: 5px; }
+
+        /* 모드 전환 버튼 스타일 */
+        .mode-toggle {
+            position: absolute; top: 20px; right: 20px;
+            background-color: #ffca28; border: none; padding: 10px 15px;
+            border-radius: 20px; cursor: pointer; font-weight: bold; color: white;
+            box-shadow: 0 2px 5px var(--shadow);
+        }
+
         .container { width: 90%; max-width: 800px; margin: 20px auto; padding: 20px; }
         
         /* 메인 카드 스타일 */
         .card { 
-            background-color: #fff; padding: 30px; border-radius: 15px; 
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center; 
-            margin-bottom: 20px;
+            background-color: var(--card-bg); padding: 30px; border-radius: 15px; 
+            box-shadow: 0 4px 20px var(--shadow); text-align: center; 
+            margin-bottom: 20px; transition: background-color 0.3s, box-shadow 0.3s;
         }
 
-        /* 1등 후보 프리뷰 */
-        .ranking-preview { display: block; }
         .dog-photo-main {
             width: 180px; height: 180px; border-radius: 50%; 
             margin: 0 auto 15px; border: 5px solid #ffca28; object-fit: cover;
         }
 
-        /* 투표 섹션 (기본 숨김) */
+        /* 투표 섹션 */
         #voteSection { display: none; }
         .vote-grid {
             display: grid;
@@ -40,9 +70,10 @@
             padding: 10px;
             border-radius: 10px;
         }
-        .vote-item:hover { transform: translateY(-5px); background-color: #fff9c4; border-color: #ffca28; }
+        .vote-item:hover { transform: translateY(-5px); background-color: var(--header-bg); border-color: #ffca28; }
         .vote-item img { width: 100%; aspect-ratio: 1/1; border-radius: 10px; object-fit: cover; margin-bottom: 10px; }
-        .vote-item h4 { margin: 5px 0; }
+        .vote-item h4 { margin: 5px 0; color: var(--text-color); }
+        .vote-item small { color: var(--sub-text); }
 
         .btn-main {
             background-color: #ffca28; color: white; border: none; padding: 15px 30px;
@@ -56,12 +87,15 @@
             color: #2e7d32; border-radius: 10px; font-weight: bold; font-size: 1.1em;
             animation: popIn 0.5s ease-out forwards;
         }
+        body.dark-mode .result-message { background-color: #1b5e20; color: #a5d6a7; }
+
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
     </style>
 </head>
 <body>
 
     <header>
+        <button class="mode-toggle" id="modeBtn" onclick="toggleMode()">🌙 다크 모드</button>
         <h1>Petple</h1>
         <p>반려동물과 사람이 모이는 곳, 펫플</p>
     </header>
@@ -76,24 +110,21 @@
             <button class="btn-main" onclick="showVoteOptions()">👍 주간 랭킹 투표하기</button>
         </section>
 
-        <!-- 2. 실제 투표 섹션 (버튼 클릭 시 등장) -->
+        <!-- 2. 실제 투표 섹션 -->
         <section class="card" id="voteSection">
             <h2>🏆 이번 주 랭킹 투표</h2>
             <p>가장 마음에 드는 아이를 선택해주세요!</p>
             <div class="vote-grid">
-                <!-- 후보 1 -->
                 <div class="vote-item" onclick="submitVote('진구')">
                     <img src="https://images.unsplash.com/photo-1517849845537-4d257902454a?w=150&h=150&fit=crop" alt="진구">
                     <h4>1. 진구</h4>
                     <small>푸들 / 3세</small>
                 </div>
-                <!-- 후보 2 -->
                 <div class="vote-item" onclick="submitVote('초코')">
                     <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=150&h=150&fit=crop" alt="초코">
                     <h4>2. 초코</h4>
                     <small>비글 / 2세</small>
                 </div>
-                <!-- 후보 3 -->
                 <div class="vote-item" onclick="submitVote('밀크')">
                     <img src="https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?w=150&h=150&fit=crop" alt="밀크">
                     <h4>3. 밀크</h4>
@@ -105,6 +136,19 @@
     </div>
 
     <script>
+        // 다크모드 전환 함수
+        function toggleMode() {
+            const body = document.body;
+            const btn = document.getElementById('modeBtn');
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                btn.innerHTML = '☀️ 화이트 모드';
+            } else {
+                btn.innerHTML = '🌙 다크 모드';
+            }
+        }
+
         // 투표 옵션 보여주기
         function showVoteOptions() {
             document.getElementById('previewSection').style.display = 'none';
@@ -117,11 +161,10 @@
             resultMsg.style.display = 'block';
             resultMsg.innerHTML = `🎉 ${name}에게 투표 완료!<br>소중한 한 표 감사합니다. 랭킹 결과는 월요일에 발표됩니다!`;
             
-            // 다른 후보들 클릭 방지
             const items = document.querySelectorAll('.vote-item');
             items.forEach(item => {
                 item.style.pointerEvents = 'none';
-                item.style.opacity = '0.7';
+                item.style.opacity = '0.5';
             });
             
             setTimeout(() => {
