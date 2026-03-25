@@ -282,20 +282,85 @@
 
     <script>
         let myChart = null;
+        let prankCounter = 0;
+
+        const prankMessages = [
+            "더이상은 안되지롱 😜",
+            "훗 넌 더이상 나아갈수 없어 🛡️",
+            "또 누르시게요? 에베베~ 😝",
+            "손가락이 근질근질하시죠? 🖐️",
+            "지구 정복이 꿈이신가요? 🌍",
+            "숫자가 너무 커서 서버가 울고 있어요.. 😭",
+            "이정도면 거의 신의 영역인데요? 😇",
+            "적당히 하세요, 현기증 난단 말이에요! 😵",
+            "숫자로 우주 만드시게요? 🌌",
+            "와우, 이 돈이면 화성도 사겠어요! 🚀",
+            "장난은 여기까지만~ 🙅",
+            "끈기가 대단하시네요! 👍",
+            "제 계산기가 파업 직전입니다. 🛠️",
+            "그만! 더 이상은 0이 부족해요. 🕳️",
+            "혹시 빌 게이츠세요? 💰",
+            "이 숫자는 저도 처음 봐요.. 🧐",
+            "멈춰! (정색) ✋",
+            "아직도 포기 안 하셨나요? 끈기왕! 👑",
+            "당신의 열정에 박수를 보냅니다. 👏",
+            "숫자랑 싸우시는 중인가요? 🥊",
+            "이제 그만 다른 걸 해보는 건 어때요? 🎨",
+            "화면이 뚫릴 것 같아요! 📱",
+            "쉿! 조용히 숫자를 줄여봐요. 🤫",
+            "어머어머, 너무 무리하시는 거 아니에요? 💃",
+            "삐-빅! 정상 범위가 아닙니다. 🚨",
+            "도대체 어디까지 가시려는 건가요? 🏃",
+            "이 숫자는 제 용량을 초과했습니다. 🧠",
+            "훗, 제법이군.. 하지만 여기까지다! 💥",
+            "무지개 반사! 더 이상은 안 들어가요. 🌈",
+            "숫자 수집가이신가요? Collector! 💎",
+            "그만 누르라고 전해라~ 🎤",
+            "아잇 참! 자꾸 그러시면 곤란해요. 😤",
+            "숫자가 너무 많아서 멀미나요.. 🤢",
+            "당신은 정말 대단한 장난꾸러기군요! 🤡",
+            "얍! 숫자 제한 마법에 걸리셨습니다. ✨",
+            "오호~ 계속 도전하시겠다? 🔥",
+            "자, 이제 심호흡 한번 하고 숫자를 줄여볼까요? 🧘",
+            "이 돈이면 나라 하나 세우겠어요! 🏰",
+            "숫자 폭격 금지! 💣",
+            "훠이~ 훠이~ 저리 가세요! 🧹",
+            "아직도 누르고 계신 건 아니죠? 🤨",
+            "와, 끝판왕 등장인가요? 👾",
+            "제 인내심을 테스트 중이신가요? ⏳",
+            "이제 손가락 쉴 시간이에요. 😴",
+            "메롱! 안되지롱~ 👅",
+            "숫자 장인의 길은 멀고도 험하답니다. 🏔️",
+            "여기서 멈추면 멋쟁이! 😎",
+            "자자, 진정하시고.. 🍵",
+            "우와~ 정말 끈기 대장이시네요! 🏅",
+            "마지막 경고입니다! (농담이에요 ㅎㅎ) 🤡"
+        ];
 
         function toggleMode() {
             const body = document.body;
             body.classList.toggle('dark-mode');
             document.getElementById('modeBtn').innerHTML = body.classList.contains('dark-mode') ? '☀️ Light Mode' : '🌙 Dark Mode';
-            calculate(); // 차트 색상 갱신을 위해 재계산
+            calculate(); 
         }
 
-        // 커스텀 알림창 함수
-        function showAlert(msg) {
+        // 커스텀 알림창 함수 (장난 로직 포함)
+        function showAlert(baseMsg) {
             const modal = document.getElementById('customAlert');
-            document.getElementById('modalMsg').innerText = msg;
+            let finalMsg = baseMsg;
+
+            if (prankCounter > 0) {
+                // 두 번째부터는 랜덤 장난 문구 사용
+                finalMsg = prankMessages[Math.floor(Math.random() * prankMessages.length)];
+            } else {
+                // 처음에는 기존 문구 유지
+                finalMsg = "이런 장난꾸러기! " + baseMsg;
+            }
+
+            document.getElementById('modalMsg').innerText = finalMsg;
             modal.style.display = 'flex';
             setTimeout(() => modal.classList.add('active'), 10);
+            prankCounter++;
         }
 
         function closeAlert() {
@@ -304,22 +369,18 @@
             setTimeout(() => modal.style.display = 'none', 200);
         }
 
-        // 숫자에 점을 찍는 함수
         function formatWithDots(num) {
             return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
 
         function handleInput(el) {
-            // 숫자만 남기고 점 제거
             let value = el.value.replace(/[^0-9]/g, "");
             
-            // 해 단위 초과 체크 (10^24 미만으로 제한)
             if (value.length > 24) {
-                showAlert("이런 장난꾸러기! 해 단위를 초과하는 금액은 입력할 수 없습니다. 😉");
+                showAlert("해 단위를 초과하는 금액은 입력할 수 없습니다. 😉");
                 value = value.substring(0, 24);
             }
             
-            // 천 단위 점 찍기
             el.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             calculate();
         }
@@ -342,7 +403,6 @@
                 unitIdx++;
             }
 
-            // 해 단위를 넘어가는 경우 (자 단위 이상)
             if (tempNum > 0) {
                 return "해 단위 초과 (계산 불가)";
             }
@@ -363,9 +423,8 @@
             const inflationRate = (parseFloat(document.getElementById('inflation').value) || 0) / 100;
             const taxType = document.getElementById('taxType').value;
 
-            // 입력값 자체 제한
             if (P >= 1e24 || PMT >= 1e24) {
-                showAlert("이런 장난꾸러기! 해 단위를 초과하는 금액은 입력할 수 없습니다. 적당히 하세요~");
+                showAlert("해 단위를 초과하는 금액은 입력할 수 없습니다. 적당히 하세요~");
                 return;
             }
 
@@ -379,7 +438,7 @@
             let totalTaxPaid = 0;
 
             const monthlyRate = annualRate / 12;
-            const taxRate = taxType === 'general' ? 0.154 : 0; // 일반과세 15.4%
+            const taxRate = taxType === 'general' ? 0.154 : 0; 
 
             labels.push('현재');
             dataNominal.push(P);
@@ -395,9 +454,8 @@
                     currentAsset += (interest - tax + PMT);
                     totalPrincipal += PMT;
 
-                    // 계산 중 해 단위 초과 체크
                     if (currentAsset >= 1e24) {
-                        showAlert("이런 장난꾸러기! 복리 계산 결과가 해 단위를 초과하여 시뮬레이션을 중단합니다. 지구가 위험해요! 🌍");
+                        showAlert("복리 계산 결과가 해 단위를 초과하여 시뮬레이션을 중단합니다. 지구가 위험해요! 🌍");
                         return;
                     }
                 }
@@ -410,7 +468,6 @@
                 dataPrincipal.push(totalPrincipal);
             }
 
-            // UI 업데이트
             document.getElementById('totalValue').innerText = formatCurrency(currentAsset);
             document.getElementById('realValue').innerText = formatCurrency(dataReal[dataReal.length-1]);
             document.getElementById('statPrincipal').innerText = formatCurrency(totalPrincipal);
@@ -500,7 +557,6 @@
             });
         }
 
-        // 초기 실행
         calculate();
     </script>
 </body>
