@@ -68,9 +68,9 @@
         #comparisonBanner { display: none; margin-top: 24px; padding: 30px; border-radius: 32px; text-align: center; animation: slideUp 0.5s ease-out; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         .chart-container { position: relative; flex-grow: 1; min-height: 450px; width: 100%; margin-top: 25px; border-radius: 24px; overflow: hidden; }
         
-        /* 광고 영역 */
+        /* 광고 영역 스타일 */
         .ad-area { margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.02); border: 1px dashed var(--border-color); border-radius: 24px; text-align: center; color: var(--text-secondary); font-size: 0.85em; box-sizing: border-box; }
-        .ads-container { margin-top: 15px; min-height: 90px; }
+        .ads-container { margin-top: 15px; min-height: 90px; overflow: hidden; }
 
         .contact-section { margin-top: 80px; padding-top: 60px; border-top: 2px solid var(--border-color); }
         .contact-title { font-size: 2.2em; font-weight: 900; text-align: center; margin-bottom: 10px; color: var(--text-primary); }
@@ -105,8 +105,6 @@
             <div class="card">
                 <p style="font-size: 1em; margin-bottom: 20px; text-align: center;">시간이 지날수록 벌어지는 이 격차를 보세요. 이것이 바로 복리의 마법입니다.</p>
                 <div style="height: 350px;"><canvas id="compareChart"></canvas></div>
-                
-                <!-- 분석 모달 내 광고 -->
                 <div class="ad-area" style="margin-top: 30px; border-style: solid; background: rgba(37, 99, 235, 0.05); border-radius: 24px;">
                     <span style="font-weight: 800; color: var(--accent-color);">금융 지식 스폰서</span>
                     <div class="ads-container">
@@ -132,9 +130,9 @@
                     <div id="requiredMonthly" style="font-size: 1.8em; font-weight: 900; color: var(--accent-color); margin: 10px 0;">₩ 0</div>
                 </div>
 
-                <!-- 목표 역계산기 모달 내 광고 -->
-                <div class="ad-area" style="margin-top: 30px; border-style: solid; background: rgba(219, 39, 119, 0.05); border-color: var(--real-value-color); border-radius: 24px;">
-                    <span style="font-weight: 800; color: var(--real-value-color);">목표 달성 가이드</span>
+                <!-- A1 광고자리에 애드센스 적용 -->
+                <div class="ad-area" id="A1" style="margin-top: 30px; border-style: solid; background: rgba(219, 39, 119, 0.05); border-color: var(--real-value-color); border-radius: 24px;">
+                    <span style="font-weight: 800; color: var(--real-value-color);">A1 - 목표 달성 가이드</span>
                     <div class="ads-container">
                         <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="1764207728" data-ad-format="auto" data-full-width-responsive="true"></ins>
                         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -167,8 +165,7 @@
                     <button class="btn-sub" onclick="openGoal()">목표 달성 역계산기</button>
                 </div>
 
-                <!-- 사이드바 광고 -->
-                <div class="ad-area" style="margin-top: 30px; background: rgba(37, 99, 235, 0.05); border-style: solid;">
+                <div class="ad-area" style="margin-top: 30px; background: rgba(37, 99, 235, 0.05); border-style: solid; border-radius: 24px;">
                     <span style="font-weight: 800; color: var(--accent-color);">Premium Sponsor</span>
                     <div class="ads-container">
                         <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="1764207728" data-ad-format="auto" data-full-width-responsive="true"></ins>
@@ -191,8 +188,6 @@
                 <div id="comparisonBanner"><div class="banner-title" id="bannerTitle" style="font-size:1.3em; font-weight:900; margin-bottom:8px;"></div><div class="banner-desc" id="bannerDesc" style="font-size:1em; font-weight:600;"></div></div>
                 <div class="chart-container"><canvas id="assetChart"></canvas></div>
                 <div id="quoteBox" style="margin-top:20px; padding:15px 20px; border-left:6px solid var(--accent-color); background:rgba(37,99,235,0.05); font-style:italic; font-size:1em; border-radius:0 20px 20px 0; line-height:1.5; min-height:50px; color: var(--text-primary);"></div>
-                
-                <!-- 메인 결과창 하단 광고 -->
                 <div class="ad-area">
                     <span>Sponsored Content</span>
                     <div class="ads-container">
