@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- 보안 강화를 위한 메타 태그 추가 -->
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta name="referrer" content="no-referrer-when-downgrade">
     <title>간편한 복리 계산기 - 금융의 마법</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -178,7 +181,7 @@
     </div>
     <script>
         const $ = id => document.getElementById(id);
-        const els = { principal: $('principal'), monthly: $('monthly'), rate: $('rate'), years: $('years'), inflation: $('inflation'), taxType: $('taxType'), totalValue: $('totalValue'), realValue: $('realValue'), modal: $('customAlert'), modalTitle: $('modalTitle'), modalMsg: $('modalMsg'), banner: $('comparisonBanner'), quote: $('quoteBox'), valUSD: $('valUSD'), magic: $('magicIcon'), headerUSD: $('headerUSD'), calcBtn: $('mainCalcBtn') };
+        const els = { principal: $('principal'), monthly: $('monthly'), rate: $('rate'), years: $('years'), inflation: $('inflation'), taxType: $('taxType'), totalValue: $('totalValue'), realValue: $('realValue'), modal: $('customAlert'), modalTitle: $('modalTitle'), modalMsg: $('modalMsg'), banner: $('comparisonBanner'), quote: $('quoteBox'), rank: $('rankBadge'), valUSD: $('valUSD'), magic: $('magicIcon'), headerUSD: $('headerUSD'), calcBtn: $('mainCalcBtn') };
         
         let myChart = null, compareChart = null, currentRate = 1350, iconSize = 1, iconTimer = null;
 
@@ -217,7 +220,7 @@
 
         function openCompare() {
             $('compareModal').classList.add('active');
-            const P = getVal(els.principal), PMT = getVal(els.monthly), years = parseInt(els.years.value), r = getVal(els.rate)/100;
+            const P = getVal(els.principal), PMT = getVal(els.monthly), years = Math.min(parseInt(els.years.value), 100), r = getVal(els.rate)/100;
             const labels = [], dCompound = [], dSimple = []; let compound = P, simple = P;
             for(let y=0; y<=years; y++) {
                 labels.push(y+'년'); dCompound.push(compound); dSimple.push(simple);
@@ -231,7 +234,8 @@
         function openGoal() { $('goalModal').classList.add('active'); }
         function closeSubModal(id) { $(id).classList.remove('active'); }
         function findGoal() {
-            const target = getVal($('targetAmt')), years = parseInt($('targetYears').value), rate = getVal($('targetRate'))/100/12;
+            const target = getVal($('targetAmt')), years = Math.min(parseInt($('targetYears').value), 100), rate = Math.min(getVal($('targetRate')), 1000)/100/12;
+            if (years <= 0 || rate <= 0) return showAlert("유효한 기간과 수익률을 입력해 주세요.");
             const months = years * 12; const required = (target * rate) / (Math.pow(1 + rate, months) - 1);
             $('goalResult').style.display = 'block'; $('requiredMonthly').innerText = formatCurrency(required);
         }
@@ -258,28 +262,22 @@
 
             const val = getVal(els.principal) + (getVal(els.monthly) * 12 * parseInt(els.years.value));
             if (val >= 1e12) triggerNatureShower();
-            playSuccessSound(); // 새로운 성공 사운드 재생
-            calculate(); 
+            playSuccessSound(); calculate(); 
         }
 
-        // 고급스러운 성공 사운드 합성 (저작권 프리)
         function playSuccessSound() {
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
                 const playNote = (freq, start, duration) => {
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(freq, ctx.currentTime + start);
+                    const osc = ctx.createOscillator(); const gain = ctx.createGain();
+                    osc.type = 'sine'; osc.frequency.setValueAtTime(freq, ctx.currentTime + start);
                     gain.gain.setValueAtTime(0, ctx.currentTime + start);
                     gain.gain.linearRampToValueAtTime(0.1, ctx.currentTime + start + 0.01);
                     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + start + duration);
                     osc.connect(gain); gain.connect(ctx.destination);
                     osc.start(ctx.currentTime + start); osc.stop(ctx.currentTime + start + duration);
                 };
-                // 메이저 3도 화음으로 맑은 소리 연출 (C6, E6)
-                playNote(1046.50, 0, 0.5); 
-                playNote(1318.51, 0.05, 0.5);
+                playNote(1046.50, 0, 0.5); playNote(1318.51, 0.05, 0.5);
             } catch(e) {}
         }
 
@@ -294,7 +292,7 @@
 
         function calculate() {
             const P = getVal(els.principal), PMT = getVal(els.monthly);
-            let cur = P, totalP = P; const years = parseInt(els.years.value) || 0, mRate = (getVal(els.rate) / 100) / 12, tRate = els.taxType.value === 'general' ? 0.154 : 0, labels = ['현재'], dNom = [P], dReal = [P], dPriz = [P];
+            let cur = P, totalP = P; const years = Math.min(parseInt(els.years.value) || 0, 100), mRate = (getVal(els.rate) / 100) / 12, tRate = els.taxType.value === 'general' ? 0.154 : 0, labels = ['현재'], dNom = [P], dReal = [P], dPriz = [P];
             for (let y = 1; y <= years; y++) { for (let m = 1; m <= 12; m++) { let intr = cur * mRate, tax = intr * tRate; cur += (intr - tax + PMT); totalP += PMT; } dNom.push(cur); dReal.push(cur / Math.pow(1 + getVal(els.inflation)/100, y)); dPriz.push(totalP); labels.push(y + '년'); }
             animateNumber(els.totalValue, cur); animateNumber(els.realValue, dReal[dReal.length-1]);
             animateNumber(els.valUSD, dReal[dReal.length-1] / currentRate, true);
@@ -309,7 +307,7 @@
 
         function updateComparison(val) {
             els.banner.style.display = 'block'; let t = '', d = '', bg = '', c = '#78350f';
-            if (val < 1000000) { t = "🌱 씨앗을 심는 중"; d = "습관이 부자를 만듭니다. 계속 전진하세요!"; bg = "linear-gradient(135deg, #dcfce7) 0%, #86efac 100%)"; }
+            if (val < 1000000) { t = "🌱 씨앗을 심는 중"; d = "습관이 부자를 만듭니다. 계속 전진하세요!"; bg = "linear-gradient(135deg, #dcfce7 0%, #86efac 100%)"; }
             else if (val >= 1e12) { t = "👑 재벌 3세 저리가라"; d = "대기업 몇 개쯤은 쇼핑하듯 살 수 있는 엄청난 금액입니다."; bg = "linear-gradient(135deg, #4c1d95 0%, #8b5cf6 100%)"; c = "#fff"; }
             else { t = "🏢 강남 건물주 등극!"; d = "축하합니다! 이제 강남 요지에 빌딩 한 채 정도는 가볍게 소유하시겠네요."; bg = "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)"; }
             $('bannerTitle').innerText = t; $('bannerDesc').innerText = d; els.banner.style.background = bg; els.banner.style.color = c;
