@@ -20,16 +20,12 @@
             --border-color: #334155; --input-bg: #0f172a; --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
         }
         
-        /* 다크모드 시 모든 배경을 명확하게 처리 */
         body.dark-mode { background-color: var(--bg-color); }
-        
         body.theme-jo .input-group label, body.theme-ja .input-group label { color: #f8fafc !important; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
         body.theme-jo .input-group input, body.theme-ja .input-group input { color: #fff !important; background: rgba(255,255,255,0.1) !important; border-color: rgba(255,255,255,0.3) !important; }
         body.theme-eok { background: linear-gradient(135deg, var(--bg-color) 0%, #e0f2fe 100%); }
         body.theme-jo { background: linear-gradient(135deg, #1e293b 0%, #4338ca 100%); color: #fff; }
-        body.theme-jo .card { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); }
         body.theme-ja { background: radial-gradient(circle at center, #1e1b4b 0%, #020617 100%); color: #fff; overflow-x: hidden; }
-        body.theme-ja .card { background: rgba(255,255,255,0.05); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); }
         body.theme-ja::after { content: '✨'; position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.5; animation: spaceStars 10s infinite linear; font-size: 20px; }
         @keyframes spaceStars { from { transform: translateY(0); } to { transform: translateY(-100px); } }
 
@@ -49,32 +45,9 @@
         .usd-ticker { display: inline-block; font-size: 1em; background: rgba(37, 99, 235, 0.1); padding: 8px 20px; border-radius: 20px; color: var(--accent-color); font-weight: 700; margin-top: 20px; }
         
         .mode-toggle { 
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            background: var(--accent-color); 
-            color: white; 
-            border: none; 
-            padding: 12px 24px; 
-            border-radius: 16px; 
-            cursor: pointer; 
-            font-size: 1em; 
-            font-weight: 800; 
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3); 
-            transition: 0.3s; 
+            position: absolute; top: 20px; right: 30px; background: var(--accent-color); color: white; border: none; padding: 12px 24px; border-radius: 16px; cursor: pointer; font-size: 1em; font-weight: 800; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3); transition: 0.3s; 
         }
-        .mode-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4); }
         
-        @media (max-width: 1000px) { .main-grid { grid-template-columns: 1fr !important; } .container { margin-top: 20px; } }
-        @media (max-width: 650px) {
-            header { padding: 40px 15px; } 
-            header h1 { font-size: 2em; flex-direction: column; gap: 10px; }
-            .mode-toggle { position: relative; top: 0; right: 0; margin-bottom: 20px; width: 100%; }
-            .res-value { font-size: 1.6em !important; }
-            .card { padding: 20px; }
-            .chart-container { height: 300px; }
-        }
-
         .container { width: 95%; max-width: 1200px; margin: 40px auto 80px; padding: 0 20px; box-sizing: border-box; }
         .main-grid { display: grid; grid-template-columns: 380px 1fr; gap: 30px; align-items: start; }
         .card { background-color: var(--card-bg); padding: 30px; border-radius: 32px; box-shadow: var(--shadow); border: 1px solid var(--border-color); transition: all 0.3s; }
@@ -82,30 +55,66 @@
         .input-group label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.9em; color: var(--text-secondary); }
         .input-group input, .input-group select { width: 100%; padding: 15px; border-radius: 14px; border: 1px solid var(--border-color); background-color: var(--input-bg); color: var(--text-primary); font-size: 1.1em; outline: none; transition: 0.2s; box-sizing: border-box; }
         
-        .coffee-btn { width: 100%; background: linear-gradient(135deg, #713f12 0%, #451a03 100%); color: #fef3c7; border: none; padding: 14px; border-radius: 16px; font-weight: 800; cursor: pointer; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1em; }
         .btn-calc { width: 100%; background: var(--accent-color); color: white; border: none; padding: 20px; border-radius: 20px; font-size: 1.2em; font-weight: 900; cursor: pointer; transition: 0.3s; margin-top: 15px; box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2); }
         
+        /* 추가 제안 버튼 스타일 */
+        .extra-btns { margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 20px; }
+        .suggest-box { margin-bottom: 15px; font-size: 0.85em; color: var(--text-secondary); text-align: center; line-height: 1.4; }
+        .btn-sub { width: 100%; padding: 12px; border-radius: 14px; background: none; border: 2px solid var(--accent-color); color: var(--accent-color); font-weight: 800; cursor: pointer; transition: 0.3s; margin-bottom: 10px; }
+        .btn-sub:hover { background: var(--accent-color); color: white; }
+
         .res-box { padding: 25px; border-radius: 24px; background: rgba(0,0,0,0.03); border: 1px solid var(--border-color); margin-bottom: 20px; }
         .res-value { font-size: 2em; font-weight: 900; word-break: break-all; }
         .chart-container { position: relative; height: 400px; width: 100%; margin-top: 25px; border-radius: 24px; overflow: hidden; }
         
-        #comparisonBanner { display: none; margin-top: 24px; padding: 30px; border-radius: 24px; text-align: center; animation: slideUp 0.5s ease-out; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        
-        .ad-area { margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.02); border: 1px dashed var(--border-color); border-radius: 20px; text-align: center; color: var(--text-secondary); font-size: 0.8em; }
-        .ad-placeholder { width: 100%; max-width: 728px; height: 90px; margin: 10px auto 0; background: rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; border-radius: 10px; border: 1px solid var(--border-color); }
+        .sub-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 3000; overflow-y: auto; padding: 40px 20px; box-sizing: border-box; }
+        .sub-modal.active { display: block; animation: slideIn 0.4s ease-out; }
+        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+        .close-sub { position: absolute; top: 30px; left: 30px; background: var(--text-primary); color: var(--bg-color); border: none; padding: 10px 20px; border-radius: 12px; cursor: pointer; font-weight: 800; }
 
         .money-particle { position: fixed; top: -50px; font-size: 24px; pointer-events: none; z-index: 9999; animation: fall linear forwards; }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
 
-        #customAlert { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
+        #customAlert { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 4000; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
         .modal-content { background: var(--card-bg); padding: 45px; border-radius: 40px; box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.5); max-width: 480px; width: 85%; text-align: center; border: 1px solid var(--border-color); transform: scale(0.8); transition: 0.3s; opacity: 0; color: var(--text-primary) !important; }
         #customAlert.active .modal-content { transform: scale(1); opacity: 1; }
     </style>
 </head>
 <body>
+    <!-- 모달 창들 -->
     <div id="customAlert"><div class="modal-content"><div class="modal-title" id="modalTitle" style="font-size:1.6em; font-weight:900; color:#ef4444; margin-bottom:15px;">⚠️ 알림</div><div class="modal-msg" id="modalMsg" style="margin-bottom:30px; font-size:1.1em;"></div><button class="btn-modal" onclick="closeAlert()" style="background:var(--accent-color); color:#fff; border:none; padding:14px 50px; border-radius:16px; font-weight:800; cursor:pointer;">확인</button></div></div>
-    
+
+    <!-- 서브 페이지: 단리 vs 복리 -->
+    <div id="compareModal" class="sub-modal">
+        <button class="close-sub" onclick="closeSubModal('compareModal')">← 돌아가기</button>
+        <div class="container">
+            <h2 style="font-size: 2.5em; text-align: center; margin-bottom: 40px;">단리 vs 복리, 격차의 실체</h2>
+            <div class="card">
+                <p style="font-size: 1.2em; margin-bottom: 30px; text-align: center;">시간이 지날수록 벌어지는 이 격차를 보세요. 이것이 바로 복리의 마법입니다.</p>
+                <div style="height: 500px;"><canvas id="compareChart"></canvas></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 서브 페이지: 역계산기 -->
+    <div id="goalModal" class="sub-modal">
+        <button class="close-sub" onclick="closeSubModal('goalModal')">← 돌아가기</button>
+        <div class="container" style="max-width: 600px;">
+            <h2 style="font-size: 2.5em; text-align: center; margin-bottom: 40px;">나의 목표 금액 찾기</h2>
+            <div class="card">
+                <div class="input-group"><label>목표 금액 (원)</label><input type="text" id="targetAmt" placeholder="예: 1.000.000.000" oninput="handleInput(this)"></div>
+                <div class="input-group"><label>투자기간 (년)</label><input type="number" id="targetYears" value="10"></div>
+                <div class="input-group"><label>연 예상 수익률 (%)</label><input type="number" id="targetRate" value="8"></div>
+                <button class="btn-calc" onclick="findGoal()">필요한 저축액 계산하기</button>
+                <div id="goalResult" style="margin-top: 30px; display: none; text-align: center;">
+                    <div style="font-size: 1.1em; opacity: 0.8;">매달 저축해야 할 금액은</div>
+                    <div id="requiredMonthly" style="font-size: 2.2em; font-weight: 900; color: var(--accent-color); margin: 10px 0;">₩ 0</div>
+                    <div style="font-size: 1em;">입니다. 꾸준히 하시면 목표에 도달할 수 있어요! 🚀</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <header id="mainHeader">
         <button class="mode-toggle" id="modeBtn" onclick="toggleMode()">🌙 다크 모드</button>
         <h1><span id="headerIcon">🌱</span> 간편한 복리 계산기</h1>
@@ -124,10 +133,13 @@
                 <div class="input-group"><label>세제 혜택 선택</label><select id="taxType"><option value="general">일반 과세 (15.4%)</option><option value="isa">ISA/비과세 (0%)</option><option value="pension">연금저축 (과세이연)</option></select></div>
                 <button class="btn-calc" onclick="playCalc()">복리의 마법 시작 💰</button>
                 
-                <!-- 추가 광고 배너 -->
-                <div class="ad-area" style="margin-top: 40px; border-style: solid; background: rgba(37, 99, 235, 0.05);">
-                    <span style="font-weight: 800; color: var(--accent-color);">Premium Sponsor</span>
-                    <div class="ad-placeholder" style="height: 150px; margin-top: 15px;">추가 광고 영역</div>
+                <!-- 추가 제안 버튼들 -->
+                <div class="extra-btns">
+                    <div class="suggest-box">왜 복리가 무서울까요?<br>단리와 복리를 직접 비교해보세요!</div>
+                    <button class="btn-sub" onclick="openCompare()">단리 vs 복리 비교하기</button>
+                    
+                    <div class="suggest-box" style="margin-top: 20px;">모으고 싶은 목표 금액이 있으신가요?<br>매달 얼마씩 모아야 할지 알려드릴게요!</div>
+                    <button class="btn-sub" onclick="openGoal()">목표 달성 역계산기</button>
                 </div>
             </aside>
             <main class="card">
@@ -154,45 +166,82 @@
         const $ = id => document.getElementById(id);
         const els = { principal: $('principal'), monthly: $('monthly'), rate: $('rate'), years: $('years'), inflation: $('inflation'), taxType: $('taxType'), totalValue: $('totalValue'), realValue: $('realValue'), modal: $('customAlert'), modalTitle: $('modalTitle'), modalMsg: $('modalMsg'), banner: $('comparisonBanner'), quote: $('quoteBox'), rank: $('rankBadge'), valUSD: $('valUSD'), hIcon: $('headerIcon'), headerUSD: $('headerUSD') };
         
-        let myChart = null, prankCounter = 0, unlocked = false, isModalActive = false, lastTier = '';
+        let myChart = null, compareChart = null, prankCounter = 0, unlocked = false, isModalActive = false, lastTier = '';
         let currentRate = 1350; 
 
-        const prankMessages = ["더이상은 안되지롱 😜", "🛡️ 여기까지다!", "에베베~ 😝", "😭 서버가 울어요", "🚀 화성 가자!", "✋ 멈춰!"];
-        const quotes = ["인내심은 부를 일구는 가장 강력한 도구다.", "복리는 세계 8대 불가사의다.", "투자의 제1원칙은 돈을 잃지 않는 것이다.", "오늘 심은 나무가 내일 그늘을 만들어준다.", "가장 좋은 투자 시기는 바로 '지금'이다.", "시간이 흐를수록 복리의 힘은 무서워진다."];
+        function animateNumber(el, target) {
+            const start = parseFloat(el.innerText.replace(/[^0-9.-]+/g,"")) || 0;
+            const duration = 1500;
+            const startTime = performance.now();
+            function update(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const current = start + (target - start) * (1 - Math.pow(1 - progress, 3)); // easeOutCubic
+                el.innerText = formatCurrency(current);
+                if (progress < 1) requestAnimationFrame(update);
+            }
+            requestAnimationFrame(update);
+        }
+
+        function openCompare() {
+            $('compareModal').classList.add('active');
+            const P = getVal(els.principal), PMT = getVal(els.monthly), years = parseInt(els.years.value), r = getVal(els.rate)/100;
+            const labels = [], dCompound = [], dSimple = [];
+            let compound = P, simple = P;
+            for(let y=0; y<=years; y++) {
+                labels.push(y+'년');
+                dCompound.push(compound);
+                dSimple.push(simple);
+                const annualSimpleInterest = (P + (PMT * 12 * y)) * r;
+                simple = P + (PMT * 12 * (y+1)) + annualSimpleInterest * (y+1); // 단순화된 단리 근사
+                compound = (compound + PMT*12) * (1+r);
+            }
+            if(compareChart) compareChart.destroy();
+            compareChart = new Chart($('compareChart').getContext('2d'), {
+                type: 'line',
+                data: { labels, datasets: [
+                    { label: '복리 (눈덩이)', data: dCompound, borderColor: '#2563eb', fill: true, backgroundColor: 'rgba(37,99,235,0.1)' },
+                    { label: '단리 (직선)', data: dSimple, borderColor: '#94a3b8' }
+                ]},
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        function openGoal() { $('goalModal').classList.add('active'); }
+        function closeSubModal(id) { $(id).classList.remove('active'); }
+
+        function findGoal() {
+            const target = getVal($('targetAmt')), years = parseInt($('targetYears').value), rate = getVal($('targetRate'))/100/12;
+            const months = years * 12;
+            const required = (target * rate) / (Math.pow(1 + rate, months) - 1);
+            $('goalResult').style.display = 'block';
+            $('requiredMonthly').innerText = formatCurrency(required);
+        }
 
         async function updateExchangeRate() {
-            const now = new Date().getTime();
-            const cachedData = localStorage.getItem('exchangeRateData');
-            if (cachedData) {
-                const { rate, timestamp } = JSON.parse(cachedData);
-                if (now - timestamp < 43200000) { applyRate(rate); return; }
-            }
             try {
                 const res = await fetch('https://open.er-api.com/v6/latest/USD');
                 const data = await res.json();
                 if (data && data.rates && data.rates.KRW) {
-                    const newRate = Math.floor(data.rates.KRW);
-                    localStorage.setItem('exchangeRateData', JSON.stringify({ rate: newRate, timestamp: now }));
-                    applyRate(newRate);
-                } else throw new Error();
+                    currentRate = Math.floor(data.rates.KRW);
+                    els.headerUSD.innerText = fmtDots(currentRate);
+                }
             } catch (e) { applyRate(1350); }
         }
 
-        function applyRate(rate) { currentRate = rate; els.headerUSD.innerText = fmtDots(rate); calculate(); }
         function playCalc() { 
             const val = getVal(els.principal) + (getVal(els.monthly) * 12 * parseInt(els.years.value));
-            if (val >= 1e12) triggerMoneyShower(); // '조' 단위 이상이면 버튼 누를 때마다 효과
-            playCoinSound(); 
-            calculate(); 
+            if (val >= 1e12) triggerMoneyShower();
+            playCoinSound(); calculate(); 
         }
         function playCoinSound() { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(), gain = ctx.createGain(); osc.type = 'triangle'; osc.frequency.setValueAtTime(880, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(1760, ctx.currentTime + 0.1); gain.gain.setValueAtTime(0.1, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3); osc.connect(gain); gain.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime + 0.3); } catch(e) {} }
-        function setCoffeeMiracle() { els.principal.value = "0"; els.monthly.value = "150.000"; els.rate.value = "10"; els.years.value = "30"; playCalc(); showAlert("매일 커피 한 잔을 아껴 30년 투자하면 어떤 일이 벌어질까요?", "☕ 커피의 기적"); }
+        function setCoffeeMiracle() { els.principal.value = "0"; els.monthly.value = "150.000"; els.rate.value = "10"; els.years.value = "30"; playCalc(); }
         function toggleMode() { document.body.classList.toggle('dark-mode'); $('modeBtn').innerText = document.body.classList.contains('dark-mode') ? '☀️ 라이트 모드' : '🌙 다크 모드'; calculate(); }
-        function showAlert(msg, title = "⚠️ 알림") { if (isModalActive) return; isModalActive = true; document.activeElement.blur(); els.modalTitle.innerText = title; els.modalMsg.innerText = msg; els.modal.style.display = 'flex'; setTimeout(() => els.modal.classList.add('active'), 10); if (!unlocked && ++prankCounter === 10) { setTimeout(() => { isModalActive = false; unlocked = true; showAlert("끈질기시네요! 제가 졌습니다. 🏳️ '자' 단위까지 허용해드릴게요.", "🏳️ 항복 선언"); }, 500); } }
+        function showAlert(msg, title = "⚠️ 알림") { if (isModalActive) return; isModalActive = true; els.modalTitle.innerText = title; els.modalMsg.innerText = msg; els.modal.style.display = 'flex'; setTimeout(() => els.modal.classList.add('active'), 10); }
         function closeAlert() { els.modal.classList.remove('active'); setTimeout(() => { els.modal.style.display = 'none'; isModalActive = false; }, 200); }
         const fmtDots = n => Math.floor(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         const getVal = el => parseFloat(el.value.replace(/\./g, "")) || 0;
-        function handleInput(el) { if (isModalActive) return; let val = el.value.replace(/[^0-9]/g, ""); const limit = unlocked ? 28 : 24; if (val.length > limit) { showAlert(unlocked ? "이제 그만... 제발요! 😭" : prankMessages[Math.floor(Math.random() * prankMessages.length)]); val = val.substring(0, limit); } el.value = val.replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
+        function handleInput(el) { let val = el.value.replace(/[^0-9]/g, ""); el.value = val.replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
         function formatCurrency(num) { if (num < 10000) return '₩ ' + fmtDots(num); const units = ['', '만', '억', '조', '경', '해', '자', '양']; let parts = [], temp = num, idx = 0; while (temp > 0.9 && idx < units.length) { let rem = Math.floor(temp % 10000); if (rem > 0) parts.push(fmtDots(rem) + units[idx]); temp /= 10000; idx++; } return parts.reverse().slice(0, 2).join(' ') + ' 원'; }
         
         function triggerMoneyShower() {
@@ -206,14 +255,22 @@
             }
         }
 
+        function calculate() {
+            const P = getVal(els.principal), PMT = getVal(els.monthly);
+            let cur = P, totalP = P; const years = parseInt(els.years.value) || 0, mRate = (getVal(els.rate) / 100) / 12, tRate = els.taxType.value === 'general' ? 0.154 : 0, labels = ['현재'], dNom = [P], dReal = [P], dPriz = [P];
+            for (let y = 1; y <= years; y++) { for (let m = 1; m <= 12; m++) { let intr = cur * mRate, tax = intr * tRate; cur += (intr - tax + PMT); totalP += PMT; } dNom.push(cur); dReal.push(cur / Math.pow(1 + getVal(els.inflation)/100, y)); dPriz.push(totalP); labels.push(y + '년'); }
+            
+            animateNumber(els.totalValue, cur);
+            animateNumber(els.realValue, dReal[dReal.length-1]);
+            els.valUSD.innerText = '$' + fmtDots(cur / currentRate);
+            updateTierTheme(cur); updateComparison(cur); updateChart(labels, dNom, dReal, dPriz);
+        }
+
         function updateTierTheme(val) {
-            let currentTier = '', icon = '🌱';
-            if (val >= 1e24) { currentTier = 'theme-ja'; icon = '🪐'; }
-            else if (val >= 1e12) { currentTier = 'theme-jo'; icon = '🌍'; }
-            else if (val >= 1e8) { currentTier = 'theme-eok'; icon = '🏢'; }
-            else if (val >= 1e6) icon = '🐷';
-            else icon = '🌱';
-            els.hIcon.innerText = icon;
+            let currentTier = '';
+            if (val >= 1e24) currentTier = 'theme-ja';
+            else if (val >= 1e12) currentTier = 'theme-jo';
+            else if (val >= 1e8) currentTier = 'theme-eok';
             if (currentTier !== lastTier) {
                 document.body.classList.remove('theme-eok', 'theme-jo', 'theme-ja');
                 if (currentTier) document.body.classList.add(currentTier);
@@ -223,40 +280,19 @@
 
         function updateComparison(val) {
             els.banner.style.display = 'block'; let t = '', d = '', bg = '', c = '#78350f';
-            if (val < 100000) { t = "🌱 시작은 미미하지만.."; d = "티끌 모아 태산! 당신을 응원합니다."; bg = "linear-gradient(135deg, #dcfce7 0%, #86efac 100%)"; }
-            else if (val < 1000000) { t = "💪 차곡차곡 쌓이는 중!"; d = "습관이 부자를 만듭니다. 계속 전진하세요!"; bg = "linear-gradient(135deg, #fef9c3 0%, #fde047 100%)"; }
-            else if (val >= 1e24) { t = "🌌 우주 정거장 집주인"; d = `지구를 ${fmtDots(val / 1e18)}개 사고 달에 신도시를 건설할 상상 초월 자산!`; bg = "linear-gradient(135deg, #1e1b4b 0%, #4338ca 100%)"; c = "#fff"; }
-            else if (val >= 1e20) { t = "🌍 지구의 실질적 주인"; d = "전 세계 GDP를 합친 것보다 많습니다. 당신이 곧 법입니다."; bg = "linear-gradient(135deg, #064e3b 0%, #10b981 100%)"; c = "#fff"; }
+            if (val < 1000000) { t = "🌱 씨앗을 심는 중"; d = "습관이 부자를 만듭니다. 계속 전진하세요!"; bg = "linear-gradient(135deg, #fef9c3 0%, #fde047 100%)"; }
             else if (val >= 1e12) { t = "👑 재벌 3세 저리가라"; d = "대기업 몇 개쯤은 쇼핑하듯 살 수 있는 엄청난 금액입니다."; bg = "linear-gradient(135deg, #4c1d95 0%, #8b5cf6 100%)"; c = "#fff"; }
-            else if (val >= 1e9) { t = "🏢 강남 건물주 등극!"; d = "축하합니다! 이제 강남 요지에 빌딩 한 채 정도는 가볍게 소유하시겠네요."; bg = "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)"; }
-            else { els.banner.style.display = 'none'; return; }
+            else { t = "🏢 강남 건물주 등극!"; d = "축하합니다! 이제 강남 요지에 빌딩 한 채 정도는 가볍게 소유하시겠네요."; bg = "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)"; }
             $('bannerTitle').innerText = t; $('bannerDesc').innerText = d; els.banner.style.background = bg; els.banner.style.color = c;
         }
 
-        function calculate() {
-            const P = getVal(els.principal), PMT = getVal(els.monthly), limit = unlocked ? 1e28 : 1e24;
-            if (P >= limit || PMT >= limit) return showAlert("한계를 넘볼 수 없습니다!");
-            let cur = P, totalP = P, totalT = 0; const years = parseInt(els.years.value) || 0, mRate = (getVal(els.rate) / 100) / 12, tRate = els.taxType.value === 'general' ? 0.154 : 0, labels = ['현재'], dNom = [P], dReal = [P], dPriz = [P];
-            for (let y = 1; y <= years; y++) { for (let m = 1; m <= 12; m++) { let intr = cur * mRate, tax = intr * tRate; totalT += tax; cur += (intr - tax + PMT); totalP += PMT; if (cur >= limit) return showAlert("지구가 위험해요! 🌍"); } dNom.push(cur); dReal.push(cur / Math.pow(1 + getVal(els.inflation)/100, y)); dPriz.push(totalP); labels.push(y + '년'); }
-            els.totalValue.innerText = formatCurrency(cur); els.realValue.innerText = formatCurrency(dReal[dReal.length-1]);
-            els.valUSD.innerText = '$' + fmtDots(cur / currentRate);
-            if (cur >= 1000000) { els.rank.style.display = 'inline-block'; if (cur >= 300e12) els.rank.innerText = "일론 머스크 능가! 🚀"; else if (cur >= 150e12) els.rank.innerText = "워런 버핏급! 🐢"; else if (cur >= 13e8) els.rank.innerText = "상위 1% 부자! 💎"; else els.rank.innerText = "대한민국 저력! 👍"; } else { els.rank.style.display = 'none'; }
-            els.quote.innerText = '"' + quotes[Math.floor(Math.random() * quotes.length)] + '"'; updateTierTheme(cur); updateComparison(cur); updateChart(labels, dNom, dReal, dPriz);
-        }
-
         function updateChart(labels, nominal, real, principal) {
-            const useLightText = document.body.classList.contains('dark-mode') || document.body.classList.contains('theme-jo') || document.body.classList.contains('theme-ja');
-            const tCol = useLightText ? '#cbd5e1' : '#4b5563', gCol = useLightText ? 'rgba(255,255,255,0.1)' : '#e5e7eb';
             const ctx = $('assetChart').getContext('2d'); if (myChart) myChart.destroy();
-            myChart = new Chart(ctx, { type: 'line', data: { labels, datasets: [{ label: '명목 자산', data: nominal, borderColor: '#2563eb', backgroundColor: 'rgba(37, 99, 235, 0.1)', fill: true, tension: 0.3 }, { label: '실질 가치', data: real, borderColor: '#db2777', borderDash: [5, 5], tension: 0.3 }, { label: '투자 원금', data: principal, borderColor: useLightText ? '#94a3b8' : '#9ca3af', borderWidth: 2, tension: 0 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: tCol, font: { weight: 'bold' } } }, tooltip: { callbacks: { label: c => (c.dataset.label + ': ' + formatCurrency(c.parsed.y)) } } }, scales: { x: { grid: { color: gCol }, ticks: { color: tCol } }, y: { grid: { color: gCol }, ticks: { color: tCol, callback: v => v >= 1e12 ? (v / 1e12).toFixed(1) + '조' : v >= 1e8 ? (v / 1e8).toFixed(1) + '억' : v >= 1e4 ? (v / 1e4).toFixed(1) + '만' : v } } }, interaction: { intersect: false, mode: 'index' } } });
+            myChart = new Chart(ctx, { type: 'line', data: { labels, datasets: [{ label: '명목 자산', data: nominal, borderColor: '#2563eb', fill: true, tension: 0.3 }, { label: '실질 가치', data: real, borderColor: '#db2777', borderDash: [5, 5] }, { label: '투자 원금', data: principal, borderColor: '#9ca3af', borderWidth: 2 }] }, options: { responsive: true, maintainAspectRatio: false } });
         }
         
-        // 초기 실행
-        window.onload = () => {
-            updateExchangeRate();
-            calculate(); // 페이지 로드 시 즉시 계산하여 그래프 표시
+        window.onload = () => { updateExchangeRate().then(() => calculate()); };
 
-        };
-    </script>
+</script>
 </body>
 </html>
