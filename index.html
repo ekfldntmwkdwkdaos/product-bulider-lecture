@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- 보안 강화를 위한 메타 태그 추가 -->
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta name="referrer" content="no-referrer-when-downgrade">
     <title>간편한 복리 계산기 - 금융의 마법</title>
@@ -71,10 +72,12 @@
         .ad-area { margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.02); border: 1px dashed var(--border-color); border-radius: 24px; text-align: center; color: var(--text-secondary); font-size: 0.85em; box-sizing: border-box; }
         .ad-placeholder { width: 100%; height: 90px; margin: 15px auto 0; background: rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; border-radius: 16px; border: 1px solid var(--border-color); font-weight: 600; }
 
-        /* 제휴 문의 섹션 스타일 */
+        /* 서비스 문의 섹션 스타일 */
         .contact-section { margin-top: 80px; padding-top: 60px; border-top: 2px solid var(--border-color); }
-        .contact-title { font-size: 2em; font-weight: 900; text-align: center; margin-bottom: 40px; color: var(--text-primary); }
+        .contact-title { font-size: 2.2em; font-weight: 900; text-align: center; margin-bottom: 10px; color: var(--text-primary); }
+        .contact-desc { text-align: center; color: var(--text-secondary); margin-bottom: 40px; font-size: 1em; }
         .contact-form { max-width: 600px; margin: 0 auto; }
+        .privacy-note { font-size: 0.8em; color: var(--text-secondary); margin-top: 15px; text-align: center; line-height: 1.4; }
 
         @media (max-width: 1000px) { .main-grid { grid-template-columns: 1fr; } .container { margin-top: 20px; } }
         @media (max-width: 650px) {
@@ -183,24 +186,27 @@
             </main>
         </div>
 
-        <!-- 제휴 문의 섹션 추가 -->
+        <!-- 서비스 문의 섹션 -->
         <section class="contact-section">
-            <h2 class="contact-title">🤝 제휴 및 서비스 문의</h2>
+            <h2 class="contact-title">📩 서비스 문의</h2>
+            <p class="contact-desc">앱 사용 중 불편한 점이나 제안하고 싶은 기능이 있다면 언제든 말씀해 주세요.</p>
             <div class="card contact-form">
-                <form action="https://formspree.io/f/사용자_ID_입력" method="POST">
+                <form action="https://formspree.io/f/xqegkydw" method="POST">
+                    <input type="text" name="_gotcha" style="display:none">
                     <div class="input-group">
-                        <label>성함 / 기업명</label>
+                        <label>성함</label>
                         <input type="text" name="name" placeholder="이름을 입력해 주세요" required>
                     </div>
                     <div class="input-group">
                         <label>이메일 주소</label>
-                        <input type="email" name="_replyto" placeholder="연락받으실 이메일을 입력해 주세요" required>
+                        <input type="email" name="_replyto" placeholder="답변받으실 이메일을 입력해 주세요" required>
                     </div>
                     <div class="input-group">
                         <label>문의 내용</label>
-                        <textarea name="message" rows="5" placeholder="제휴 제안이나 문의 내용을 자유롭게 적어주세요" required></textarea>
+                        <textarea name="message" rows="5" placeholder="궁금하신 점이나 제안 내용을 입력해 주세요" required></textarea>
                     </div>
                     <button type="submit" class="btn-calc" style="margin-top: 0;">문의 보내기 ✉️</button>
+                    <p class="privacy-note">※ 입력하신 이메일 주소는 문의 답변 용도로만 사용되며, 외부로 유출되지 않습니다.</p>
                 </form>
             </div>
         </section>
