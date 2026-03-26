@@ -98,6 +98,7 @@
 <body>
     <div id="customAlert"><div class="modal-content"><div class="modal-title" id="modalTitle" style="font-size:1.4em; font-weight:900; color:#ef4444; margin-bottom:15px;">⚠️ 알림</div><div class="modal-msg" id="modalMsg" style="margin-bottom:30px; font-size:1.1em;"></div><button class="btn-modal" onclick="closeAlert()" style="background:var(--accent-color); color:#fff; border:none; padding:12px 40px; border-radius:14px; font-weight:800; cursor:pointer;">확인</button></div></div>
 
+    <!-- 단리 vs 복리 모달 -->
     <div id="compareModal" class="sub-modal">
         <button class="close-sub" onclick="closeSubModal('compareModal')">← 돌아가기</button>
         <div class="container">
@@ -105,8 +106,10 @@
             <div class="card">
                 <p style="font-size: 1em; margin-bottom: 20px; text-align: center;">시간이 지날수록 벌어지는 이 격차를 보세요. 이것이 바로 복리의 마법입니다.</p>
                 <div style="height: 350px;"><canvas id="compareChart"></canvas></div>
-                <div class="ad-area" style="margin-top: 30px; border-style: solid; background: rgba(37, 99, 235, 0.05); border-radius: 24px;">
-                    <span style="font-weight: 800; color: var(--accent-color);">금융 지식 스폰서</span>
+                
+                <!-- A3 광좌자리 -->
+                <div class="ad-area" id="A3" style="margin-top: 30px; border-style: solid; background: rgba(37, 99, 235, 0.05); border-radius: 24px;">
+                    <span style="font-weight: 800; color: var(--accent-color);">A3 - 금융 지식 스폰서</span>
                     <div class="ads-container">
                         <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="1764207728" data-ad-format="auto" data-full-width-responsive="true"></ins>
                         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -116,6 +119,7 @@
         </div>
     </div>
 
+    <!-- 목표 역계산기 모달 -->
     <div id="goalModal" class="sub-modal">
         <button class="close-sub" onclick="closeSubModal('goalModal')">← 돌아가기</button>
         <div class="container" style="max-width: 600px;">
@@ -130,9 +134,9 @@
                     <div id="requiredMonthly" style="font-size: 1.8em; font-weight: 900; color: var(--accent-color); margin: 10px 0;">₩ 0</div>
                 </div>
 
-                <!-- A1 광고자리에 애드센스 적용 -->
-                <div class="ad-area" id="A1" style="margin-top: 30px; border-style: solid; background: rgba(219, 39, 119, 0.05); border-color: var(--real-value-color); border-radius: 24px;">
-                    <span style="font-weight: 800; color: var(--real-value-color);">A1 - 목표 달성 가이드</span>
+                <!-- A4 광좌자리 -->
+                <div class="ad-area" id="A4" style="margin-top: 30px; border-style: solid; background: rgba(219, 39, 119, 0.05); border-color: var(--real-value-color); border-radius: 24px;">
+                    <span style="font-weight: 800; color: var(--real-value-color);">A4 - 목표 달성 가이드</span>
                     <div class="ads-container">
                         <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="1764207728" data-ad-format="auto" data-full-width-responsive="true"></ins>
                         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -165,8 +169,9 @@
                     <button class="btn-sub" onclick="openGoal()">목표 달성 역계산기</button>
                 </div>
 
-                <div class="ad-area" style="margin-top: 30px; background: rgba(37, 99, 235, 0.05); border-style: solid; border-radius: 24px;">
-                    <span style="font-weight: 800; color: var(--accent-color);">Premium Sponsor</span>
+                <!-- A1 광좌자리 -->
+                <div class="ad-area" id="A1" style="margin-top: 30px; background: rgba(37, 99, 235, 0.05); border-style: solid; border-radius: 24px;">
+                    <span style="font-weight: 800; color: var(--accent-color);">A1 - Premium Sponsor</span>
                     <div class="ads-container">
                         <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="1764207728" data-ad-format="auto" data-full-width-responsive="true"></ins>
                         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -188,8 +193,10 @@
                 <div id="comparisonBanner"><div class="banner-title" id="bannerTitle" style="font-size:1.3em; font-weight:900; margin-bottom:8px;"></div><div class="banner-desc" id="bannerDesc" style="font-size:1em; font-weight:600;"></div></div>
                 <div class="chart-container"><canvas id="assetChart"></canvas></div>
                 <div id="quoteBox" style="margin-top:20px; padding:15px 20px; border-left:6px solid var(--accent-color); background:rgba(37,99,235,0.05); font-style:italic; font-size:1em; border-radius:0 20px 20px 0; line-height:1.5; min-height:50px; color: var(--text-primary);"></div>
-                <div class="ad-area">
-                    <span>Sponsored Content</span>
+                
+                <!-- A2 광좌자리 -->
+                <div class="ad-area" id="A2">
+                    <span>A2 - Sponsored Content</span>
                     <div class="ads-container">
                         <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="1764207728" data-ad-format="auto" data-full-width-responsive="true"></ins>
                         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
