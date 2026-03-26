@@ -42,12 +42,19 @@
             display: block;
             width: 100%;
             box-sizing: border-box;
+            overflow: hidden;
         }
         header h1 { font-family: 'Noto Serif KR', serif; margin: 0; font-size: 3.2em; color: var(--accent-color); display: flex; align-items: center; justify-content: center; gap: 15px; font-weight: 900; }
+        
+        /* 마법의 눈덩이 아이콘 스타일 */
+        #magicIcon { cursor: pointer; display: inline-block; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); user-select: none; z-index: 10; position: relative; }
+        #magicIcon:hover { transform: scale(1.1) rotate(10deg); }
+        #magicIcon:active { transform: scale(0.9); }
+
         .usd-ticker { display: inline-block; font-size: 1em; background: rgba(37, 99, 235, 0.1); padding: 8px 20px; border-radius: 20px; color: var(--accent-color); font-weight: 700; margin-top: 20px; }
         
         .mode-toggle { 
-            position: absolute; top: 20px; right: 30px; background: var(--accent-color); color: white; border: none; padding: 12px 24px; border-radius: 16px; cursor: pointer; font-size: 1em; font-weight: 800; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3); transition: 0.3s; 
+            position: absolute; top: 20px; right: 30px; background: var(--accent-color); color: white; border: none; padding: 12px 24px; border-radius: 16px; cursor: pointer; font-size: 1em; font-weight: 800; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3); transition: 0.3s; z-index: 20;
         }
         
         .container { width: 95%; max-width: 1200px; margin: 40px auto 80px; padding: 0 20px; box-sizing: border-box; }
@@ -59,31 +66,22 @@
         .input-group input, .input-group select { width: 100%; padding: 15px; border-radius: 14px; border: 1px solid var(--border-color); background-color: var(--input-bg); color: var(--text-primary); font-size: 1.1em; outline: none; transition: 0.2s; box-sizing: border-box; }
         
         .coffee-btn { width: 100%; background: linear-gradient(135deg, #713f12 0%, #451a03 100%); color: #fef3c7; border: none; padding: 14px; border-radius: 16px; font-weight: 800; cursor: pointer; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1em; transition: 0.3s; }
-        .coffee-btn:hover { transform: scale(1.02); filter: brightness(1.2); }
-
+        
         .btn-calc { width: 100%; background: var(--accent-color); color: white; border: none; padding: 20px; border-radius: 20px; font-size: 1.2em; font-weight: 900; cursor: pointer; transition: 0.3s; margin-top: 15px; box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2); }
-        .btn-calc:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(37, 99, 235, 0.3); }
         
         .extra-btns { margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 20px; }
-        .suggest-box { margin-bottom: 15px; font-size: 0.85em; color: var(--text-secondary); text-align: center; line-height: 1.4; }
         .btn-sub { width: 100%; padding: 12px; border-radius: 14px; background: none; border: 2px solid var(--accent-color); color: var(--accent-color); font-weight: 800; cursor: pointer; transition: 0.3s; margin-bottom: 10px; }
-        .btn-sub:hover { background: var(--accent-color); color: white; }
 
         .res-box { padding: 25px; border-radius: 24px; background: rgba(0,0,0,0.03); border: 1px solid var(--border-color); margin-bottom: 20px; }
         .res-value { font-size: 2em; font-weight: 900; word-break: break-all; }
         
         #comparisonBanner { display: none; margin-top: 24px; padding: 30px; border-radius: 32px; text-align: center; animation: slideUp 0.5s ease-out; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
-        .chart-container { position: relative; height: 400px; width: 100%; margin-top: 25px; border-radius: 24px; overflow: hidden; }
         
         .ad-area { margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.02); border: 1px dashed var(--border-color); border-radius: 24px; text-align: center; color: var(--text-secondary); font-size: 0.85em; box-sizing: border-box; }
         .ad-placeholder { width: 100%; height: 90px; margin: 15px auto 0; background: rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; border-radius: 16px; border: 1px solid var(--border-color); font-weight: 600; color: var(--text-secondary); }
-        body.dark-mode .ad-area { background: rgba(255,255,255,0.03); }
 
         .sub-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 3000; overflow-y: auto; padding: 40px 20px; box-sizing: border-box; }
         .sub-modal.active { display: block; animation: slideIn 0.4s ease-out; }
-        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
         .close-sub { position: absolute; top: 30px; left: 30px; background: var(--text-primary); color: var(--bg-color); border: none; padding: 10px 20px; border-radius: 12px; cursor: pointer; font-weight: 800; }
 
         .money-particle { position: fixed; top: -50px; font-size: 24px; pointer-events: none; z-index: 9999; animation: fall linear forwards; }
@@ -97,6 +95,7 @@
 <body>
     <div id="customAlert"><div class="modal-content"><div class="modal-title" id="modalTitle" style="font-size:1.6em; font-weight:900; color:#ef4444; margin-bottom:15px;">⚠️ 알림</div><div class="modal-msg" id="modalMsg" style="margin-bottom:30px; font-size:1.1em;"></div><button class="btn-modal" onclick="closeAlert()" style="background:var(--accent-color); color:#fff; border:none; padding:14px 50px; border-radius:16px; font-weight:800; cursor:pointer;">확인</button></div></div>
 
+    <!-- 단리 vs 복리 모달 -->
     <div id="compareModal" class="sub-modal">
         <button class="close-sub" onclick="closeSubModal('compareModal')">← 돌아가기</button>
         <div class="container">
@@ -112,6 +111,7 @@
         </div>
     </div>
 
+    <!-- 목표 역계산기 모달 -->
     <div id="goalModal" class="sub-modal">
         <button class="close-sub" onclick="closeSubModal('goalModal')">← 돌아가기</button>
         <div class="container" style="max-width: 600px;">
@@ -136,7 +136,11 @@
 
     <header id="mainHeader">
         <button class="mode-toggle" id="modeBtn" onclick="toggleMode()">🌙 다크 모드</button>
-        <h1><span id="headerIcon">🌱</span> 간편한 복리 계산기</h1>
+        <h1>
+            <!-- 클릭하면 복리로 커지는 마법의 아이콘 -->
+            <span id="magicIcon" onclick="growIcon()">🌱</span> 
+            간편한 복리 계산기
+        </h1>
         <div class="usd-ticker">환율: 1 USD = <span id="headerUSD">...</span> KRW <span id="rateTime" style="font-weight:400; opacity:0.8; font-size:0.9em; margin-left:5px;"></span></div>
     </header>
 
@@ -153,9 +157,9 @@
                 <button class="btn-calc" onclick="playCalc()">복리의 마법 시작 💰</button>
                 
                 <div class="extra-btns">
-                    <div class="suggest-box">왜 복리가 무서울까요?<br>단리와 복리를 직접 비교해보세요!</div>
+                    <div class="suggest-box" style="margin-bottom:10px; font-size:0.85em; color:var(--text-secondary); text-align:center;">왜 복리가 무서울까요?<br>단리와 복리를 직접 비교해보세요!</div>
                     <button class="btn-sub" onclick="openCompare()">단리 vs 복리 비교하기</button>
-                    <div class="suggest-box" style="margin-top: 20px;">모으고 싶은 목표 금액이 있으신가요?</div>
+                    <div class="suggest-box" style="margin-top: 20px; margin-bottom:10px; font-size:0.85em; color:var(--text-secondary); text-align:center;">모으고 싶은 목표 금액이 있으신가요?</div>
                     <button class="btn-sub" onclick="openGoal()">목표 달성 역계산기</button>
                 </div>
 
@@ -186,21 +190,25 @@
     </div>
     <script>
         const $ = id => document.getElementById(id);
-        const els = { principal: $('principal'), monthly: $('monthly'), rate: $('rate'), years: $('years'), inflation: $('inflation'), taxType: $('taxType'), totalValue: $('totalValue'), realValue: $('realValue'), modal: $('customAlert'), modalTitle: $('modalTitle'), modalMsg: $('modalMsg'), banner: $('comparisonBanner'), quote: $('quoteBox'), rank: $('rankBadge'), valUSD: $('valUSD'), hIcon: $('headerIcon'), headerUSD: $('headerUSD') };
+        const els = { principal: $('principal'), monthly: $('monthly'), rate: $('rate'), years: $('years'), inflation: $('inflation'), taxType: $('taxType'), totalValue: $('totalValue'), realValue: $('realValue'), modal: $('customAlert'), modalTitle: $('modalTitle'), modalMsg: $('modalMsg'), banner: $('comparisonBanner'), quote: $('quoteBox'), rank: $('rankBadge'), valUSD: $('valUSD'), magic: $('magicIcon'), headerUSD: $('headerUSD') };
         
         let myChart = null, compareChart = null, prankCounter = 0, unlocked = false, isModalActive = false, lastTier = '';
-        let currentRate = 1350; 
+        let currentRate = 1350, iconSize = 1;
 
-        const quotes = [
-            "인내심은 부를 일구는 가장 강력한 도구다.",
-            "복리는 세계 8대 불가사의다. - 알베르트 아인슈타인",
-            "투자의 제1원칙은 돈을 잃지 않는 것이다. - 워런 버핏",
-            "오늘 심은 나무가 내일 그늘을 만들어준다.",
-            "가장 좋은 투자 시기는 바로 '지금'이다.",
-            "시간이 흐를수록 복리의 힘은 무서워진다.",
-            "부자가 되는 비결은 간단하다. 남들보다 적게 쓰고 남는 것을 투자하라.",
-            "시장의 변동성은 친구이지 적이 아니다."
-        ];
+        // 마법의 아이콘 성장 함수
+        function growIcon() {
+            iconSize *= 1.25; // 복리로 커짐!
+            els.magic.style.transform = `scale(${iconSize}) rotate(${iconSize * 5}deg)`;
+            
+            if (iconSize > 15) {
+                triggerMoneyShower();
+                showAlert("이것이 바로 복리의 마법입니다! 기하급수적인 성장을 경험해 보세요. 🪄", "🪄 복리의 신비");
+                resetIcon();
+            }
+        }
+        function resetIcon() { iconSize = 1; setTimeout(() => els.magic.style.transform = `scale(1) rotate(0deg)`, 1000); }
+
+        const quotes = ["인내심은 부를 일구는 가장 강력한 도구다.", "복리는 세계 8대 불가사의다. - 알베르트 아인슈타인", "투자의 제1원칙은 돈을 잃지 않는 것이다. - 워런 버핏", "오늘 심은 나무가 내일 그늘을 만들어준다.", "가장 좋은 투자 시기는 바로 '지금'이다.", "시간이 흐를수록 복리의 힘은 무서워진다.", "부자가 되는 비결은 간단하다. 남들보다 적게 쓰고 남는 것을 투자하라.", "시장의 변동성은 친구이지 적이 아니다."];
 
         function animateNumber(el, target, isUSD = false) {
             const start = parseFloat(el.innerText.replace(/[^0-9.-]+/g,"")) || 0;
@@ -247,9 +255,7 @@
             const cached = localStorage.getItem('exRate');
             if (cached) {
                 const { rate, time } = JSON.parse(cached);
-                if (now - time < 3600000) { // 1시간 캐싱
-                    applyRate(rate, time); return;
-                }
+                if (now - time < 3600000) { applyRate(rate, time); return; }
             }
             try {
                 const res = await fetch('https://open.er-api.com/v6/latest/USD');
@@ -301,10 +307,7 @@
             let cur = P, totalP = P; const years = parseInt(els.years.value) || 0, mRate = (getVal(els.rate) / 100) / 12, tRate = els.taxType.value === 'general' ? 0.154 : 0, labels = ['현재'], dNom = [P], dReal = [P], dPriz = [P];
             for (let y = 1; y <= years; y++) { for (let m = 1; m <= 12; m++) { let intr = cur * mRate, tax = intr * tRate; cur += (intr - tax + PMT); totalP += PMT; } dNom.push(cur); dReal.push(cur / Math.pow(1 + getVal(els.inflation)/100, y)); dPriz.push(totalP); labels.push(y + '년'); }
             animateNumber(els.totalValue, cur); animateNumber(els.realValue, dReal[dReal.length-1]);
-            
-            // 달러 환산 애니메이션 추가 및 최신 환율 연동
             animateNumber(els.valUSD, dReal[dReal.length-1] / currentRate, true);
-            
             els.quote.innerText = '"' + quotes[Math.floor(Math.random() * quotes.length)] + '"';
             updateTierTheme(cur); updateComparison(cur); updateChart(labels, dNom, dReal, dPriz);
         }
