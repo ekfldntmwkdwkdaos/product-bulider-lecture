@@ -46,7 +46,7 @@
         }
         header h1 { font-family: 'Noto Serif KR', serif; margin: 0; font-size: 3.2em; color: var(--accent-color); display: flex; align-items: center; justify-content: center; gap: 15px; font-weight: 900; }
         
-        #magicIcon { cursor: pointer; display: inline-block; transition: transform 0.2s ease-out; user-select: none; z-index: 10; position: relative; }
+        #magicIcon { cursor: pointer; display: inline-block; transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); user-select: none; z-index: 10; position: relative; }
         #magicIcon:hover { transform: scale(1.1); }
         #magicIcon:active { transform: scale(0.95); }
 
@@ -57,7 +57,6 @@
         }
         
         .container { width: 95%; max-width: 1200px; margin: 40px auto 80px; padding: 0 20px; box-sizing: border-box; }
-        /* 그리드 레이아웃 수정: 세로 길이를 맞추기 위해 align-items: stretch 사용 */
         .main-grid { display: grid; grid-template-columns: 380px 1fr; gap: 30px; align-items: stretch; }
         .card { background-color: var(--card-bg); padding: 30px; border-radius: 32px; box-shadow: var(--shadow); border: 1px solid var(--border-color); transition: all 0.3s; display: flex; flex-direction: column; }
         
@@ -77,7 +76,6 @@
         
         #comparisonBanner { display: none; margin-top: 24px; padding: 30px; border-radius: 32px; text-align: center; animation: slideUp 0.5s ease-out; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         
-        /* 그래프 컨테이너가 남은 공간을 꽉 채우도록 설정 */
         .chart-container { position: relative; flex-grow: 1; min-height: 450px; width: 100%; margin-top: 25px; border-radius: 24px; overflow: hidden; }
         
         .ad-area { margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.02); border: 1px dashed var(--border-color); border-radius: 24px; text-align: center; color: var(--text-secondary); font-size: 0.85em; box-sizing: border-box; }
@@ -98,7 +96,6 @@
 <body>
     <div id="customAlert"><div class="modal-content"><div class="modal-title" id="modalTitle" style="font-size:1.6em; font-weight:900; color:#ef4444; margin-bottom:15px;">⚠️ 알림</div><div class="modal-msg" id="modalMsg" style="margin-bottom:30px; font-size:1.1em;"></div><button class="btn-modal" onclick="closeAlert()" style="background:var(--accent-color); color:#fff; border:none; padding:14px 50px; border-radius:16px; font-weight:800; cursor:pointer;">확인</button></div></div>
 
-    <!-- 단리 vs 복리 모달 -->
     <div id="compareModal" class="sub-modal">
         <button class="close-sub" onclick="closeSubModal('compareModal')">← 돌아가기</button>
         <div class="container">
@@ -114,7 +111,6 @@
         </div>
     </div>
 
-    <!-- 목표 역계산기 모달 -->
     <div id="goalModal" class="sub-modal">
         <button class="close-sub" onclick="closeSubModal('goalModal')">← 돌아가기</button>
         <div class="container" style="max-width: 600px;">
@@ -195,14 +191,30 @@
         const els = { principal: $('principal'), monthly: $('monthly'), rate: $('rate'), years: $('years'), inflation: $('inflation'), taxType: $('taxType'), totalValue: $('totalValue'), realValue: $('realValue'), modal: $('customAlert'), modalTitle: $('modalTitle'), modalMsg: $('modalMsg'), banner: $('comparisonBanner'), quote: $('quoteBox'), rank: $('rankBadge'), valUSD: $('valUSD'), magic: $('magicIcon'), headerUSD: $('headerUSD') };
         
         let myChart = null, compareChart = null, prankCounter = 0, unlocked = false, isModalActive = false, lastTier = '';
-        let currentRate = 1350, iconSize = 1;
+        let currentRate = 1350, iconSize = 1, iconTimer = null;
 
+        // 아이콘 성장 및 자동 복구 로직
         function growIcon() {
             iconSize *= 1.25;
             els.magic.style.transform = `scale(${iconSize})`;
-            if (iconSize > 15) { triggerMoneyShower(); resetIcon(); }
+            
+            // 기존 타이머 취소
+            if (iconTimer) clearTimeout(iconTimer);
+            
+            // 1초 뒤에 다시 작아지도록 타이머 설정
+            iconTimer = setTimeout(() => {
+                resetIcon();
+            }, 1000);
+
+            if (iconSize > 15) {
+                triggerMoneyShower();
+                resetIcon();
+            }
         }
-        function resetIcon() { iconSize = 1; setTimeout(() => els.magic.style.transform = `scale(1)`, 1000); }
+        function resetIcon() { 
+            iconSize = 1; 
+            els.magic.style.transform = `scale(1)`; 
+        }
 
         const quotes = ["인내심은 부를 일구는 가장 강력한 도구다.", "복리는 세계 8대 불가사의다. - 알베르트 아인슈타인", "투자의 제1원칙은 돈을 잃지 않는 것이다. - 워런 버핏", "오늘 심은 나무가 내일 그늘을 만들어준다.", "가장 좋은 투자 시기는 바로 '지금'이다.", "시간이 흐를수록 복리의 힘은 무서워진다.", "부자가 되는 비결은 간단하다. 남들보다 적게 쓰고 남는 것을 투자하라.", "시장의 변동성은 친구이지 적이 아니다."];
 
