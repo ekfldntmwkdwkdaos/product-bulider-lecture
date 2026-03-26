@@ -97,7 +97,6 @@
 <body>
     <div id="customAlert"><div class="modal-content"><div class="modal-title" id="modalTitle" style="font-size:1.6em; font-weight:900; color:#ef4444; margin-bottom:15px;">⚠️ 알림</div><div class="modal-msg" id="modalMsg" style="margin-bottom:30px; font-size:1.1em;"></div><button class="btn-modal" onclick="closeAlert()" style="background:var(--accent-color); color:#fff; border:none; padding:14px 50px; border-radius:16px; font-weight:800; cursor:pointer;">확인</button></div></div>
 
-    <!-- 서브 페이지: 단리 vs 복리 -->
     <div id="compareModal" class="sub-modal">
         <button class="close-sub" onclick="closeSubModal('compareModal')">← 돌아가기</button>
         <div class="container">
@@ -105,7 +104,6 @@
             <div class="card">
                 <p style="font-size: 1.2em; margin-bottom: 30px; text-align: center;">시간이 지날수록 벌어지는 이 격차를 보세요. 이것이 바로 복리의 마법입니다.</p>
                 <div style="height: 500px;"><canvas id="compareChart"></canvas></div>
-                <!-- 새로운 광고 배치: 분석 결과 하단 -->
                 <div class="ad-area" style="margin-top: 50px; border-style: solid; background: rgba(37, 99, 235, 0.05);">
                     <span style="font-weight: 800; color: var(--accent-color);">금융 지식 스폰서</span>
                     <div class="ad-placeholder" style="height: 100px;">이 그래프가 도움이 되셨나요? 관련 금융 상품 보기</div>
@@ -114,7 +112,6 @@
         </div>
     </div>
 
-    <!-- 서브 페이지: 역계산기 -->
     <div id="goalModal" class="sub-modal">
         <button class="close-sub" onclick="closeSubModal('goalModal')">← 돌아가기</button>
         <div class="container" style="max-width: 600px;">
@@ -129,7 +126,6 @@
                     <div id="requiredMonthly" style="font-size: 2.2em; font-weight: 900; color: var(--accent-color); margin: 10px 0;">₩ 0</div>
                     <div style="font-size: 1em;">입니다. 꾸준히 하시면 목표에 도달할 수 있어요! 🚀</div>
                 </div>
-                <!-- 새로운 광고 배치: 결과값 바로 아래 -->
                 <div class="ad-area" style="border-style: solid; background: rgba(219, 39, 119, 0.05); border-color: var(--real-value-color);">
                     <span style="font-weight: 800; color: var(--real-value-color);">목표 달성 가이드</span>
                     <div class="ad-placeholder" style="height: 100px; border-color: var(--real-value-color);">목표 달성을 앞당기는 투자 팁 확인하기</div>
@@ -141,7 +137,7 @@
     <header id="mainHeader">
         <button class="mode-toggle" id="modeBtn" onclick="toggleMode()">🌙 다크 모드</button>
         <h1><span id="headerIcon">🌱</span> 간편한 복리 계산기</h1>
-        <div class="usd-ticker">현재 환율: 1 USD = <span id="headerUSD">...</span> KRW</div>
+        <div class="usd-ticker">환율: 1 USD = <span id="headerUSD">...</span> KRW <span id="rateTime" style="font-weight:400; opacity:0.8; font-size:0.9em; margin-left:5px;"></span></div>
     </header>
 
     <div class="container">
@@ -206,7 +202,7 @@
             "시장의 변동성은 친구이지 적이 아니다."
         ];
 
-        function animateNumber(el, target) {
+        function animateNumber(el, target, isUSD = false) {
             const start = parseFloat(el.innerText.replace(/[^0-9.-]+/g,"")) || 0;
             const duration = 1500;
             const startTime = performance.now();
@@ -214,7 +210,7 @@
                 const elapsed = now - startTime;
                 const progress = Math.min(elapsed / duration, 1);
                 const current = start + (target - start) * (1 - Math.pow(1 - progress, 3));
-                el.innerText = formatCurrency(current);
+                el.innerText = isUSD ? '$' + fmtDots(current) : formatCurrency(current);
                 if (progress < 1) requestAnimationFrame(update);
             }
             requestAnimationFrame(update);
@@ -247,14 +243,31 @@
         }
 
         async function updateExchangeRate() {
+            const now = new Date().getTime();
+            const cached = localStorage.getItem('exRate');
+            if (cached) {
+                const { rate, time } = JSON.parse(cached);
+                if (now - time < 3600000) { // 1시간 캐싱
+                    applyRate(rate, time); return;
+                }
+            }
             try {
                 const res = await fetch('https://open.er-api.com/v6/latest/USD');
                 const data = await res.json();
-                if (data && data.rates && data.rates.KRW) {
-                    currentRate = Math.floor(data.rates.KRW);
-                    els.headerUSD.innerText = fmtDots(currentRate);
+                if (data?.rates?.KRW) {
+                    const rate = Math.floor(data.rates.KRW);
+                    localStorage.setItem('exRate', JSON.stringify({ rate, time: now }));
+                    applyRate(rate, now);
                 }
-            } catch (e) { currentRate = 1350; }
+            } catch (e) { applyRate(1350, now); }
+        }
+
+        function applyRate(rate, time) {
+            currentRate = rate;
+            els.headerUSD.innerText = fmtDots(rate);
+            const date = new Date(time);
+            $('rateTime').innerText = `(${date.getHours().toString().padStart(2,'0')}:${date.getMinutes().toString().padStart(2,'0')} 기준)`;
+            calculate();
         }
 
         function playCalc() { 
@@ -262,7 +275,7 @@
             if (val >= 1e12) triggerMoneyShower();
             playCoinSound(); calculate(); 
         }
-        function playCoinSound() { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(), gain = ctx.createGain(); osc.type = 'triangle'; osc.frequency.setValueAtTime(880, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(1760, ctx.currentTime + 0.1); gain.gain.setValueAtTime(0.1, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3); osc.connect(gain); gain.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime + 0.3); } catch(e) {} }
+        function playCoinSound() { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(), gain = ctx.createGain(); osc.type = 'triangle'; osc.frequency.setValueAtTime(880, ctx.currentTime); gain.gain.setValueAtTime(0.1, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3); osc.connect(gain); gain.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime + 0.3); } catch(e) {} }
         function setCoffeeMiracle() { els.principal.value = "0"; els.monthly.value = "150.000"; els.rate.value = "10"; els.years.value = "30"; playCalc(); }
         function toggleMode() { document.body.classList.toggle('dark-mode'); $('modeBtn').innerText = document.body.classList.contains('dark-mode') ? '☀️ 라이트 모드' : '🌙 다크 모드'; calculate(); }
         function showAlert(msg, title = "⚠️ 알림") { if (isModalActive) return; isModalActive = true; els.modalTitle.innerText = title; els.modalMsg.innerText = msg; els.modal.style.display = 'flex'; setTimeout(() => els.modal.classList.add('active'), 10); }
@@ -288,7 +301,10 @@
             let cur = P, totalP = P; const years = parseInt(els.years.value) || 0, mRate = (getVal(els.rate) / 100) / 12, tRate = els.taxType.value === 'general' ? 0.154 : 0, labels = ['현재'], dNom = [P], dReal = [P], dPriz = [P];
             for (let y = 1; y <= years; y++) { for (let m = 1; m <= 12; m++) { let intr = cur * mRate, tax = intr * tRate; cur += (intr - tax + PMT); totalP += PMT; } dNom.push(cur); dReal.push(cur / Math.pow(1 + getVal(els.inflation)/100, y)); dPriz.push(totalP); labels.push(y + '년'); }
             animateNumber(els.totalValue, cur); animateNumber(els.realValue, dReal[dReal.length-1]);
-            els.valUSD.innerText = '$' + fmtDots(cur / currentRate);
+            
+            // 달러 환산 애니메이션 추가 및 최신 환율 연동
+            animateNumber(els.valUSD, dReal[dReal.length-1] / currentRate, true);
+            
             els.quote.innerText = '"' + quotes[Math.floor(Math.random() * quotes.length)] + '"';
             updateTierTheme(cur); updateComparison(cur); updateChart(labels, dNom, dReal, dPriz);
         }
@@ -312,7 +328,7 @@
             myChart = new Chart(ctx, { type: 'line', data: { labels, datasets: [{ label: '명목 자산', data: nominal, borderColor: '#2563eb', fill: true, tension: 0.3 }, { label: '실질 가치', data: real, borderColor: '#db2777', borderDash: [5, 5] }, { label: '투자 원금', data: principal, borderColor: '#9ca3af', borderWidth: 2 }] }, options: { responsive: true, maintainAspectRatio: false } });
         }
         
-        window.onload = () => { updateExchangeRate().then(() => calculate()); };
+        window.onload = () => { updateExchangeRate(); };
     </script>
 </body>
 </html>
