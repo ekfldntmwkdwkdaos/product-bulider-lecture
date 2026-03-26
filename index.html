@@ -45,15 +45,21 @@
         
         .container { width: 95%; max-width: 1200px; margin: 40px auto 80px; padding: 0 20px; box-sizing: border-box; }
         .main-grid { display: grid; grid-template-columns: 380px 1fr; gap: 30px; align-items: stretch; }
-        .card { background-color: var(--card-bg); padding: 30px; border-radius: 32px; box-shadow: var(--shadow); border: 1px solid var(--border-color); transition: all 0.3s; display: flex; flex-direction: column; }
+        .card { background-color: var(--card-bg); padding: 30px; border-radius: 32px; box-shadow: var(--shadow); border: 1px solid var(--border-color); transition: all 0.3s; display: flex; flex-direction: column; position: relative; }
         
         .input-group { margin-bottom: 20px; }
         .input-group label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.9em; color: var(--text-secondary); }
         .input-group input, .input-group select { width: 100%; padding: 15px; border-radius: 14px; border: 1px solid var(--border-color); background-color: var(--input-bg); color: var(--text-primary); font-size: 1.1em; outline: none; transition: 0.2s; box-sizing: border-box; }
         
         .coffee-btn { width: 100%; background: linear-gradient(135deg, #713f12 0%, #451a03 100%); color: #fef3c7; border: none; padding: 14px; border-radius: 16px; font-weight: 800; cursor: pointer; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1em; transition: 0.3s; }
-        .btn-calc { width: 100%; background: var(--accent-color); color: white; border: none; padding: 20px; border-radius: 20px; font-size: 1.2em; font-weight: 900; cursor: pointer; transition: 0.3s; margin-top: 15px; box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2); }
         
+        .btn-calc { width: 100%; background: var(--accent-color); color: white; border: none; padding: 20px; border-radius: 20px; font-size: 1.2em; font-weight: 900; cursor: pointer; transition: 0.3s; margin-top: 15px; box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2); }
+        .btn-calc:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
+
+        .extra-btns { margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 25px; }
+        .btn-sub { width: 100%; padding: 14px; border-radius: 16px; background: none; border: 2px solid var(--accent-color); color: var(--accent-color); font-weight: 800; cursor: pointer; transition: 0.3s; margin-bottom: 12px; font-size: 0.95em; }
+        .btn-sub:hover { background: var(--accent-color); color: white; }
+
         .res-box { padding: 25px; border-radius: 24px; background: rgba(0,0,0,0.03); border: 1px solid var(--border-color); margin-bottom: 20px; }
         .res-value { font-size: 2em; font-weight: 900; word-break: break-all; }
         
@@ -63,17 +69,14 @@
         .ad-area { margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.02); border: 1px dashed var(--border-color); border-radius: 24px; text-align: center; color: var(--text-secondary); font-size: 0.85em; box-sizing: border-box; }
         .ad-placeholder { width: 100%; height: 90px; margin: 15px auto 0; background: rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; border-radius: 16px; border: 1px solid var(--border-color); font-weight: 600; }
 
-        /* 모바일 최적화 미디어 쿼리 */
         @media (max-width: 1000px) { .main-grid { grid-template-columns: 1fr; } .container { margin-top: 20px; } }
         @media (max-width: 650px) {
             header { padding: 40px 15px; } 
-            header h1 { font-size: 1.8em; flex-direction: row; flex-wrap: wrap; justify-content: center; }
-            .mode-toggle { position: relative; top: 0; right: 0; margin-bottom: 20px; width: 100%; transform: none; display: block; }
-            .usd-ticker { font-size: 0.85em; width: 100%; box-sizing: border-box; }
+            header h1 { font-size: 1.8em; }
+            .mode-toggle { position: relative; top: 0; right: 0; margin-bottom: 20px; width: 100%; display: block; }
             .card { padding: 20px; border-radius: 24px; }
             .res-value { font-size: 1.5em !important; }
-            .chart-container { min-height: 300px; }
-            .container { padding: 0 15px; }
+            .chart-container { min-height: 350px; }
         }
 
         .sub-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 3000; overflow-y: auto; padding: 40px 20px; box-sizing: border-box; }
@@ -88,7 +91,7 @@
     </style>
 </head>
 <body>
-    <div id="customAlert"><div class="modal-content"><div class="modal-title" id="modalTitle" style="font-size:1.4em; font-weight:900; color:#ef4444; margin-bottom:15px;">⚠️ 알림</div><div class="modal-msg" id="modalMsg" style="margin-bottom:30px; font-size:1.1em;"></div><button class="btn-modal" onclick="closeAlert()" style="background:var(--accent-color); color:#fff; border:none; padding:12px 40px; border-radius:14px; font-weight:800; cursor:pointer;">확인</button></div></div>
+    <div id="customAlert"><div class="modal-content"><div class="modal-title" id="modalTitle" style="font-size:1.4em; font-weight:900; color:#ef4444; margin-bottom:15px;">⚠️ 알림</div><div class="modal-msg" id="modalMsg" style="margin-bottom:30px; font-size:1.1em;"></div><button class="btn-modal" onclick="closeAlert()" style="background:var(--accent-color); color:#fff; border:none; padding:14px 40px; border-radius:14px; font-weight:800; cursor:pointer;">확인</button></div></div>
 
     <div id="compareModal" class="sub-modal">
         <button class="close-sub" onclick="closeSubModal('compareModal')">← 돌아가기</button>
@@ -142,7 +145,7 @@
                 <div class="input-group"><label>투자 기간 (년)</label><input type="number" id="years" value="10"></div>
                 <div class="input-group"><label>연 물가상승률 (%)</label><input type="number" id="inflation" value="2.5" step="0.1"></div>
                 <div class="input-group"><label>세제 혜택 선택</label><select id="taxType"><option value="general">일반 과세 (15.4%)</option><option value="isa">ISA/비과세 (0%)</option><option value="pension">연금저축 (과세이연)</option></select></div>
-                <button class="btn-calc" onclick="playCalc()">복리의 마법 시작 💰</button>
+                <button class="btn-calc" id="mainCalcBtn" onclick="playCalc()">복리의 마법 시작 💰</button>
                 
                 <div class="extra-btns">
                     <button class="btn-sub" onclick="openCompare()">단리 vs 복리 비교하기</button>
@@ -175,13 +178,12 @@
     </div>
     <script>
         const $ = id => document.getElementById(id);
-        const els = { principal: $('principal'), monthly: $('monthly'), rate: $('rate'), years: $('years'), inflation: $('inflation'), taxType: $('taxType'), totalValue: $('totalValue'), realValue: $('realValue'), modal: $('customAlert'), modalTitle: $('modalTitle'), modalMsg: $('modalMsg'), banner: $('comparisonBanner'), quote: $('quoteBox'), valUSD: $('valUSD'), magic: $('magicIcon'), headerUSD: $('headerUSD') };
+        const els = { principal: $('principal'), monthly: $('monthly'), rate: $('rate'), years: $('years'), inflation: $('inflation'), taxType: $('taxType'), totalValue: $('totalValue'), realValue: $('realValue'), modal: $('customAlert'), modalTitle: $('modalTitle'), modalMsg: $('modalMsg'), banner: $('comparisonBanner'), quote: $('quoteBox'), valUSD: $('valUSD'), magic: $('magicIcon'), headerUSD: $('headerUSD'), calcBtn: $('mainCalcBtn') };
         
         let myChart = null, compareChart = null, currentRate = 1350, iconSize = 1, iconTimer = null;
 
         function growIcon() {
-            iconSize *= 1.25;
-            els.magic.style.transform = `scale(${Math.min(iconSize, 10)})`;
+            iconSize *= 1.25; els.magic.style.transform = `scale(${Math.min(iconSize, 10)})`;
             if (iconTimer) clearTimeout(iconTimer);
             iconTimer = setTimeout(() => resetIcon(), 1000);
             if (iconSize > 10) { triggerNatureShower(); resetIcon(); }
@@ -250,6 +252,10 @@
         }
 
         function playCalc() { 
+            if (els.calcBtn.disabled) return;
+            els.calcBtn.disabled = true;
+            setTimeout(() => { els.calcBtn.disabled = false; }, 1000); // 1초간 비활성화
+
             const val = getVal(els.principal) + (getVal(els.monthly) * 12 * parseInt(els.years.value));
             if (val >= 1e12) triggerNatureShower(); playCoinSound(); calculate(); 
         }
