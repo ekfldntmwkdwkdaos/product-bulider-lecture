@@ -31,40 +31,41 @@
 
         body { font-family: 'Pretendard', sans-serif; margin: 0; transition: all 0.5s; line-height: 1.6; min-height: 100vh; color: var(--text-primary); }
         
-        /* 헤더 스타일 전면 수정: 절대 고정되지 않음 */
         header { 
             background-color: var(--header-bg); 
-            padding: 40px 20px; 
+            padding: 60px 20px; 
             text-align: center; 
             border-bottom: 1px solid var(--border-color); 
-            position: relative !important; /* static 대신 relative 사용 (버튼 배치를 위해) */
+            position: relative !important;
             display: block;
             width: 100%;
             box-sizing: border-box;
         }
-        header h1 { font-family: 'Noto Serif KR', serif; margin: 0; font-size: 2em; color: var(--accent-color); display: flex; align-items: center; justify-content: center; gap: 12px; }
-        .usd-ticker { display: inline-block; font-size: 0.9em; background: rgba(37, 99, 235, 0.1); padding: 6px 16px; border-radius: 20px; color: var(--accent-color); font-weight: 700; margin-top: 15px; }
+        header h1 { font-family: 'Noto Serif KR', serif; margin: 0; font-size: 3.2em; color: var(--accent-color); display: flex; align-items: center; justify-content: center; gap: 15px; font-weight: 900; }
+        .usd-ticker { display: inline-block; font-size: 1em; background: rgba(37, 99, 235, 0.1); padding: 8px 20px; border-radius: 20px; color: var(--accent-color); font-weight: 700; margin-top: 20px; }
         
-        /* 다크모드 버튼 스타일 수정: 헤더 내부에 자연스럽게 위치 */
         .mode-toggle { 
-            display: inline-block;
-            margin-bottom: 20px;
+            position: absolute;
+            top: 20px;
+            right: 30px;
             background: var(--accent-color); 
             color: white; 
             border: none; 
-            padding: 10px 20px; 
-            border-radius: 12px; 
+            padding: 12px 24px; 
+            border-radius: 16px; 
             cursor: pointer; 
-            font-size: 0.9em; 
-            font-weight: 700; 
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+            font-size: 1em; 
+            font-weight: 800; 
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3); 
             transition: 0.3s; 
         }
+        .mode-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4); }
         
         @media (max-width: 1000px) { .main-grid { grid-template-columns: 1fr !important; } .container { margin-top: 20px; } }
         @media (max-width: 650px) {
-            header { padding: 30px 15px; } 
-            header h1 { font-size: 1.6em; }
+            header { padding: 40px 15px; } 
+            header h1 { font-size: 2em; flex-direction: column; gap: 10px; }
+            .mode-toggle { position: relative; top: 0; right: 0; margin-bottom: 20px; width: 100%; }
             .res-value { font-size: 1.6em !important; }
             .card { padding: 20px; }
             .chart-container { height: 300px; }
@@ -101,7 +102,7 @@
 <body>
     <div id="customAlert"><div class="modal-content"><div class="modal-title" id="modalTitle" style="font-size:1.6em; font-weight:900; color:#ef4444; margin-bottom:15px;">⚠️ 알림</div><div class="modal-msg" id="modalMsg" style="margin-bottom:30px; font-size:1.1em;"></div><button class="btn-modal" onclick="closeAlert()" style="background:var(--accent-color); color:#fff; border:none; padding:14px 50px; border-radius:16px; font-weight:800; cursor:pointer;">확인</button></div></div>
     
-    <header>
+    <header id="mainHeader">
         <button class="mode-toggle" id="modeBtn" onclick="toggleMode()">🌙 다크 모드</button>
         <h1><span id="headerIcon">🌱</span> 간편한 복리 계산기</h1>
         <div class="usd-ticker">현재 환율: 1 USD = <span id="headerUSD">...</span> KRW</div>
