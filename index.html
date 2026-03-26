@@ -72,12 +72,15 @@
         .ad-area { margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.02); border: 1px dashed var(--border-color); border-radius: 24px; text-align: center; color: var(--text-secondary); font-size: 0.85em; box-sizing: border-box; }
         .ads-container { margin-top: 15px; min-height: 90px; overflow: hidden; }
 
+        /* 세로형 광고 스타일 (A5) */
+        .vertical-ad { width: 160px; min-height: 600px; background: rgba(0,0,0,0.02); border: 1px dashed var(--border-color); border-radius: 24px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 20px 10px; box-sizing: border-box; }
+
         .contact-section { margin-top: 80px; padding-top: 60px; border-top: 2px solid var(--border-color); }
         .contact-title { font-size: 2.2em; font-weight: 900; text-align: center; margin-bottom: 10px; color: var(--text-primary); }
         .contact-desc { text-align: center; color: var(--text-secondary); margin-bottom: 40px; }
         .privacy-note { font-size: 0.8em; color: var(--text-secondary); margin-top: 15px; text-align: center; line-height: 1.4; }
 
-        @media (max-width: 1000px) { .main-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 1000px) { .main-grid { grid-template-columns: 1fr; } .vertical-ad { display: none; } }
         @media (max-width: 650px) {
             header h1 { font-size: 1.8em; }
             .mode-toggle { position: relative; top: 0; right: 0; margin-bottom: 20px; width: 100%; display: block; }
@@ -107,11 +110,11 @@
                 <p style="font-size: 1em; margin-bottom: 20px; text-align: center;">시간이 지날수록 벌어지는 이 격차를 보세요. 이것이 바로 복리의 마법입니다.</p>
                 <div style="height: 350px;"><canvas id="compareChart"></canvas></div>
                 
-                <!-- A3 광좌자리 -->
+                <!-- A3 광좌자리 - A2와 동일한 코드로 업데이트 -->
                 <div class="ad-area" id="A3" style="margin-top: 30px; border-style: solid; background: rgba(37, 99, 235, 0.05); border-radius: 24px;">
                     <span style="font-weight: 800; color: var(--accent-color);">A3 - 금융 지식 스폰서</span>
                     <div class="ads-container">
-                        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="1764207728" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="9997920969" data-ad-format="auto" data-full-width-responsive="true"></ins>
                         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
                     </div>
                 </div>
@@ -119,27 +122,42 @@
         </div>
     </div>
 
+    <!-- 목표 역계산기 모달 -->
     <div id="goalModal" class="sub-modal">
         <button class="close-sub" onclick="closeSubModal('goalModal')">← 돌아가기</button>
-        <div class="container" style="max-width: 600px;">
+        <div class="container" style="max-width: 1000px;">
             <h2 style="font-size: 1.8em; text-align: center; margin-bottom: 30px;">나의 목표 금액 찾기</h2>
-            <div class="card">
-                <div class="input-group"><label>목표 금액 (원)</label><input type="text" id="targetAmt" placeholder="예: 1.000.000.000" oninput="handleInput(this)"></div>
-                <div class="input-group"><label>투자기간 (년)</label><input type="number" id="targetYears" value="10"></div>
-                <div class="input-group"><label>연 예상 수익률 (%)</label><input type="number" id="targetRate" value="8"></div>
-                <button class="btn-calc" onclick="findGoal()">필요한 저축액 계산하기</button>
-                <div id="goalResult" style="margin-top: 30px; display: none; text-align: center;">
-                    <div style="font-size: 1.1em; opacity: 0.8;">매달 저축해야 할 금액은</div>
-                    <div id="requiredMonthly" style="font-size: 1.8em; font-weight: 900; color: var(--accent-color); margin: 10px 0;">₩ 0</div>
+            
+            <div style="display: flex; gap: 30px; align-items: flex-start; justify-content: center;">
+                <!-- 역계산기 메인 카드 -->
+                <div class="card" style="flex: 1; max-width: 600px;">
+                    <div class="input-group"><label>목표 금액 (원)</label><input type="text" id="targetAmt" placeholder="예: 1.000.000.000" oninput="handleInput(this)"></div>
+                    <div class="input-group"><label>투자기간 (년)</label><input type="number" id="targetYears" value="10"></div>
+                    <div class="input-group"><label>연 예상 수익률 (%)</label><input type="number" id="targetRate" value="8"></div>
+                    <button class="btn-calc" onclick="findGoal()">필요한 저축액 계산하기</button>
+                    <div id="goalResult" style="margin-top: 30px; display: none; text-align: center;">
+                        <div style="font-size: 1.1em; opacity: 0.8;">매달 저축해야 할 금액은</div>
+                        <div id="requiredMonthly" style="font-size: 1.8em; font-weight: 900; color: var(--accent-color); margin: 10px 0;">₩ 0</div>
+                    </div>
+
+                    <!-- A4 광좌자리 -->
+                    <div class="ad-area" id="A4" style="margin-top: 30px; border-style: solid; background: rgba(219, 39, 119, 0.05); border-color: var(--real-value-color); border-radius: 24px;">
+                        <span style="font-weight: 800; color: var(--real-value-color);">A4 - 목표 달성 가이드</span>
+                        <div class="ads-container">
+                            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="1764207728" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- A4 광좌자리 -->
-                <div class="ad-area" id="A4" style="margin-top: 30px; border-style: solid; background: rgba(219, 39, 119, 0.05); border-color: var(--real-value-color); border-radius: 24px;">
-                    <span style="font-weight: 800; color: var(--real-value-color);">A4 - 목표 달성 가이드</span>
-                    <div class="ads-container">
-                        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="1764207728" data-ad-format="auto" data-full-width-responsive="true"></ins>
-                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-                    </div>
+                <!-- A5 세로형 광고 영역 추가 -->
+                <div class="vertical-ad" id="A5">
+                    <span style="font-weight: 800; color: var(--text-secondary); font-size: 0.8em; margin-bottom: 15px;">A5 - Special Ad</span>
+                    <ins class="adsbygoogle"
+                         style="display:inline-block;width:160px;height:600px"
+                         data-ad-client="ca-pub-6421966697163453"
+                         data-ad-slot="1764207728"></ins>
+                    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
                 </div>
             </div>
         </div>
@@ -193,7 +211,7 @@
                 <div class="chart-container"><canvas id="assetChart"></canvas></div>
                 <div id="quoteBox" style="margin-top:20px; padding:15px 20px; border-left:6px solid var(--accent-color); background:rgba(37,99,235,0.05); font-style:italic; font-size:1em; border-radius:0 20px 20px 0; line-height:1.5; min-height:50px; color: var(--text-primary);"></div>
                 
-                <!-- A2 광좌자리 - 새로 주신 코드로 업데이트 -->
+                <!-- A2 광좌자리 -->
                 <div class="ad-area" id="A2">
                     <span>A2 - Sponsored Content</span>
                     <div class="ads-container">
@@ -241,7 +259,11 @@
             if (num < 10000) return '₩ ' + fmtDots(num);
             const units = ['', '만', '억', '조', '경', '해', '자', '양'];
             let parts = [], temp = num, idx = 0;
-            while (temp > 0.9 && idx < units.length) { let rem = Math.floor(temp % 10000); if (rem > 0) parts.push(fmtDots(rem) + units[idx]); temp /= 10000; idx++; }
+            while (temp > 0.9 && idx < units.length) {
+                let rem = Math.floor(temp % 10000);
+                if (rem > 0) parts.push(fmtDots(rem) + units[idx]);
+                temp /= 10000; idx++;
+            }
             return parts.reverse().slice(0, 2).join(' ') + ' 원';
         }
 
