@@ -41,7 +41,7 @@
         
         .input-group { margin-bottom: 20px; }
         .input-group label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.9em; color: var(--text-secondary); }
-        .input-group input, .input-group select, .input-group textarea { width: 100%; padding: 15px; border-radius: 14px; border: 1px solid var(--border-color); background-color: var(--input-bg); color: var(--text-primary); font-size: 1.1em; outline: none; transition: 0.2s; box-sizing: border-box; font-family: inherit; }
+        .input-group input, .input-group select { width: 100%; padding: 15px; border-radius: 14px; border: 1px solid var(--border-color); background-color: var(--input-bg); color: var(--text-primary); font-size: 1.1em; outline: none; transition: 0.2s; box-sizing: border-box; font-family: inherit; }
         
         .coffee-btn { width: 100%; background: linear-gradient(135deg, #713f12 0%, #451a03 100%); color: #fef3c7; border: none; padding: 14px; border-radius: 16px; font-weight: 800; cursor: pointer; margin-bottom: 25px; transition: 0.3s; }
         .btn-calc { width: 100%; background: var(--accent-color); color: white; border: none; padding: 20px; border-radius: 20px; font-size: 1.2em; font-weight: 900; cursor: pointer; transition: 0.3s; margin-top: 15px; box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2); }
@@ -87,6 +87,7 @@
         .modal-content { background: var(--card-bg); padding: 30px; border-radius: 32px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; text-align: left; border: 1px solid var(--border-color); }
         .money-particle { position: fixed; top: -50px; font-size: 24px; pointer-events: none; z-index: 9999; animation: fall linear forwards; }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+        @keyframes slideIn { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     </style>
 </head>
 <body>
@@ -101,7 +102,12 @@
                 <div class="ad-area" id="A3" style="margin-top: 30px; border-style: solid; background: rgba(37, 99, 235, 0.05); border-radius: 24px;">
                     <span style="font-weight: 800; color: var(--accent-color);">A3 - 금융 지식 스폰서</span>
                     <div class="ads-container">
-                        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="9997920969" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-client="ca-pub-6421966697163453"
+                             data-ad-slot="6595397429"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
                         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
                     </div>
                 </div>
@@ -126,7 +132,12 @@
                     <div class="ad-area" id="A4" style="margin-top: 30px; border-style: solid; background: rgba(219, 39, 119, 0.05); border-color: var(--real-value-color); border-radius: 24px;">
                         <span style="font-weight: 800; color: var(--real-value-color);">A4 - 맞춤형 자산 가이드</span>
                         <div class="ads-container">
-                            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="1998910394" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                            <ins class="adsbygoogle"
+                                 style="display:block"
+                                 data-ad-client="ca-pub-6421966697163453"
+                                 data-ad-slot="1998910394"
+                                 data-ad-format="auto"
+                                 data-full-width-responsive="true"></ins>
                             <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
                         </div>
                     </div>
@@ -134,7 +145,11 @@
                 <div class="vertical-ad-wide" id="A5">
                     <span style="font-weight: 800; color: var(--text-secondary); font-size: 0.85em; margin-bottom: 15px;">A5 - 추천 금융 서비스</span>
                     <div class="ads-container" style="width: 100%; height: 600px;">
-                        <ins class="adsbygoogle" style="display:block" data-ad-format="autorelaxed" data-ad-client="ca-pub-6421966697163453" data-ad-slot="1601256897"></ins>
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-client="ca-pub-6421966697163453"
+                             data-ad-slot="1601256897"
+                             data-ad-format="autorelaxed"></ins>
                         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
                     </div>
                 </div>
@@ -166,13 +181,19 @@
                 <div class="ad-area" id="A1" style="margin-top: 30px; background: rgba(37, 99, 235, 0.05); border-style: solid; border-radius: 24px;">
                     <span style="font-weight: 800; color: var(--accent-color);">A1 - Premium Sponsor</span>
                     <div class="ads-container">
-                        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="1764207728" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-client="ca-pub-6421966697163453"
+                             data-ad-slot="1764207728"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
                         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
                     </div>
                 </div>
             </aside>
+
             <main class="card">
-                <div class="result-header">
+                <div class="result-header" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div class="res-box">
                         <div class="res-label" style="font-size:0.85em; opacity:0.8; font-weight:600; margin-bottom:5px;">최종 세후 명목 자산</div>
                         <div class="res-value val-nominal" id="totalValue">₩ 0</div>
@@ -187,11 +208,16 @@
                     <div id="bannerTitle"></div><div id="bannerDesc" style="font-size:0.9em; opacity:0.9;"></div>
                 </div>
                 <div class="chart-container"><canvas id="assetChart"></canvas></div>
-                <div id="quoteBox" style="margin-top:20px; padding:15px 20px; border-left:6px solid var(--accent-color); background:rgba(37,99,235,0.05); font-style:italic; font-size:1em; border-radius:0 20px 20px 0; line-height:1.5; min-height:50px; color: var(--text-primary);"></div>
+                <div id="quoteBox" style="margin-top:20px; padding:15px 20px; border-left:6px solid var(--accent-color); background:rgba(37,99,235,0.05); font-style:italic; font-size:1em; border-radius:0 20px 20px 0; line-height:1.5; min-height:50px;"></div>
                 <div class="ad-area" id="A2">
                     <span>A2 - Sponsored Content</span>
                     <div class="ads-container">
-                        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="9997920969" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-client="ca-pub-6421966697163453"
+                             data-ad-slot="9997920969"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
                         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
                     </div>
                 </div>
@@ -224,19 +250,10 @@
 
     <script>
         const $ = id => document.getElementById(id);
-        let myChart = null, compareChart = null, currentRate = 1350, iconSize = 1, iconTimer = null;
+        let myChart = null, compareChart = null, currentRate = 1350, isAlertOpen = false;
         
-        // 추가: 팝업 무한 반복 방지를 위한 상태 변수
-        let isAlertOpen = false; 
-
-        const quotes = ["인내심은 부를 일구는 가장 강력한 도구다.", "복리는 세계 8대 불가사의다. - 아인슈타인", "투자의 제1원칙은 돈을 잃지 않는 것이다. - 워런 버핏", "오늘 심은 나무가 내일 그늘을 만들어준다.", "가장 좋은 투자 시기는 바로 '지금'이다.", "부자가 되는 비결은 간단하다. 남들보다 적게 쓰고 남는 것을 투자하라."];
-        const warningMsgs = [
-            "훗, 더 이상은 안되지롱~", "워워~ 진정하세요! 숫자가 너무 커요!", 
-            "이 정도 금액이면 나라 하나 사시겠는데요?", "제 계산기가 터지려고 해요! 조금만 줄여주세요.", 
-            "부자의 꿈은 좋지만, 현실적인 숫자를 입력해볼까요?", "욕심쟁이 후후훗! 숫자가 한도를 초과했어요.", 
-            "여기까지만! 제 엔진이 뜨거워지고 있어요.", "에헤이~ 장난치시면 안 됩니다!", 
-            "지구가 멸망할 정도의 금액이네요. 조금만 깎아주세요.", "어머나! 숫자가 너무 길어서 안 보여요!"
-        ];
+        const quotes = ["인내심은 부를 일구는 가장 강력한 도구다.", "복리는 세계 8대 불가사의다. - 아인슈타인", "투자의 제1원칙은 돈을 잃지 않는 것이다. - 워런 버핏", "오늘 심은 나무가 내일 그늘을 만들어준다.", "가장 좋은 투자 시기는 바로 '지금'이다."];
+        const warningMsgs = ["숫자가 너무 커요!", "현실적인 숫자를 입력해볼까요?", "제 계산기가 터지려고 해요!"];
 
         const fmtCommas = n => Math.floor(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         const getVal = id => {
@@ -246,52 +263,61 @@
             return parseFloat(val) || 0;
         };
 
-        // 수정 4: 팝업 중복 방지 로직 적용
         function showAlert(title, msg) {
-            if (isAlertOpen) return; // 이미 열려있으면 무시 (스팸 방지)
+            if (isAlertOpen) return;
             isAlertOpen = true;
-            $('modalBody').innerHTML = `<h2 style="color:var(--accent-color); margin-top:0;">${title}</h2><p style="font-size:1.2em; line-height:1.6; font-weight:800; text-align:center;">${msg}</p>`;
+            $('modalBody').innerHTML = `<h2 style="color:var(--accent-color);">${title}</h2><p style="font-size:1.2em; font-weight:800; text-align:center;">${msg}</p>`;
             $('customAlert').style.display = 'flex';
         }
 
-        // 팝업 닫을 때 상태 초기화
-        function closeAlert() { 
-            $('customAlert').style.display = 'none'; 
-            isAlertOpen = false; 
-        }
+        function closeAlert() { $('customAlert').style.display = 'none'; isAlertOpen = false; }
 
         function formatCurrency(num) {
             if (num < 10000) return '₩ ' + fmtCommas(num);
             const units = ['', '만', '억', '조', '경'];
             let parts = [], temp = Math.floor(num), idx = 0;
-            while (temp > 0 && idx < units.length) { let rem = temp % 10000; if (rem > 0) parts.push(fmtCommas(rem) + units[idx]); temp = Math.floor(temp / 10000); idx++; }
+            while (temp > 0 && idx < units.length) { 
+                let rem = temp % 10000; 
+                if (rem > 0) parts.push(fmtCommas(rem) + units[idx]); 
+                temp = Math.floor(temp / 10000); idx++; 
+            }
             return parts.length ? parts.reverse().slice(0, 2).join(' ') + ' 원' : '₩ 0';
         }
 
+        // 핵심 복리 계산 로직 (수정됨)
         function calculate(noAnim = false) {
             const P = getVal('principal'), PMT = getVal('monthly'), R = getVal('rate')/100/12, Y = getVal('years'), INF = getVal('inflation')/100, TAX = $('taxType').value === 'general' ? 0.154 : 0;
             
             let cur = P, labels = ['현재'], dNom = [P], dReal = [P], dPri = [P], cumulativePri = P;
             for (let y = 1; y <= Y; y++) { 
                 for (let m = 1; m <= 12; m++) { 
-                    let intr = cur * R; 
-                    cur += (intr * (1 - TAX)) + PMT; 
+                    let monthlyInterest = cur * R; 
+                    cur += (monthlyInterest * (1 - TAX)) + PMT; 
                     cumulativePri += PMT;
                 } 
-                labels.push(y + '년'); dNom.push(cur); dReal.push(cur / Math.pow(1 + INF, y)); dPri.push(cumulativePri);
+                labels.push(y + '년'); 
+                dNom.push(cur); 
+                dReal.push(cur / Math.pow(1 + INF, y)); 
+                dPri.push(cumulativePri);
             }
             
             if (cur > 1e18) showAlert("경고", "자산 규모가 시스템 한도를 초과했습니다.");
 
-            if (noAnim) { $('totalValue').innerText = formatCurrency(cur); $('realValue').innerText = formatCurrency(dReal[dReal.length-1]); $('valUSD').innerText = '$' + fmtCommas(dReal[dReal.length-1] / currentRate); }
-            else { animateNumber($('totalValue'), cur); animateNumber($('realValue'), dReal[dReal.length-1]); animateNumber($('valUSD'), dReal[dReal.length-1] / currentRate, true); }
+            if (noAnim) { 
+                $('totalValue').innerText = formatCurrency(cur); 
+                $('realValue').innerText = formatCurrency(dReal[dReal.length-1]); 
+                $('valUSD').innerText = '$' + fmtCommas(dReal[dReal.length-1] / currentRate); 
+            } else { 
+                animateNumber($('totalValue'), cur); 
+                animateNumber($('realValue'), dReal[dReal.length-1]); 
+                animateNumber($('valUSD'), dReal[dReal.length-1] / currentRate, true); 
+            }
             $('quoteBox').innerText = '"' + quotes[Math.floor(Math.random() * quotes.length)] + '"';
             updateComparison(cur); updateChart(labels, dNom, dReal, dPri);
         }
 
         function animateNumber(el, target, isUSD = false) {
-            const currentText = el.innerText.replace(/[^0-9.-]/g, "");
-            const start = parseFloat(currentText) || 0;
+            const start = parseFloat(el.innerText.replace(/[^0-9.-]/g, "")) || 0;
             const duration = 1000, startTime = performance.now();
             function up(now) {
                 const p = Math.min((now - startTime) / duration, 1);
@@ -319,7 +345,16 @@
         }
 
         async function updateExchangeRate() {
-            try { const res = await fetch('https://open.er-api.com/v6/latest/USD'), data = await res.json(); if (data?.rates?.KRW) { currentRate = Math.floor(data.rates.KRW); $('headerUSD').innerText = fmtCommas(currentRate); const now = new Date(); $('rateTime').innerText = `(${now.getHours()}:${now.getMinutes().toString().padStart(2,'0')} 기준)`; calculate(true); } } catch (e) { $('headerUSD').innerText = "1,350"; calculate(true); }
+            try { 
+                const res = await fetch('https://open.er-api.com/v6/latest/USD'), data = await res.json(); 
+                if (data?.rates?.KRW) { 
+                    currentRate = Math.floor(data.rates.KRW); 
+                    $('headerUSD').innerText = fmtCommas(currentRate); 
+                    const now = new Date(); 
+                    $('rateTime').innerText = `(${now.getHours()}:${now.getMinutes().toString().padStart(2,'0')} 기준)`; 
+                    calculate(true); 
+                } 
+            } catch (e) { $('headerUSD').innerText = "1,350"; calculate(true); }
         }
 
         function findGoal() {
@@ -332,7 +367,12 @@
         function openCompare() {
             $('compareModal').classList.add('active'); const P = getVal('principal'), PMT = getVal('monthly'), years = getVal('years'), r = getVal('rate')/100;
             const labels = [], dCompound = [], dSimple = []; let compound = P, simple = P;
-            for(let y=0; y<=years; y++) { labels.push(y+'년'); dCompound.push(compound); dSimple.push(simple); simple = P + (PMT * 12 * (y+1)) + ((P + (PMT * 12 * y)) * r * (y+1)); compound = (compound + PMT*12) * (1+r); }
+            for(let y=0; y<=years; y++) { 
+                labels.push(y+'년'); 
+                dCompound.push(compound); dSimple.push(simple); 
+                simple = P + (PMT * 12 * (y+1)) + ((P + (PMT * 12 * y)) * r * (y+1)); 
+                compound = (compound + PMT*12) * (1+r); 
+            }
             if(compareChart) compareChart.destroy();
             compareChart = new Chart($('compareChart').getContext('2d'), { type: 'line', data: { labels, datasets: [ { label: '복리', data: dCompound, borderColor: '#2563eb', fill: true, backgroundColor: 'rgba(37,99,235,0.1)' }, { label: '단리', data: dSimple, borderColor: '#94a3b8' } ] }, options: { responsive: true, maintainAspectRatio: false } });
         }
@@ -340,53 +380,49 @@
         function playCalc() { calculate(); if (getVal('totalValue') >= 1e12) triggerNatureShower(); }
         function toggleMode() { document.body.classList.toggle('dark-mode'); $('modeBtn').innerText = document.body.classList.contains('dark-mode') ? '☀️ 라이트 모드' : '🌙 다크 모드'; calculate(true); }
         
-        // 수정 4: 숫자를 꾹 눌렀을 때 팝업 반복을 막고 입력을 강제 중단(blur)
         function handleInput(el) { 
             let val = el.value.replace(/[^0-9]/g, ""); 
-            if (val.length > 15) {
-                val = val.substring(0, 15);
-                if (!isAlertOpen) {
-                    el.blur(); // 키보드 포커스 해제 (입력 강제 중지)
-                    showAlert("입력 제한", warningMsgs[Math.floor(Math.random() * warningMsgs.length)]);
-                }
-            }
-            el.value = val.replace(/\B(?=(\d{3})+(?!\d))/g, ","); 
+            if (val.length > 15) { val = val.substring(0, 15); if (!isAlertOpen) { el.blur(); showAlert("입력 제한", warningMsgs[Math.floor(Math.random() * warningMsgs.length)]); } }
+            el.value = val ? parseInt(val).toLocaleString() : ""; 
         }
 
         function limitNumInput(el, max) {
-            if (el.value > max) {
-                el.value = max;
-                if (!isAlertOpen) {
-                    el.blur(); // 키보드 포커스 해제 (입력 강제 중지)
-                    showAlert("한도 초과", warningMsgs[Math.floor(Math.random() * warningMsgs.length)]);
-                }
-            }
+            if (el.value > max) { el.value = max; if (!isAlertOpen) { el.blur(); showAlert("한도 초과", "최대 수치에 도달했습니다."); } }
         }
 
         function openGoal() { $('goalModal').classList.add('active'); }
         function closeSubModal(id) { $(id).classList.remove('active'); }
         function toggleFaq(el) { const a = el.nextElementSibling; a.style.display = a.style.display === 'block' ? 'none' : 'block'; }
-        function updateComparison(val) { $('comparisonBanner').style.display = 'block'; let t = '', d = '', bg = '#dcfce7', c = '#166534'; if (val >= 1e12) { t = "👑 재벌 3세 수준"; d = "대기업 쇼핑이 가능한 자산입니다."; bg = "#f3e8ff"; c = "#6b21a8"; } else if (val >= 1e8) { t = "🏢 강남 건물주 후보"; d = "강남 빌딩 소유가 꿈이 아닙니다."; bg = "#fef3c7"; c = "#92400e"; } $('bannerTitle').innerText = t; $('bannerDesc').innerText = d; $('comparisonBanner').style.background = bg; $('comparisonBanner').style.color = c; }
-        function growIcon() { iconSize *= 1.25; $('magicIcon').style.transform = `scale(${Math.min(iconSize, 10)})`; if (iconTimer) clearTimeout(iconTimer); iconTimer = setTimeout(() => { iconSize = 1; $('magicIcon').style.transform = 'scale(1)'; }, 1000); if (iconSize > 10) triggerNatureShower(); }
-        function triggerNatureShower() { const emojis = ['🍃', '🍎', '🌿', '🌱', '🍀', '✨']; for(let i=0; i<50; i++) { setTimeout(() => { const el = document.createElement('div'); el.className = 'money-particle'; el.innerText = emojis[Math.floor(Math.random() * emojis.length)]; el.style.left = Math.random() * 100 + 'vw'; el.style.animationDuration = (Math.random() * 2 + 1) + 's'; document.body.appendChild(el); setTimeout(() => el.remove(), 3000); }, i * 40); } }
-        function showInfo(type) { 
-            let h = type === 'privacy' ? '개인정보처리방침' : '이용약관', 
-                c = '본 서비스는 데이터를 서버에 저장하지 않습니다.'; 
-            showAlert(h, c);
+        
+        function updateComparison(val) { 
+            $('comparisonBanner').style.display = 'block'; 
+            let t = '', d = '', bg = '#dcfce7', c = '#166534'; 
+            if (val >= 1e12) { t = "👑 재벌 3세 수준"; d = "대기업 쇼핑이 가능한 자산입니다."; bg = "#f3e8ff"; c = "#6b21a8"; } 
+            else if (val >= 1e8) { t = "🏢 건물주 후보"; d = "자산 성장의 기초를 다지셨습니다."; bg = "#fef3c7"; c = "#92400e"; } 
+            $('bannerTitle').innerText = t; $('bannerDesc').innerText = d; 
+            $('comparisonBanner').style.background = bg; $('comparisonBanner').style.color = c; 
         }
 
-        // 수정 3: 커피 한 잔의 기적 함수 추가
+        function triggerNatureShower() {
+            const emojis = ['🍃', '🍎', '🌿', '🌱', '🍀'];
+            for(let i=0; i<30; i++) {
+                setTimeout(() => {
+                    const el = document.createElement('div'); el.className = 'money-particle';
+                    el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                    el.style.left = Math.random() * 100 + 'vw';
+                    document.body.appendChild(el);
+                    setTimeout(() => el.remove(), 3000);
+                }, i * 100);
+            }
+        }
+
         function setCoffeeMiracle() {
-            $('principal').value = '0';
-            $('monthly').value = '150,000'; // 매일 5천원 * 30일
-            $('rate').value = '10'; // 10% 예상 수익률
-            $('years').value = '20'; // 20년 투자
-            $('taxType').value = 'general';
-            
-            // 시각적 피드백을 위해 팝업 띄우고 계산 실행
-            showAlert("☕ 커피 한 잔의 기적", "매일 마시는 커피값(약 5천원)을 모아 한 달 15만 원씩 20년간 연 10% 수익률로 투자한다면?<br><br>작은 습관이 만드는 복리의 마법을 확인해 보세요!");
+            $('principal').value = '0'; $('monthly').value = '150,000'; $('rate').value = '10'; $('years').value = '20';
+            showAlert("☕ 커피 한 잔의 기적", "매달 15만 원씩 20년간 연 10% 수익률로 투자하는 습관!");
             calculate();
         }
+
+        function showInfo(type) { showAlert(type === 'privacy' ? '개인정보처리방침' : '이용약관', '본 서비스는 사용자의 데이터를 서버에 저장하지 않습니다.'); }
 
         window.onload = () => { updateExchangeRate(); };
     </script>
