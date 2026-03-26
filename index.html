@@ -9,14 +9,15 @@
 
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌱</text></svg>">
 
-    <title>🌱 간편한 복리 계산기 - 금융의 마법으로 만드는 미래 자산</title>
-    <meta name="description" content="초기 투자금, 월 적립액, 수익률만 입력하면 미래의 자산을 한눈에 확인하세요. 복리와 단리 비교, 목표 금액 역계산 기능까지 제공하는 가장 직관적인 복리 계산기입니다.">
-    <meta name="keywords" content="복리 계산기, 복리의 마법, 재테크 계산기, 은퇴 설계, 자산 관리, 단리 복리 비교, 투자 수익률 계산">
+    <title>🌱 간편한 복리 계산기 - 금융의 마법으로 만드는 미래 자산 가이드</title>
+    <meta name="description" content="전문적인 복리 계산기와 재테크 가이드. 초기 투자금, 월 적립액, 수익률에 따른 미래 자산 변화와 물가 상승률을 반영한 실질 구매력을 분석해 드립니다.">
+    <meta name="keywords" content="복리 계산기, 복리의 마법, 재테크 가이드, 은퇴 설계, 자산 관리, 단리 복리 비교, 투자 수익률 계산, 재테크 기초">
     <link rel="canonical" href="https://product-bulider-lecture-djm.pages.dev/">
 
+    <!-- SNS Meta Tags -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="🌱 간편한 복리 계산기 - 금융의 마법">
-    <meta property="og:description" content="복리의 힘으로 당신의 미래 자산이 얼마나 불어날지 지금 바로 확인해 보세요!">
+    <meta property="og:title" content="🌱 간편한 복리 계산기 - 당신의 부를 설계하는 법">
+    <meta property="og:description" content="복리의 마법을 이용해 미래의 자산을 설계하세요. 전문적인 분석 도구와 재테크 가이드를 제공합니다.">
     <meta property="og:url" content="https://product-bulider-lecture-djm.pages.dev/">
     <meta property="og:site_name" content="금융의 마법 복리 계산기">
 
@@ -57,7 +58,6 @@
         
         .coffee-btn { width: 100%; background: linear-gradient(135deg, #713f12 0%, #451a03 100%); color: #fef3c7; border: none; padding: 14px; border-radius: 16px; font-weight: 800; cursor: pointer; margin-bottom: 25px; transition: 0.3s; }
         .btn-calc { width: 100%; background: var(--accent-color); color: white; border: none; padding: 20px; border-radius: 20px; font-size: 1.2em; font-weight: 900; cursor: pointer; transition: 0.3s; margin-top: 15px; box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2); }
-        .btn-calc:disabled { opacity: 0.6; cursor: not-allowed; }
         
         .extra-btns { margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 25px; }
         .btn-sub { width: 100%; padding: 14px; border-radius: 16px; background: none; border: 2px solid var(--accent-color); color: var(--accent-color); font-weight: 800; cursor: pointer; transition: 0.3s; margin-bottom: 12px; }
@@ -65,20 +65,26 @@
 
         .res-box { padding: 25px; border-radius: 24px; background: rgba(0,0,0,0.03); border: 1px solid var(--border-color); margin-bottom: 20px; }
         .res-value { font-size: 2em; font-weight: 900; word-break: break-all; }
-        #comparisonBanner { display: none; margin-top: 24px; padding: 30px; border-radius: 32px; text-align: center; animation: slideUp 0.5s ease-out; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         .chart-container { position: relative; flex-grow: 1; min-height: 450px; width: 100%; margin-top: 25px; border-radius: 24px; overflow: hidden; }
         
-        /* 광고 영역 스타일 */
         .ad-area { margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.02); border: 1px dashed var(--border-color); border-radius: 24px; text-align: center; color: var(--text-secondary); font-size: 0.85em; box-sizing: border-box; }
         .ads-container { margin-top: 15px; min-height: 90px; overflow: hidden; }
-
-        /* A5 멀티플렉스 전용 넓은 세로형 광고 스타일 */
         .vertical-ad-wide { width: 336px; min-height: 600px; background: rgba(0,0,0,0.02); border: 1px dashed var(--border-color); border-radius: 24px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 20px 10px; box-sizing: border-box; }
 
-        .contact-section { margin-top: 80px; padding-top: 60px; border-top: 2px solid var(--border-color); }
-        .contact-title { font-size: 2.2em; font-weight: 900; text-align: center; margin-bottom: 10px; color: var(--text-primary); }
-        .contact-desc { text-align: center; color: var(--text-secondary); margin-bottom: 40px; }
-        .privacy-note { font-size: 0.8em; color: var(--text-secondary); margin-top: 15px; text-align: center; line-height: 1.4; }
+        /* 지식 정보 섹션 스타일 */
+        .knowledge-section { margin-top: 60px; }
+        .knowledge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px; }
+        .knowledge-card { background: var(--card-bg); padding: 30px; border-radius: 24px; border: 1px solid var(--border-color); }
+        .knowledge-card h3 { color: var(--accent-color); margin-top: 0; font-size: 1.4em; }
+        .knowledge-card p { color: var(--text-secondary); font-size: 0.95em; line-height: 1.7; }
+
+        .faq-item { margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
+        .faq-q { font-weight: 800; color: var(--text-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .faq-a { color: var(--text-secondary); margin-top: 10px; display: none; font-size: 0.9em; }
+
+        footer { text-align: center; padding: 60px 20px; border-top: 1px solid var(--border-color); margin-top: 80px; color: var(--text-secondary); font-size: 0.9em; }
+        .footer-links { margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .footer-links a { color: var(--text-primary); text-decoration: none; font-weight: 700; cursor: pointer; }
 
         @media (max-width: 1100px) { .main-grid { grid-template-columns: 1fr; } .vertical-ad-wide { display: none; } }
         @media (max-width: 650px) {
@@ -92,14 +98,13 @@
         .sub-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 3000; overflow-y: auto; padding: 40px 20px; box-sizing: border-box; }
         .sub-modal.active { display: block; animation: slideIn 0.4s ease-out; }
         .close-sub { position: absolute; top: 20px; left: 20px; background: var(--text-primary); color: var(--bg-color); border: none; padding: 10px 20px; border-radius: 12px; cursor: pointer; font-weight: 800; z-index: 3100; }
-        .money-particle { position: fixed; top: -50px; font-size: 24px; pointer-events: none; z-index: 9999; animation: fall linear forwards; }
-        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+        
         #customAlert { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 4000; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
-        .modal-content { background: var(--card-bg); padding: 30px; border-radius: 32px; max-width: 400px; width: 85%; text-align: center; border: 1px solid var(--border-color); }
+        .modal-content { background: var(--card-bg); padding: 30px; border-radius: 32px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; text-align: left; border: 1px solid var(--border-color); }
     </style>
 </head>
 <body>
-    <div id="customAlert"><div class="modal-content"><div class="modal-title" id="modalTitle" style="font-size:1.4em; font-weight:900; color:#ef4444; margin-bottom:15px;">⚠️ 알림</div><div class="modal-msg" id="modalMsg" style="margin-bottom:30px; font-size:1.1em;"></div><button class="btn-modal" onclick="closeAlert()" style="background:var(--accent-color); color:#fff; border:none; padding:12px 40px; border-radius:14px; font-weight:800; cursor:pointer;">확인</button></div></div>
+    <div id="customAlert"><div class="modal-content"><div id="modalBody"></div><div style="text-align:center; margin-top:30px;"><button class="btn-calc" onclick="closeAlert()" style="padding:12px 40px;">닫기</button></div></div></div>
 
     <!-- 단리 vs 복리 모달 -->
     <div id="compareModal" class="sub-modal">
@@ -107,10 +112,10 @@
         <div class="container">
             <h2 style="font-size: 1.8em; text-align: center; margin-bottom: 30px;">단리 vs 복리, 격차의 실체</h2>
             <div class="card">
-                <p style="font-size: 1em; margin-bottom: 20px; text-align: center;">시간이 지날수록 벌어지는 이 격차를 보세요. 이것이 바로 복리의 마법입니다.</p>
+                <p style="font-size: 1em; margin-bottom: 20px; text-align: center;">복리는 이자에 이자가 붙는 방식입니다. 시간이 지날수록 원금 위주의 단리와는 비교할 수 없는 수익을 만들어냅니다.</p>
                 <div style="height: 350px;"><canvas id="compareChart"></canvas></div>
                 
-                <!-- A3 광고 영역 -->
+                <!-- A3 광고 영역 (A2와 동일 코드) -->
                 <div class="ad-area" id="A3" style="margin-top: 30px; border-style: solid; background: rgba(37, 99, 235, 0.05); border-radius: 24px;">
                     <span style="font-weight: 800; color: var(--accent-color);">A3 - 금융 지식 스폰서</span>
                     <div class="ads-container">
@@ -126,23 +131,23 @@
     <div id="goalModal" class="sub-modal">
         <button class="close-sub" onclick="closeSubModal('goalModal')">← 돌아가기</button>
         <div class="container" style="max-width: 1100px;">
-            <h2 style="font-size: 1.8em; text-align: center; margin-bottom: 30px;">나의 목표 금액 찾기</h2>
+            <h2 style="font-size: 1.8em; text-align: center; margin-bottom: 30px;">미래 목표 금액 역산기</h2>
             
             <div style="display: flex; gap: 40px; align-items: flex-start; justify-content: center;">
-                <!-- 역계산기 메인 카드 -->
                 <div class="card" style="flex: 1; max-width: 600px;">
-                    <div class="input-group"><label>목표 금액 (원)</label><input type="text" id="targetAmt" placeholder="예: 1.000.000.000" oninput="handleInput(this)"></div>
+                    <p style="font-size: 0.9em; color: var(--text-secondary); margin-bottom: 20px;">원하는 목표 금액을 달성하기 위해 매달 얼마를 저축해야 하는지 확인해 보세요.</p>
+                    <div class="input-group"><label>최종 목표 금액 (원)</label><input type="text" id="targetAmt" placeholder="예: 1.000.000.000" oninput="handleInput(this)"></div>
                     <div class="input-group"><label>투자기간 (년)</label><input type="number" id="targetYears" value="10"></div>
                     <div class="input-group"><label>연 예상 수익률 (%)</label><input type="number" id="targetRate" value="8"></div>
-                    <button class="btn-calc" onclick="findGoal()">필요한 저축액 계산하기</button>
+                    <button class="btn-calc" onclick="findGoal()">필요 저축액 계산하기</button>
                     <div id="goalResult" style="margin-top: 30px; display: none; text-align: center;">
-                        <div style="font-size: 1.1em; opacity: 0.8;">매달 저축해야 할 금액은</div>
+                        <div style="font-size: 1.1em; opacity: 0.8;">매달 필요한 저축액은</div>
                         <div id="requiredMonthly" style="font-size: 1.8em; font-weight: 900; color: var(--accent-color); margin: 10px 0;">₩ 0</div>
                     </div>
 
-                    <!-- A4 광고 영역 - 전용 코드로 업데이트 -->
+                    <!-- A4 광고 영역 -->
                     <div class="ad-area" id="A4" style="margin-top: 30px; border-style: solid; background: rgba(219, 39, 119, 0.05); border-color: var(--real-value-color); border-radius: 24px;">
-                        <span style="font-weight: 800; color: var(--real-value-color);">A4 - 목표 달성 가이드</span>
+                        <span style="font-weight: 800; color: var(--real-value-color);">A4 - 맞춤형 자산 가이드</span>
                         <div class="ads-container">
                             <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="1998910394" data-ad-format="auto" data-full-width-responsive="true"></ins>
                             <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -152,7 +157,7 @@
 
                 <!-- A5 멀티플렉스 광고 영역 -->
                 <div class="vertical-ad-wide" id="A5">
-                    <span style="font-weight: 800; color: var(--text-secondary); font-size: 0.85em; margin-bottom: 15px;">A5 - 멀티플렉스 추천 상품</span>
+                    <span style="font-weight: 800; color: var(--text-secondary); font-size: 0.85em; margin-bottom: 15px;">A5 - 추천 금융 서비스</span>
                     <div class="ads-container" style="width: 100%; height: 600px;">
                         <ins class="adsbygoogle"
                              style="display:block"
@@ -169,24 +174,24 @@
     <header id="mainHeader">
         <button class="mode-toggle" id="modeBtn" onclick="toggleMode()">🌙 다크 모드</button>
         <h1><span id="magicIcon" onclick="growIcon()">🌱</span> 간편한 복리 계산기</h1>
-        <div class="usd-ticker">환율: 1 USD = <span id="headerUSD">...</span> KRW <span id="rateTime" style="font-weight:400; opacity:0.8; font-size:0.85em; margin-left:5px;"></span></div>
+        <div class="usd-ticker">환율 정보: 1 USD = <span id="headerUSD">...</span> KRW <span id="rateTime" style="font-weight:400; opacity:0.8; font-size:0.85em; margin-left:5px;"></span></div>
     </header>
 
     <div class="container">
         <div class="main-grid">
             <aside class="card">
-                <button class="coffee-btn" onclick="setCoffeeMiracle()">☕ 커피 한 잔의 기적</button>
+                <button class="coffee-btn" onclick="setCoffeeMiracle()">☕ 커피 한 잔의 기적 체험</button>
                 <div class="input-group"><label>초기 투자액 (원)</label><input type="text" id="principal" placeholder="0" oninput="handleInput(this)"></div>
                 <div class="input-group"><label>월 추가 적립액 (원)</label><input type="text" id="monthly" placeholder="0" oninput="handleInput(this)"></div>
                 <div class="input-group"><label>연 예상 수익률 (%)</label><input type="number" id="rate" value="8" step="0.1"></div>
                 <div class="input-group"><label>투자 기간 (년)</label><input type="number" id="years" value="10"></div>
                 <div class="input-group"><label>연 물가상승률 (%)</label><input type="number" id="inflation" value="2.5" step="0.1"></div>
-                <div class="input-group"><label>세제 혜택 선택</label><select id="taxType"><option value="general">일반 과세 (15.4%)</option><option value="isa">ISA/비과세 (0%)</option><option value="pension">연금저축 (과세이연)</option></select></div>
-                <button class="btn-calc" id="mainCalcBtn" onclick="playCalc()">복리의 마법 시작 💰</button>
+                <div class="input-group"><label>세제 혜택</label><select id="taxType"><option value="general">일반 과세 (15.4%)</option><option value="isa">ISA/비과세 (0%)</option><option value="pension">연금저축 (과세이연)</option></select></div>
+                <button class="btn-calc" id="mainCalcBtn" onclick="playCalc()">분석 시작 💰</button>
                 
                 <div class="extra-btns">
-                    <button class="btn-sub" onclick="openCompare()">단리 vs 복리 비교하기</button>
-                    <button class="btn-sub" onclick="openGoal()">목표 달성 역계산기</button>
+                    <button class="btn-sub" onclick="openCompare()">단리 vs 복리 차이 분석</button>
+                    <button class="btn-sub" onclick="openGoal()">미래 목표 금액 역산기</button>
                 </div>
 
                 <!-- A1 광고 영역 -->
@@ -205,14 +210,16 @@
                         <div class="res-value val-nominal" id="totalValue">₩ 0</div>
                     </div>
                     <div class="res-box" style="border-color: var(--real-value-color)">
-                        <div class="res-label" style="font-size:0.85em; opacity:0.8; font-weight:600; margin-bottom:5px;">물가 반영 실질 구매력</div>
+                        <div class="res-label" style="font-size:0.85em; opacity:0.8; font-weight:600; margin-bottom:5px;">물가 반영 실질 구매력 (가치)</div>
                         <div class="res-value val-real" id="realValue">₩ 0</div>
-                        <div style="font-size:0.95em; font-weight:800; margin-top:10px; color:var(--accent-color);">달러(USD) 환산: <span id="valUSD">$0</span></div>
+                        <div style="font-size:0.95em; font-weight:800; margin-top:10px; color:var(--accent-color);">USD 달러 환산 가치: <span id="valUSD">$0</span></div>
                     </div>
                 </div>
-                <div id="comparisonBanner"><div class="banner-title" id="bannerTitle" style="font-size:1.3em; font-weight:900; margin-bottom:8px;"></div><div class="banner-desc" id="bannerDesc" style="font-size:1em; font-weight:600;"></div></div>
+                <div id="comparisonBanner" style="display:none; padding:20px; border-radius:24px; margin-bottom:20px; text-align:center; font-weight:800;">
+                    <div id="bannerTitle"></div><div id="bannerDesc" style="font-size:0.9em; opacity:0.9;"></div>
+                </div>
                 <div class="chart-container"><canvas id="assetChart"></canvas></div>
-                <div id="quoteBox" style="margin-top:20px; padding:15px 20px; border-left:6px solid var(--accent-color); background:rgba(37,99,235,0.05); font-style:italic; font-size:1em; border-radius:0 20px 20px 0; line-height:1.5; min-height:50px; color: var(--text-primary);"></div>
+                <div id="quoteBox" style="margin-top:20px; padding:15px 20px; border-left:6px solid var(--accent-color); background:rgba(37,99,235,0.05); font-style:italic; font-size:1em; border-radius:0 20px 20px 0; line-height:1.5; color: var(--text-primary);"></div>
                 
                 <!-- A2 광고 영역 -->
                 <div class="ad-area" id="A2">
@@ -225,33 +232,72 @@
             </main>
         </div>
 
-        <section class="contact-section">
-            <h2 class="contact-title">📩 서비스 문의</h2>
-            <p class="contact-desc">앱 사용 중 불편한 점이나 제안하고 싶은 기능이 있다면 언제든 말씀해 주세요.</p>
-            <div class="card contact-form">
+        <!-- 고품질 텍스트 섹션: 복리의 이해 -->
+        <section class="knowledge-section">
+            <h2 style="text-align: center; font-size: 2.2em; font-weight: 900; margin-bottom: 40px;">금융의 핵심, 복리의 이해</h2>
+            <div class="knowledge-grid">
+                <div class="knowledge-card">
+                    <h3>72의 법칙이란?</h3>
+                    <p>자산이 두 배가 되는 데 걸리는 시간을 계산하는 간단한 공식입니다. 72를 연수익률로 나누면 원금이 두 배가 되는 예상 기간이 나옵니다. 예를 들어 수익률이 8%라면 약 9년이 걸립니다.</p>
+                </div>
+                <div class="knowledge-card">
+                    <h3>명목 자산 vs 실질 가치</h3>
+                    <p>숫자로 보이는 금액이 명목 자산이라면, 물가 상승률을 제외하고 현재 시점의 돈의 가치로 환산한 것이 실질 가치입니다. 장기 투자 시 물가 상승률을 반드시 고려해야 하는 이유입니다.</p>
+                </div>
+                <div class="knowledge-card">
+                    <h3>시간이 최고의 자산입니다</h3>
+                    <p>복리는 후반부로 갈수록 수익의 경사가 급격해지는 특성이 있습니다. 더 빨리 시작할수록, 더 오래 유지할수록 복리의 마법은 강력해집니다. 적은 금액이라도 일찍 시작하는 것이 중요합니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ 섹션 -->
+        <section class="knowledge-section">
+            <h2 style="text-align: center; font-size: 2em; font-weight: 900; margin-bottom: 30px;">자주 묻는 질문 (FAQ)</h2>
+            <div class="card" style="max-width: 800px; margin: 0 auto;">
+                <div class="faq-item">
+                    <div class="faq-q" onclick="toggleFaq(this)">Q. 세금 계산은 어떻게 이루어지나요? <span>▼</span></div>
+                    <div class="faq-a">일반 과세의 경우 이자 소득에 대해 15.4%의 세율을 매달 차감하여 계산합니다. ISA나 비과세 상품을 선택하면 세금 차감 없이 전액 재투자되는 효과를 볼 수 있습니다.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q" onclick="toggleFaq(this)">Q. 월 추가 적립액은 언제 반영되나요? <span>▼</span></div>
+                    <div class="faq-a">본 계산기는 매달 말에 적립액이 추가되는 것으로 가정하며, 월 단위 복리로 계산되어 연 단위보다 정밀한 결과를 제공합니다.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q" onclick="toggleFaq(this)">Q. 환율 정보는 실시간인가요? <span>▼</span></div>
+                    <div class="faq-a">글로벌 환율 API를 통해 최신 정보를 가져오며, 브라우저에 1시간 동안 캐시되어 제공됩니다. 실질 구매력을 달러로 체감해 보는 용도로 활용하세요.</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact-section" style="margin-top: 80px; padding-top: 60px; border-top: 2px solid var(--border-color);">
+            <h2 style="font-size: 2.2em; font-weight: 900; text-align: center; margin-bottom: 10px;">📩 서비스 문의</h2>
+            <p style="text-align: center; color: var(--text-secondary); margin-bottom: 40px;">사용 의견이나 제안 사항이 있다면 언제든 보내주세요.</p>
+            <div class="card" style="max-width: 600px; margin: 0 auto;">
                 <form action="https://formspree.io/f/xqegkydw" method="POST">
                     <input type="text" name="_gotcha" style="display:none">
-                    <div class="input-group">
-                        <label>성함</label>
-                        <input type="text" name="name" placeholder="이름을 입력해 주세요" required>
-                    </div>
-                    <div class="input-group">
-                        <label>이메일 주소</label>
-                        <input type="email" name="_replyto" placeholder="답변받으실 이메일을 입력해 주세요" required>
-                    </div>
-                    <div class="input-group">
-                        <label>문의 내용</label>
-                        <textarea name="message" rows="5" placeholder="궁금하신 점이나 제안 내용을 입력해 주세요" required></textarea>
-                    </div>
-                    <button type="submit" class="btn-calc" style="margin-top: 0;">문의 보내기 ✉️</button>
-                    <p class="privacy-note">※ 입력하신 이메일 주소는 문의 답변 용도로만 사용되며, 외부로 유출되지 않습니다.</p>
+                    <div class="input-group"><label>성함</label><input type="text" name="name" required></div>
+                    <div class="input-group"><label>이메일</label><input type="email" name="_replyto" required></div>
+                    <div class="input-group"><label>문의 내용</label><textarea name="message" rows="4" required></textarea></div>
+                    <button type="submit" class="btn-calc" style="margin-top: 0;">보내기 ✉️</button>
                 </form>
             </div>
         </section>
     </div>
+
+    <footer>
+        <div class="footer-links">
+            <a onclick="showInfo('about')">앱 소개</a>
+            <a onclick="showInfo('privacy')">개인정보처리방침</a>
+            <a onclick="showInfo('terms')">이용약관</a>
+        </div>
+        <p>&copy; 2026 복리 마법 계산기. All rights reserved.</p>
+        <p style="font-size: 0.8em; margin-top: 10px;">본 사이트의 계산 결과는 입력된 데이터를 기반으로 한 시뮬레이션이며, 실제 투자 수익을 보장하지 않습니다.</p>
+    </footer>
+
     <script>
         const $ = id => document.getElementById(id);
-        const els = { principal: $('principal'), monthly: $('monthly'), rate: $('rate'), years: $('years'), inflation: $('inflation'), taxType: $('taxType'), totalValue: $('totalValue'), realValue: $('realValue'), modal: $('customAlert'), modalTitle: $('modalTitle'), modalMsg: $('modalMsg'), banner: $('comparisonBanner'), quote: $('quoteBox'), valUSD: $('valUSD'), magic: $('magicIcon'), headerUSD: $('headerUSD'), calcBtn: $('mainCalcBtn') };
+        const els = { principal: $('principal'), monthly: $('monthly'), rate: $('rate'), years: $('years'), inflation: $('inflation'), taxType: $('taxType'), totalValue: $('totalValue'), realValue: $('realValue'), modal: $('customAlert'), banner: $('comparisonBanner'), quote: $('quoteBox'), valUSD: $('valUSD'), magic: $('magicIcon'), headerUSD: $('headerUSD'), calcBtn: $('mainCalcBtn') };
         
         let myChart = null, compareChart = null, currentRate = 1350, iconSize = 1, iconTimer = null;
         const quotes = ["인내심은 부를 일구는 가장 강력한 도구다.", "복리는 세계 8대 불가사의다. - 아인슈타인", "투자의 제1원칙은 돈을 잃지 않는 것이다. - 워런 버핏", "오늘 심은 나무가 내일 그늘을 만들어준다.", "가장 좋은 투자 시기는 바로 '지금'이다.", "시간이 흐를수록 복리의 힘은 무서워진다.", "부자가 되는 비결은 간단하다. 남들보다 적게 쓰고 남는 것을 투자하라.", "시장의 변동성은 친구이지 적이 아니다."];
@@ -265,6 +311,8 @@
             while (temp > 0.9 && idx < units.length) { let rem = Math.floor(temp % 10000); if (rem > 0) parts.push(fmtDots(rem) + units[idx]); temp /= 10000; idx++; }
             return parts.reverse().slice(0, 2).join(' ') + ' 원';
         }
+
+        function toggleFaq(el) { const a = el.nextElementSibling; a.style.display = a.style.display === 'block' ? 'none' : 'block'; el.querySelector('span').innerText = a.style.display === 'block' ? '▲' : '▼'; }
 
         function growIcon() {
             iconSize *= 1.25; els.magic.style.transform = `scale(${Math.min(iconSize, 10)})`;
@@ -343,9 +391,17 @@
         function toggleMode() { document.body.classList.toggle('dark-mode'); $('modeBtn').innerText = document.body.classList.contains('dark-mode') ? '☀️ 라이트 모드' : '🌙 다크 모드'; calculate(); }
         function handleInput(el) { let val = el.value.replace(/[^0-9]/g, ""); el.value = val.replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
         function updateTierTheme(val) { let ct = ''; if (val >= 1e24) ct = 'theme-ja'; else if (val >= 1e12) ct = 'theme-jo'; else if (val >= 1e8) ct = 'theme-eok'; document.body.classList.remove('theme-eok', 'theme-jo', 'theme-ja'); if (ct) document.body.classList.add(ct); }
-        function updateComparison(val) { els.banner.style.display = 'block'; let t = '', d = '', bg = '', c = '#78350f'; if (val < 1000000) { t = "🌱 씨앗을 심는 중"; d = "습관이 부자를 만듭니다."; bg = "linear-gradient(135deg, #dcfce7 0%, #86efac 100%)"; } else if (val >= 1e12) { t = "👑 재벌 3세 저리가라"; d = "대기업 몇 개쯤은 쇼핑하듯 살 수 있습니다."; bg = "linear-gradient(135deg, #4c1d95 0%, #8b5cf6 100%)"; c = "#fff"; } else { t = "🏢 강남 건물주 등극!"; d = "강남 요지에 빌딩 한 채 정도는 소유하시겠네요."; bg = "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)"; } $('bannerTitle').innerText = t; $('bannerDesc').innerText = d; els.banner.style.background = bg; els.banner.style.color = c; }
-        function updateChart(labels, nominal, real, principal) { const ctx = $('assetChart').getContext('2d'); if (myChart) myChart.destroy(); myChart = new Chart(ctx, { type: 'line', data: { labels, datasets: [{ label: '명목 자산', data: nominal, borderColor: '#2563eb', fill: true, tension: 0.3 }, { label: '실질 가치', data: real, borderColor: '#db2777', borderDash: [5, 5] }, { label: '투자 원금', data: principal, borderColor: '#9ca3af', borderWidth: 2 }] }, options: { responsive: true, maintainAspectRatio: false } }); }
+        function updateComparison(val) { els.banner.style.display = 'block'; let t = '', d = '', bg = '', c = '#78350f'; if (val < 1000000) { t = "🌱 씨앗을 심는 중"; d = "습관이 부자를 만듭니다."; bg = "linear-gradient(135deg, #dcfce7 0%, #86efac 100%)"; } else if (val >= 1e12) { t = "👑 재벌 3세"; d = "대기업 쇼핑이 가능한 자산 규모입니다."; bg = "linear-gradient(135deg, #4c1d95 0%, #8b5cf6 100%)"; c = "#fff"; } else { t = "🏢 강남 건물주"; d = "강남 요지에 빌딩 소유가 가능한 수준입니다."; bg = "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)"; } $('bannerTitle').innerText = t; $('bannerDesc').innerText = d; els.banner.style.background = bg; els.banner.style.color = c; }
+        function updateChart(labels, nominal, real, principal) { const ctx = $('assetChart').getContext('2d'); if (myChart) myChart.destroy(); myChart = new Chart(ctx, { type: 'line', data: { labels, datasets: [{ label: '명목 자산', data: nominal, borderColor: '#2563eb', fill: true, tension: 0.3 }, { label: '실질 가치', data: real, borderColor: '#real-value-color', borderDash: [5, 5] }, { label: '투자 원금', data: principal, borderColor: '#9ca3af', borderWidth: 2 }] }, options: { responsive: true, maintainAspectRatio: false } }); }
         
+        function showInfo(type) {
+            let h = '', c = '';
+            if(type === 'privacy') { h = '개인정보처리방침'; c = '<p>본 서비스는 사용자가 입력한 금융 데이터를 서버에 저장하지 않습니다. 모든 계산은 사용자의 브라우저 내에서만 이루어집니다. 구글 애드센스 광고를 통해 쿠키가 사용될 수 있습니다.</p>'; }
+            else if(type === 'terms') { h = '이용약관'; c = '<p>제공되는 계산 결과는 참고용이며, 실제 금융 상품의 수익률 및 세금과는 차이가 있을 수 있습니다. 투자 결정은 본인의 책임하에 이루어져야 합니다.</p>'; }
+            else { h = '앱 소개'; c = '<p>복리의 마법 계산기는 사용자들이 장기 투자의 중요성을 체감하고 자산을 체계적으로 설계할 수 있도록 돕는 무료 금융 도구입니다.</p>'; }
+            $('modalBody').innerHTML = `<h2>${h}</h2>${c}`; els.modal.style.display = 'flex';
+        }
+        function closeAlert() { els.modal.style.display = 'none'; }
         window.onload = () => { updateExchangeRate(); };
     </script>
 </body>
