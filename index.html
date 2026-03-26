@@ -4,31 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <!-- 파비콘 (새싹 이모지) -->
+    <!-- 구글 애드센스 전체 스크립트 -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6421966697163453" crossorigin="anonymous"></script>
+
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌱</text></svg>">
 
-    <!-- SEO 메타 태그 -->
     <title>🌱 간편한 복리 계산기 - 금융의 마법으로 만드는 미래 자산</title>
     <meta name="description" content="초기 투자금, 월 적립액, 수익률만 입력하면 미래의 자산을 한눈에 확인하세요. 복리와 단리 비교, 목표 금액 역계산 기능까지 제공하는 가장 직관적인 복리 계산기입니다.">
     <meta name="keywords" content="복리 계산기, 복리의 마법, 재테크 계산기, 은퇴 설계, 자산 관리, 단리 복리 비교, 투자 수익률 계산">
-    <meta name="author" content="금융의 마법">
     <link rel="canonical" href="https://product-bulider-lecture-djm.pages.dev/">
 
-    <!-- Open Graph (SNS 공유용) -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="🌱 간편한 복리 계산기 - 금융의 마법">
     <meta property="og:description" content="복리의 힘으로 당신의 미래 자산이 얼마나 불어날지 지금 바로 확인해 보세요!">
     <meta property="og:url" content="https://product-bulider-lecture-djm.pages.dev/">
     <meta property="og:site_name" content="금융의 마법 복리 계산기">
-    <meta property="og:image" content="https://product-bulider-lecture-djm.pages.dev/og-image.png">
 
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="🌱 간편한 복리 계산기 - 금융의 마법">
-    <meta name="twitter:description" content="직관적인 그래프와 수치로 확인하는 복리의 마법!">
-    <meta name="twitter:image" content="https://product-bulider-lecture-djm.pages.dev/og-image.png">
-
-    <!-- 보안 및 개인정보 보호 강화 -->
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta name="referrer" content="no-referrer-when-downgrade">
 
@@ -54,7 +45,7 @@
         header h1 { font-family: 'Noto Serif KR', serif; margin: 0; font-size: 3.2em; color: var(--accent-color); display: flex; align-items: center; justify-content: center; gap: 15px; font-weight: 900; }
         #magicIcon { cursor: pointer; display: inline-block; transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); user-select: none; }
         .usd-ticker { display: inline-block; font-size: 1em; background: rgba(37, 99, 235, 0.1); padding: 8px 20px; border-radius: 20px; color: var(--accent-color); font-weight: 700; margin-top: 20px; }
-        .mode-toggle { position: absolute; top: 20px; right: 30px; background: var(--accent-color); color: white; border: none; padding: 12px 24px; border-radius: 16px; cursor: pointer; font-size: 1em; font-weight: 800; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3); transition: 0.3s; }
+        .mode-toggle { position: absolute; top: 20px; right: 30px; background: var(--accent-color); color: white; border: none; padding: 12px 24px; border-radius: 16px; cursor: pointer; font-size: 1em; font-weight: 800; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3); transition: 0.3s; z-index: 20; }
         
         .container { width: 95%; max-width: 1200px; margin: 40px auto 80px; padding: 0 20px; box-sizing: border-box; }
         .main-grid { display: grid; grid-template-columns: 380px 1fr; gap: 30px; align-items: stretch; }
@@ -67,29 +58,31 @@
         .coffee-btn { width: 100%; background: linear-gradient(135deg, #713f12 0%, #451a03 100%); color: #fef3c7; border: none; padding: 14px; border-radius: 16px; font-weight: 800; cursor: pointer; margin-bottom: 25px; transition: 0.3s; }
         .btn-calc { width: 100%; background: var(--accent-color); color: white; border: none; padding: 20px; border-radius: 20px; font-size: 1.2em; font-weight: 900; cursor: pointer; transition: 0.3s; margin-top: 15px; box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2); }
         .btn-calc:disabled { opacity: 0.6; cursor: not-allowed; }
+        
+        .extra-btns { margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 25px; }
         .btn-sub { width: 100%; padding: 14px; border-radius: 16px; background: none; border: 2px solid var(--accent-color); color: var(--accent-color); font-weight: 800; cursor: pointer; transition: 0.3s; margin-bottom: 12px; }
         .btn-sub:hover { background: var(--accent-color); color: white; }
 
         .res-box { padding: 25px; border-radius: 24px; background: rgba(0,0,0,0.03); border: 1px solid var(--border-color); margin-bottom: 20px; }
         .res-value { font-size: 2em; font-weight: 900; word-break: break-all; }
+        #comparisonBanner { display: none; margin-top: 24px; padding: 30px; border-radius: 32px; text-align: center; animation: slideUp 0.5s ease-out; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         .chart-container { position: relative; flex-grow: 1; min-height: 450px; width: 100%; margin-top: 25px; border-radius: 24px; overflow: hidden; }
+        
+        /* 광고 영역 */
         .ad-area { margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.02); border: 1px dashed var(--border-color); border-radius: 24px; text-align: center; color: var(--text-secondary); font-size: 0.85em; box-sizing: border-box; }
-        .ad-placeholder { width: 100%; height: 90px; margin: 15px auto 0; background: rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; border-radius: 16px; border: 1px solid var(--border-color); font-weight: 600; }
+        .ads-container { margin-top: 15px; min-height: 90px; }
 
-        /* 서비스 문의 */
         .contact-section { margin-top: 80px; padding-top: 60px; border-top: 2px solid var(--border-color); }
         .contact-title { font-size: 2.2em; font-weight: 900; text-align: center; margin-bottom: 10px; color: var(--text-primary); }
         .contact-desc { text-align: center; color: var(--text-secondary); margin-bottom: 40px; }
         .privacy-note { font-size: 0.8em; color: var(--text-secondary); margin-top: 15px; text-align: center; line-height: 1.4; }
 
-        /* 테마별 배경 효과 */
-        body.theme-ja::after { content: '✨'; position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.5; animation: spaceStars 10s infinite linear; font-size: 20px; }
-        @keyframes spaceStars { from { transform: translateY(0); } to { transform: translateY(-100px); } }
-
         @media (max-width: 1000px) { .main-grid { grid-template-columns: 1fr; } }
         @media (max-width: 650px) {
             header h1 { font-size: 1.8em; }
-            .mode-toggle { position: relative; top: 0; right: 0; margin-bottom: 20px; width: 100%; }
+            .mode-toggle { position: relative; top: 0; right: 0; margin-bottom: 20px; width: 100%; display: block; }
+            .card { padding: 20px; border-radius: 24px; }
+            .res-value { font-size: 1.5em !important; }
             .chart-container { min-height: 350px; }
         }
 
@@ -105,7 +98,6 @@
 <body>
     <div id="customAlert"><div class="modal-content"><div class="modal-title" id="modalTitle" style="font-size:1.4em; font-weight:900; color:#ef4444; margin-bottom:15px;">⚠️ 알림</div><div class="modal-msg" id="modalMsg" style="margin-bottom:30px; font-size:1.1em;"></div><button class="btn-modal" onclick="closeAlert()" style="background:var(--accent-color); color:#fff; border:none; padding:12px 40px; border-radius:14px; font-weight:800; cursor:pointer;">확인</button></div></div>
 
-    <!-- 분석 모달들 -->
     <div id="compareModal" class="sub-modal">
         <button class="close-sub" onclick="closeSubModal('compareModal')">← 돌아가기</button>
         <div class="container">
@@ -113,9 +105,14 @@
             <div class="card">
                 <p style="font-size: 1em; margin-bottom: 20px; text-align: center;">시간이 지날수록 벌어지는 이 격차를 보세요. 이것이 바로 복리의 마법입니다.</p>
                 <div style="height: 350px;"><canvas id="compareChart"></canvas></div>
+                
+                <!-- 분석 모달 내 광고 -->
                 <div class="ad-area" style="margin-top: 30px; border-style: solid; background: rgba(37, 99, 235, 0.05); border-radius: 24px;">
                     <span style="font-weight: 800; color: var(--accent-color);">금융 지식 스폰서</span>
-                    <div class="ad-placeholder" style="height: 80px;">관련 금융 상품 보기</div>
+                    <div class="ads-container">
+                        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="1764207728" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                    </div>
                 </div>
             </div>
         </div>
@@ -134,9 +131,14 @@
                     <div style="font-size: 1.1em; opacity: 0.8;">매달 저축해야 할 금액은</div>
                     <div id="requiredMonthly" style="font-size: 1.8em; font-weight: 900; color: var(--accent-color); margin: 10px 0;">₩ 0</div>
                 </div>
+
+                <!-- 목표 역계산기 모달 내 광고 -->
                 <div class="ad-area" style="margin-top: 30px; border-style: solid; background: rgba(219, 39, 119, 0.05); border-color: var(--real-value-color); border-radius: 24px;">
                     <span style="font-weight: 800; color: var(--real-value-color);">목표 달성 가이드</span>
-                    <div class="ad-placeholder" style="height: 80px; border-color: var(--real-value-color);">투자 팁 확인하기</div>
+                    <div class="ads-container">
+                        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="1764207728" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                    </div>
                 </div>
             </div>
         </div>
@@ -165,9 +167,13 @@
                     <button class="btn-sub" onclick="openGoal()">목표 달성 역계산기</button>
                 </div>
 
+                <!-- 사이드바 광고 -->
                 <div class="ad-area" style="margin-top: 30px; background: rgba(37, 99, 235, 0.05); border-style: solid;">
                     <span style="font-weight: 800; color: var(--accent-color);">Premium Sponsor</span>
-                    <div class="ad-placeholder" style="height: 120px;">추가 광고 영역</div>
+                    <div class="ads-container">
+                        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="1764207728" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                    </div>
                 </div>
             </aside>
             <main class="card">
@@ -185,7 +191,15 @@
                 <div id="comparisonBanner"><div class="banner-title" id="bannerTitle" style="font-size:1.3em; font-weight:900; margin-bottom:8px;"></div><div class="banner-desc" id="bannerDesc" style="font-size:1em; font-weight:600;"></div></div>
                 <div class="chart-container"><canvas id="assetChart"></canvas></div>
                 <div id="quoteBox" style="margin-top:20px; padding:15px 20px; border-left:6px solid var(--accent-color); background:rgba(37,99,235,0.05); font-style:italic; font-size:1em; border-radius:0 20px 20px 0; line-height:1.5; min-height:50px; color: var(--text-primary);"></div>
-                <div class="ad-area"><span>Sponsored Content</span><div class="ad-placeholder" id="adPlaceholder">여기에 광고가 표시됩니다</div></div>
+                
+                <!-- 메인 결과창 하단 광고 -->
+                <div class="ad-area">
+                    <span>Sponsored Content</span>
+                    <div class="ads-container">
+                        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="1764207728" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                    </div>
+                </div>
             </main>
         </div>
 
