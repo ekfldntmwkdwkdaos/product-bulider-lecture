@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <!-- 구글 애드센스 전체 스크립트 -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6421966697163453" crossorigin="anonymous"></script>
 
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌱</text></svg>">
 
-    <title>🌱 간편한 복리 계산기 - 금융의 마법 가이드</title>
+    <title>간편한 복리 계산기 - 금융의 마법 가이드</title>
     <meta name="description" content="전문적인 복리 계산기와 재테크 가이드. 초기 투자금, 월 적립액, 수익률 분석.">
     <link rel="canonical" href="https://product-bulider-lecture-djm.pages.dev/">
 
@@ -146,7 +145,7 @@
     <header id="mainHeader">
         <button class="mode-toggle" id="modeBtn" onclick="toggleMode()">🌙 다크 모드</button>
         <h1><span id="magicIcon" onclick="growIcon()">🌱</span> 간편한 복리 계산기</h1>
-        <div class="usd-ticker">환율 정보: 1 USD = <span id="headerUSD">...</span> KRW <span id="rateTime" style="font-weight:400; opacity:0.8; font-size:0.85em; margin-left:5px;"></span></div>
+        <div class="usd-ticker">기준 환율: 1 USD = <span id="headerUSD">...</span> KRW <span id="rateTime" style="font-weight:400; opacity:0.8; font-size:0.85em; margin-left:5px;"></span></div>
     </header>
 
     <div class="container">
@@ -226,6 +225,10 @@
     <script>
         const $ = id => document.getElementById(id);
         let myChart = null, compareChart = null, currentRate = 1350, iconSize = 1, iconTimer = null;
+        
+        // 추가: 팝업 무한 반복 방지를 위한 상태 변수
+        let isAlertOpen = false; 
+
         const quotes = ["인내심은 부를 일구는 가장 강력한 도구다.", "복리는 세계 8대 불가사의다. - 아인슈타인", "투자의 제1원칙은 돈을 잃지 않는 것이다. - 워런 버핏", "오늘 심은 나무가 내일 그늘을 만들어준다.", "가장 좋은 투자 시기는 바로 '지금'이다.", "부자가 되는 비결은 간단하다. 남들보다 적게 쓰고 남는 것을 투자하라."];
         const warningMsgs = [
             "훗, 더 이상은 안되지롱~", "워워~ 진정하세요! 숫자가 너무 커요!", 
@@ -243,9 +246,18 @@
             return parseFloat(val) || 0;
         };
 
+        // 수정 4: 팝업 중복 방지 로직 적용
         function showAlert(title, msg) {
+            if (isAlertOpen) return; // 이미 열려있으면 무시 (스팸 방지)
+            isAlertOpen = true;
             $('modalBody').innerHTML = `<h2 style="color:var(--accent-color); margin-top:0;">${title}</h2><p style="font-size:1.2em; line-height:1.6; font-weight:800; text-align:center;">${msg}</p>`;
             $('customAlert').style.display = 'flex';
+        }
+
+        // 팝업 닫을 때 상태 초기화
+        function closeAlert() { 
+            $('customAlert').style.display = 'none'; 
+            isAlertOpen = false; 
         }
 
         function formatCurrency(num) {
@@ -328,11 +340,15 @@
         function playCalc() { calculate(); if (getVal('totalValue') >= 1e12) triggerNatureShower(); }
         function toggleMode() { document.body.classList.toggle('dark-mode'); $('modeBtn').innerText = document.body.classList.contains('dark-mode') ? '☀️ 라이트 모드' : '🌙 다크 모드'; calculate(true); }
         
+        // 수정 4: 숫자를 꾹 눌렀을 때 팝업 반복을 막고 입력을 강제 중단(blur)
         function handleInput(el) { 
             let val = el.value.replace(/[^0-9]/g, ""); 
             if (val.length > 15) {
                 val = val.substring(0, 15);
-                showAlert("입력 제한", warningMsgs[Math.floor(Math.random() * warningMsgs.length)]);
+                if (!isAlertOpen) {
+                    el.blur(); // 키보드 포커스 해제 (입력 강제 중지)
+                    showAlert("입력 제한", warningMsgs[Math.floor(Math.random() * warningMsgs.length)]);
+                }
             }
             el.value = val.replace(/\B(?=(\d{3})+(?!\d))/g, ","); 
         }
@@ -340,13 +356,15 @@
         function limitNumInput(el, max) {
             if (el.value > max) {
                 el.value = max;
-                showAlert("한도 초과", warningMsgs[Math.floor(Math.random() * warningMsgs.length)]);
+                if (!isAlertOpen) {
+                    el.blur(); // 키보드 포커스 해제 (입력 강제 중지)
+                    showAlert("한도 초과", warningMsgs[Math.floor(Math.random() * warningMsgs.length)]);
+                }
             }
         }
 
         function openGoal() { $('goalModal').classList.add('active'); }
         function closeSubModal(id) { $(id).classList.remove('active'); }
-        function closeAlert() { $('customAlert').style.display = 'none'; }
         function toggleFaq(el) { const a = el.nextElementSibling; a.style.display = a.style.display === 'block' ? 'none' : 'block'; }
         function updateComparison(val) { $('comparisonBanner').style.display = 'block'; let t = '', d = '', bg = '#dcfce7', c = '#166534'; if (val >= 1e12) { t = "👑 재벌 3세 수준"; d = "대기업 쇼핑이 가능한 자산입니다."; bg = "#f3e8ff"; c = "#6b21a8"; } else if (val >= 1e8) { t = "🏢 강남 건물주 후보"; d = "강남 빌딩 소유가 꿈이 아닙니다."; bg = "#fef3c7"; c = "#92400e"; } $('bannerTitle').innerText = t; $('bannerDesc').innerText = d; $('comparisonBanner').style.background = bg; $('comparisonBanner').style.color = c; }
         function growIcon() { iconSize *= 1.25; $('magicIcon').style.transform = `scale(${Math.min(iconSize, 10)})`; if (iconTimer) clearTimeout(iconTimer); iconTimer = setTimeout(() => { iconSize = 1; $('magicIcon').style.transform = 'scale(1)'; }, 1000); if (iconSize > 10) triggerNatureShower(); }
@@ -355,6 +373,19 @@
             let h = type === 'privacy' ? '개인정보처리방침' : '이용약관', 
                 c = '본 서비스는 데이터를 서버에 저장하지 않습니다.'; 
             showAlert(h, c);
+        }
+
+        // 수정 3: 커피 한 잔의 기적 함수 추가
+        function setCoffeeMiracle() {
+            $('principal').value = '0';
+            $('monthly').value = '150,000'; // 매일 5천원 * 30일
+            $('rate').value = '10'; // 10% 예상 수익률
+            $('years').value = '20'; // 20년 투자
+            $('taxType').value = 'general';
+            
+            // 시각적 피드백을 위해 팝업 띄우고 계산 실행
+            showAlert("☕ 커피 한 잔의 기적", "매일 마시는 커피값(약 5천원)을 모아 한 달 15만 원씩 20년간 연 10% 수익률로 투자한다면?<br><br>작은 습관이 만드는 복리의 마법을 확인해 보세요!");
+            calculate();
         }
 
         window.onload = () => { updateExchangeRate(); };
