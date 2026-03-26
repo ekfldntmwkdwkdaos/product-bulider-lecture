@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
+    <!-- 구글 애드센스 전체 스크립트 -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6421966697163453" crossorigin="anonymous"></script>
+
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌱</text></svg>">
 
     <title>🌱 간편한 복리 계산기 - 금융의 마법 가이드</title>
     <meta name="description" content="전문적인 복리 계산기와 재테크 가이드. 초기 투자금, 월 적립액, 수익률 분석.">
-    
+    <link rel="canonical" href="https://product-bulider-lecture-djm.pages.dev/">
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700&family=Pretendard:wght@400;600;700&display=swap');
@@ -25,201 +28,280 @@
             --accent-color: #38bdf8; --real-value-color: #f472b6;
             --border-color: #334155; --input-bg: #0f172a; --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
         }
-        body { font-family: 'Pretendard', sans-serif; margin: 0; transition: all 0.5s; color: var(--text-primary); background-color: var(--bg-color); }
-        header { background-color: var(--header-bg); padding: 60px 20px; text-align: center; border-bottom: 1px solid var(--border-color); position: relative; }
-        header h1 { font-family: 'Noto Serif KR', serif; margin: 0; font-size: 3.2em; color: var(--accent-color); font-weight: 900; }
-        .mode-toggle { position: absolute; top: 20px; right: 30px; background: var(--accent-color); color: white; border: none; padding: 12px 24px; border-radius: 16px; cursor: pointer; font-weight: 800; }
+        
+        body { font-family: 'Pretendard', sans-serif; margin: 0; transition: all 0.5s; line-height: 1.6; min-height: 100vh; color: var(--text-primary); background-color: var(--bg-color); -webkit-tap-highlight-color: transparent; }
+        header { background-color: var(--header-bg); padding: 60px 20px; text-align: center; border-bottom: 1px solid var(--border-color); position: relative; width: 100%; box-sizing: border-box; overflow: hidden; }
+        header h1 { font-family: 'Noto Serif KR', serif; margin: 0; font-size: 3.2em; color: var(--accent-color); display: flex; align-items: center; justify-content: center; gap: 15px; font-weight: 900; }
+        #magicIcon { cursor: pointer; display: inline-block; transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); user-select: none; }
+        .usd-ticker { display: inline-block; font-size: 1em; background: rgba(37, 99, 235, 0.1); padding: 8px 20px; border-radius: 20px; color: var(--accent-color); font-weight: 700; margin-top: 20px; }
+        .mode-toggle { position: absolute; top: 20px; right: 30px; background: var(--accent-color); color: white; border: none; padding: 12px 24px; border-radius: 16px; cursor: pointer; font-size: 1em; font-weight: 800; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3); transition: 0.3s; z-index: 20; }
+        
         .container { width: 95%; max-width: 1200px; margin: 40px auto 80px; padding: 0 20px; box-sizing: border-box; }
-        .main-grid { display: grid; grid-template-columns: 380px 1fr; gap: 30px; }
-        .card { background-color: var(--card-bg); padding: 30px; border-radius: 32px; box-shadow: var(--shadow); border: 1px solid var(--border-color); display: flex; flex-direction: column; }
+        .main-grid { display: grid; grid-template-columns: 380px 1fr; gap: 30px; align-items: stretch; }
+        .card { background-color: var(--card-bg); padding: 30px; border-radius: 32px; box-shadow: var(--shadow); border: 1px solid var(--border-color); transition: all 0.3s; display: flex; flex-direction: column; position: relative; }
+        
         .input-group { margin-bottom: 20px; }
         .input-group label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.9em; color: var(--text-secondary); }
-        .input-group input, .input-group select, .input-group textarea { width: 100%; padding: 15px; border-radius: 14px; border: 1px solid var(--border-color); background-color: var(--input-bg); color: var(--text-primary); font-size: 1.1em; box-sizing: border-box; }
-        .btn-calc { width: 100%; background: var(--accent-color); color: white; border: none; padding: 20px; border-radius: 20px; font-size: 1.2em; font-weight: 900; cursor: pointer; margin-top: 15px; }
-        .btn-sub { width: 100%; padding: 14px; border-radius: 16px; background: none; border: 2px solid var(--accent-color); color: var(--accent-color); font-weight: 800; cursor: pointer; margin-bottom: 12px; }
+        .input-group input, .input-group select, .input-group textarea { width: 100%; padding: 15px; border-radius: 14px; border: 1px solid var(--border-color); background-color: var(--input-bg); color: var(--text-primary); font-size: 1.1em; outline: none; transition: 0.2s; box-sizing: border-box; font-family: inherit; }
+        
+        .coffee-btn { width: 100%; background: linear-gradient(135deg, #713f12 0%, #451a03 100%); color: #fef3c7; border: none; padding: 14px; border-radius: 16px; font-weight: 800; cursor: pointer; margin-bottom: 25px; transition: 0.3s; }
+        .btn-calc { width: 100%; background: var(--accent-color); color: white; border: none; padding: 20px; border-radius: 20px; font-size: 1.2em; font-weight: 900; cursor: pointer; transition: 0.3s; margin-top: 15px; box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2); }
+        
+        .extra-btns { margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 25px; }
+        .btn-sub { width: 100%; padding: 14px; border-radius: 16px; background: none; border: 2px solid var(--accent-color); color: var(--accent-color); font-weight: 800; cursor: pointer; transition: 0.3s; margin-bottom: 12px; }
+        .btn-sub:hover { background: var(--accent-color); color: white; }
+
         .res-box { padding: 25px; border-radius: 24px; background: rgba(0,0,0,0.03); border: 1px solid var(--border-color); margin-bottom: 20px; }
         .res-value { font-size: 2em; font-weight: 900; word-break: break-all; }
-        .chart-container { position: relative; flex-grow: 1; min-height: 450px; width: 100%; margin-top: 25px; }
-        .ad-area { margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.02); border: 1px dashed var(--border-color); border-radius: 24px; text-align: center; }
+        .chart-container { position: relative; flex-grow: 1; min-height: 450px; width: 100%; margin-top: 25px; border-radius: 24px; overflow: hidden; }
+        
+        .ad-area { margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.02); border: 1px dashed var(--border-color); border-radius: 24px; text-align: center; color: var(--text-secondary); font-size: 0.85em; box-sizing: border-box; }
+        .ads-container { margin-top: 15px; min-height: 90px; overflow: hidden; }
+        .vertical-ad-wide { width: 336px; min-height: 600px; background: rgba(0,0,0,0.02); border: 1px dashed var(--border-color); border-radius: 24px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 20px 10px; box-sizing: border-box; }
+
         .knowledge-section { margin-top: 60px; }
-        .knowledge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .knowledge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px; }
         .knowledge-card { background: var(--card-bg); padding: 30px; border-radius: 24px; border: 1px solid var(--border-color); }
-        footer { text-align: center; padding: 60px 20px; border-top: 1px solid var(--border-color); margin-top: 80px; }
+        .knowledge-card h3 { color: var(--accent-color); margin-top: 0; font-size: 1.4em; }
+        
+        .faq-item { margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
+        .faq-q { font-weight: 800; color: var(--text-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .faq-a { color: var(--text-secondary); margin-top: 10px; display: none; font-size: 0.9em; }
+
+        footer { text-align: center; padding: 60px 20px; border-top: 1px solid var(--border-color); margin-top: 80px; color: var(--text-secondary); font-size: 0.9em; }
+        .footer-links { margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .footer-links a { color: var(--text-primary); text-decoration: none; font-weight: 700; cursor: pointer; }
+
+        @media (max-width: 1100px) { .main-grid { grid-template-columns: 1fr; } .vertical-ad-wide { display: none; } }
+        @media (max-width: 650px) {
+            header h1 { font-size: 1.8em; }
+            .mode-toggle { position: relative; top: 0; right: 0; margin-bottom: 20px; width: 100%; display: block; }
+            .card { padding: 20px; border-radius: 24px; }
+            .res-value { font-size: 1.5em !important; }
+            .chart-container { min-height: 350px; }
+        }
+
         .sub-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 3000; overflow-y: auto; padding: 40px 20px; box-sizing: border-box; }
-        .sub-modal.active { display: block; }
+        .sub-modal.active { display: block; animation: slideIn 0.4s ease-out; }
+        .close-sub { position: absolute; top: 20px; left: 20px; background: var(--text-primary); color: var(--bg-color); border: none; padding: 10px 20px; border-radius: 12px; cursor: pointer; font-weight: 800; z-index: 3100; }
         #customAlert { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 4000; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
-        .modal-content { background: var(--card-bg); padding: 30px; border-radius: 32px; max-width: 600px; width: 90%; }
-        @media (max-width: 1100px) { .main-grid { grid-template-columns: 1fr; } }
+        .modal-content { background: var(--card-bg); padding: 30px; border-radius: 32px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; text-align: left; border: 1px solid var(--border-color); }
+        .money-particle { position: fixed; top: -50px; font-size: 24px; pointer-events: none; z-index: 9999; animation: fall linear forwards; }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
     </style>
 </head>
 <body>
     <div id="customAlert"><div class="modal-content"><div id="modalBody"></div><div style="text-align:center; margin-top:30px;"><button class="btn-calc" onclick="closeAlert()" style="padding:12px 40px;">닫기</button></div></div></div>
 
     <div id="compareModal" class="sub-modal">
-        <button class="btn-sub" onclick="closeSubModal('compareModal')" style="width:auto;">← 돌아가기</button>
+        <button class="close-sub" onclick="closeSubModal('compareModal')">← 돌아가기</button>
         <div class="container">
-            <h2>단리 vs 복리 비교</h2>
-            <div class="card"><div style="height: 350px;"><canvas id="compareChart"></canvas></div></div>
-        </div>
-    </div>
-
-    <div id="goalModal" class="sub-modal">
-        <button class="btn-sub" onclick="closeSubModal('goalModal')" style="width:auto;">← 돌아가기</button>
-        <div class="container">
-            <h2>목표 금액 역계산</h2>
+            <h2 style="font-size: 1.8em; text-align: center; margin-bottom: 30px;">단리 vs 복리 차이 분석</h2>
             <div class="card">
-                <div class="input-group"><label>목표 금액 (원)</label><input type="text" id="targetAmt" oninput="handleInput(this)"></div>
-                <div class="input-group"><label>기간 (년)</label><input type="number" id="targetYears" value="10"></div>
-                <div class="input-group"><label>수익률 (%)</label><input type="number" id="targetRate" value="8"></div>
-                <button class="btn-calc" onclick="findGoal()">계산하기</button>
-                <div id="goalResult" style="margin-top:20px; font-size:1.5em; font-weight:900; text-align:center;"></div>
+                <div style="height: 350px;"><canvas id="compareChart"></canvas></div>
+                <div class="ad-area" id="A3" style="margin-top: 30px; border-style: solid; background: rgba(37, 99, 235, 0.05); border-radius: 24px;">
+                    <span style="font-weight: 800; color: var(--accent-color);">A3 - 금융 지식 스폰서</span>
+                    <div class="ads-container">
+                        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="9997920969" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <header>
-        <button class="mode-toggle" onclick="toggleMode()">🌙 모드 전환</button>
-        <h1><span id="magicIcon" onclick="growIcon()">🌱</span> 복리 계산기</h1>
-        <div style="margin-top:10px;">환율: 1 USD = <span id="headerUSD">1.350</span> KRW</div>
+    <div id="goalModal" class="sub-modal">
+        <button class="close-sub" onclick="closeSubModal('goalModal')">← 돌아가기</button>
+        <div class="container" style="max-width: 1100px;">
+            <h2 style="font-size: 1.8em; text-align: center; margin-bottom: 30px;">미래 목표 금액 역산기</h2>
+            <div style="display: flex; gap: 40px; align-items: flex-start; justify-content: center;">
+                <div class="card" style="flex: 1; max-width: 600px;">
+                    <div class="input-group"><label>최종 목표 금액 (원)</label><input type="text" id="targetAmt" placeholder="예: 1.000.000.000" oninput="handleInput(this)"></div>
+                    <div class="input-group"><label>투자기간 (년)</label><input type="number" id="targetYears" value="10"></div>
+                    <div class="input-group"><label>연 예상 수익률 (%)</label><input type="number" id="targetRate" value="8"></div>
+                    <button class="btn-calc" onclick="findGoal()">필요 저축액 계산하기</button>
+                    <div id="goalResult" style="margin-top: 30px; display: none; text-align: center;">
+                        <div style="font-size: 1.1em; opacity: 0.8;">매달 필요한 저축액은</div>
+                        <div id="requiredMonthly" style="font-size: 1.8em; font-weight: 900; color: var(--accent-color); margin: 10px 0;">₩ 0</div>
+                    </div>
+                    <div class="ad-area" id="A4" style="margin-top: 30px; border-style: solid; background: rgba(219, 39, 119, 0.05); border-color: var(--real-value-color); border-radius: 24px;">
+                        <span style="font-weight: 800; color: var(--real-value-color);">A4 - 맞춤형 자산 가이드</span>
+                        <div class="ads-container">
+                            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="1998910394" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                        </div>
+                    </div>
+                </div>
+                <div class="vertical-ad-wide" id="A5">
+                    <span style="font-weight: 800; color: var(--text-secondary); font-size: 0.85em; margin-bottom: 15px;">A5 - 추천 금융 서비스</span>
+                    <div class="ads-container" style="width: 100%; height: 600px;">
+                        <ins class="adsbygoogle" style="display:block" data-ad-format="autorelaxed" data-ad-client="ca-pub-6421966697163453" data-ad-slot="1601256897"></ins>
+                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <header id="mainHeader">
+        <button class="mode-toggle" id="modeBtn" onclick="toggleMode()">🌙 다크 모드</button>
+        <h1><span id="magicIcon" onclick="growIcon()">🌱</span> 간편한 복리 계산기</h1>
+        <div class="usd-ticker">환율 정보: 1 USD = <span id="headerUSD">...</span> KRW <span id="rateTime" style="font-weight:400; opacity:0.8; font-size:0.85em; margin-left:5px;"></span></div>
     </header>
 
     <div class="container">
         <div class="main-grid">
             <aside class="card">
-                <div class="input-group"><label>초기 투자액 (원)</label><input type="text" id="principal" value="10.000.000" oninput="handleInput(this)"></div>
-                <div class="input-group"><label>월 적립액 (원)</label><input type="text" id="monthly" value="1.000.000" oninput="handleInput(this)"></div>
-                <div class="input-group"><label>수익률 (%)</label><input type="number" id="rate" value="8" step="0.1"></div>
-                <div class="input-group"><label>기간 (년)</label><input type="number" id="years" value="10"></div>
-                <div class="input-group"><label>물가상승률 (%)</label><input type="number" id="inflation" value="2.5" step="0.1"></div>
-                <div class="input-group"><label>세금</label><select id="taxType"><option value="general">일반과세(15.4%)</option><option value="isa">비과세(0%)</option></select></div>
-                <button class="btn-calc" onclick="calculate()">분석 시작 💰</button>
-                <div style="margin-top:20px;">
-                    <button class="btn-sub" onclick="openCompare()">단리 vs 복리 비교</button>
-                    <button class="btn-sub" onclick="openGoal()">목표 금액 역계산</button>
+                <button class="coffee-btn" onclick="setCoffeeMiracle()">☕ 커피 한 잔의 기적 체험</button>
+                <div class="input-group"><label>초기 투자액 (원)</label><input type="text" id="principal" placeholder="0" oninput="handleInput(this)"></div>
+                <div class="input-group"><label>월 추가 적립액 (원)</label><input type="text" id="monthly" placeholder="0" oninput="handleInput(this)"></div>
+                <div class="input-group"><label>연 예상 수익률 (%)</label><input type="number" id="rate" value="8" step="0.1"></div>
+                <div class="input-group"><label>투자 기간 (년)</label><input type="number" id="years" value="10"></div>
+                <div class="input-group"><label>연 물가상승률 (%)</label><input type="number" id="inflation" value="2.5" step="0.1"></div>
+                <div class="input-group"><label>세제 혜택</label><select id="taxType"><option value="general">일반 과세 (15.4%)</option><option value="isa">ISA/비과세 (0%)</option></select></div>
+                <button class="btn-calc" id="mainCalcBtn" onclick="playCalc()">분석 시작 💰</button>
+                <div class="extra-btns">
+                    <button class="btn-sub" onclick="openCompare()">단리 vs 복리 차이 분석</button>
+                    <button class="btn-sub" onclick="openGoal()">미래 목표 금액 역산기</button>
                 </div>
-                <div class="ad-area" id="A1">A1 광고 자리</div>
+                <div class="ad-area" id="A1" style="margin-top: 30px; background: rgba(37, 99, 235, 0.05); border-style: solid; border-radius: 24px;">
+                    <span style="font-weight: 800; color: var(--accent-color);">A1 - Premium Sponsor</span>
+                    <div class="ads-container">
+                        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="1764207728" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                    </div>
+                </div>
             </aside>
             <main class="card">
-                <div class="res-box"><div>최종 세후 자산</div><div class="res-value" id="totalValue">₩ 0</div></div>
-                <div class="res-box" style="border-color:var(--real-value-color);"><div>실질 구매력</div><div class="res-value" id="realValue">₩ 0</div><div id="valUSD" style="font-size:0.5em; color:var(--accent-color);">$0</div></div>
+                <div class="result-header">
+                    <div class="res-box">
+                        <div class="res-label" style="font-size:0.85em; opacity:0.8; font-weight:600; margin-bottom:5px;">최종 세후 명목 자산</div>
+                        <div class="res-value val-nominal" id="totalValue">₩ 0</div>
+                    </div>
+                    <div class="res-box" style="border-color: var(--real-value-color)">
+                        <div class="res-label" style="font-size:0.85em; opacity:0.8; font-weight:600; margin-bottom:5px;">물가 반영 실질 가치</div>
+                        <div class="res-value val-real" id="realValue">₩ 0</div>
+                        <div style="font-size:0.95em; font-weight:800; margin-top:10px; color:var(--accent-color);">달러 환산: <span id="valUSD">$0</span></div>
+                    </div>
+                </div>
+                <div id="comparisonBanner" style="display:none; padding:20px; border-radius:24px; margin-bottom:20px; text-align:center; font-weight:800;">
+                    <div id="bannerTitle"></div><div id="bannerDesc" style="font-size:0.9em; opacity:0.9;"></div>
+                </div>
                 <div class="chart-container"><canvas id="assetChart"></canvas></div>
-                <div class="ad-area" id="A2">A2 광고 자리</div>
+                <div id="quoteBox" style="margin-top:20px; padding:15px 20px; border-left:6px solid var(--accent-color); background:rgba(37,99,235,0.05); font-style:italic; font-size:1em; border-radius:0 20px 20px 0; line-height:1.5; min-height:50px; color: var(--text-primary);"></div>
+                <div class="ad-area" id="A2">
+                    <span>A2 - Sponsored Content</span>
+                    <div class="ads-container">
+                        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="9997920969" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                    </div>
+                </div>
             </main>
         </div>
 
         <section class="knowledge-section">
-            <h2>금융 지식 가이드</h2>
+            <h2 style="text-align: center; font-size: 2.2em; font-weight: 900; margin-bottom: 40px;">금융의 핵심, 복리의 이해</h2>
             <div class="knowledge-grid">
-                <div class="knowledge-card"><h3>72의 법칙</h3><p>자산이 두 배가 되는 시간을 계산하는 공식입니다.</p></div>
-                <div class="knowledge-card"><h3>복리의 힘</h3><p>이자에 이자가 붙어 자산이 기하급수적으로 늘어납니다.</p></div>
+                <div class="knowledge-card"><h3>72의 법칙이란?</h3><p>자산이 두 배가 되는 데 걸리는 시간을 계산하는 간단한 공식입니다. 72를 연수익률로 나누면 원금이 두 배가 되는 예상 기간이 나옵니다.</p></div>
+                <div class="knowledge-card"><h3>명목 자산 vs 실질 가치</h3><p>숫자로 보이는 금액이 명목 자산이라면, 물가 상승률을 제외하고 현재 시점의 돈의 가치로 환산한 것이 실질 가치입니다.</p></div>
+                <div class="knowledge-card"><h3>시간이 최고의 자산입니다</h3><p>복리는 후반부로 갈수록 수익의 경사가 급격해지는 특성이 있습니다. 더 빨리 시작할수록 복리의 마법은 강력해집니다.</p></div>
+            </div>
+        </section>
+
+        <section class="knowledge-section">
+            <h2 style="text-align: center; font-size: 2em; font-weight: 900; margin-bottom: 30px;">자주 묻는 질문 (FAQ)</h2>
+            <div class="card" style="max-width: 800px; margin: 0 auto;">
+                <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Q. 세금 계산은 어떻게 이루어지나요? <span>▼</span></div><div class="faq-a">일반 과세의 경우 이자 소득에 대해 15.4%의 세율을 매달 차감하여 계산합니다.</div></div>
+                <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Q. 월 추가 적립액은 언제 반영되나요? <span>▼</span></div><div class="faq-a">본 계산기는 매달 말에 적립액이 추가되는 것으로 가정하며, 월 단위 복리로 계산됩니다.</div></div>
             </div>
         </section>
     </div>
 
     <footer>
-        <div style="margin-bottom:20px;"><a onclick="showInfo('privacy')" style="cursor:pointer; font-weight:bold;">개인정보처리방침</a></div>
-        <p>&copy; 2026 복리 계산기</p>
+        <div class="footer-links"><a onclick="showInfo('privacy')">개인정보처리방침</a><a onclick="showInfo('terms')">이용약관</a></div>
+        <p>&copy; 2026 복리 마법 계산기. All rights reserved.</p>
     </footer>
 
     <script>
         const $ = id => document.getElementById(id);
-        let myChart = null, currentRate = 1350;
+        let myChart = null, compareChart = null, currentRate = 1350, iconSize = 1, iconTimer = null;
+        const quotes = ["인내심은 부를 일구는 가장 강력한 도구다.", "복리는 세계 8대 불가사의다. - 아인슈타인", "투자의 제1원칙은 돈을 잃지 않는 것이다. - 워런 버핏", "오늘 심은 나무가 내일 그늘을 만들어준다.", "가장 좋은 투자 시기는 바로 '지금'이다.", "부자가 되는 비결은 간단하다. 남들보다 적게 쓰고 남는 것을 투자하라."];
 
-        const parseNum = val => {
-            if (typeof val === 'number') return val;
-            return parseFloat(val.replace(/[^0-9.-]/g, "")) || 0;
+        const fmtDots = n => Math.floor(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        const getVal = id => {
+            const el = $(id);
+            if (!el) return 0;
+            const val = el.value.replace(/[^0-9.-]/g, "");
+            return parseFloat(val) || 0;
         };
 
         function formatCurrency(num) {
-            const n = Math.floor(num);
-            if (n < 10000) return '₩ ' + n.toLocaleString();
+            if (num < 10000) return '₩ ' + fmtDots(num);
             const units = ['', '만', '억', '조', '경'];
-            let parts = [], temp = n, i = 0;
-            while (temp > 0 && i < units.length) {
-                let r = temp % 10000;
-                if (r > 0) parts.push(r.toLocaleString() + units[i]);
-                temp = Math.floor(temp / 10000); i++;
-            }
-            return parts.reverse().slice(0, 2).join(' ') + ' 원';
-        }
-
-        function handleInput(el) {
-            let val = el.value.replace(/[^0-9]/g, "");
-            el.value = val.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            let parts = [], temp = Math.floor(num), idx = 0;
+            while (temp > 0 && idx < units.length) { let rem = temp % 10000; if (rem > 0) parts.push(fmtDots(rem) + units[idx]); temp = Math.floor(temp / 10000); idx++; }
+            return parts.length ? parts.reverse().slice(0, 2).join(' ') + ' 원' : '₩ 0';
         }
 
         function calculate(noAnim = false) {
-            const P = parseNum($('principal').value), PMT = parseNum($('monthly').value);
-            const R = parseNum($('rate').value) / 100 / 12, Y = parseNum($('years').value);
-            const INF = parseNum($('inflation').value) / 100, TAX = $('taxType').value === 'general' ? 0.154 : 0;
-            
-            let cur = P, totalP = P, labels = ['현재'], dNom = [P], dReal = [P];
-            for (let y = 1; y <= Y; y++) {
-                for (let m = 1; m <= 12; m++) {
-                    let intr = cur * R;
-                    cur += (intr * (1 - TAX)) + PMT;
-                    totalP += PMT;
-                }
-                labels.push(y + '년');
-                dNom.push(cur);
-                dReal.push(cur / Math.pow(1 + INF, y));
-            }
-
-            if (noAnim) {
-                $('totalValue').innerText = formatCurrency(cur);
-                $('realValue').innerText = formatCurrency(dReal[dReal.length - 1]);
-                $('valUSD').innerText = '$' + Math.floor(dReal[dReal.length - 1] / currentRate).toLocaleString();
-            } else {
-                animateNumber($('totalValue'), cur);
-                animateNumber($('realValue'), dReal[dReal.length - 1]);
-                animateNumber($('valUSD'), dReal[dReal.length - 1] / currentRate, true);
-            }
-            updateChart(labels, dNom, dReal);
+            const P = getVal('principal'), PMT = getVal('monthly'), R = getVal('rate')/100/12, Y = getVal('years'), INF = getVal('inflation')/100, TAX = $('taxType').value === 'general' ? 0.154 : 0;
+            let cur = P, labels = ['현재'], dNom = [P], dReal = [P];
+            for (let y = 1; y <= Y; y++) { for (let m = 1; m <= 12; m++) { let intr = cur * R; cur += (intr * (1 - TAX)) + PMT; } labels.push(y + '년'); dNom.push(cur); dReal.push(cur / Math.pow(1 + INF, y)); }
+            if (noAnim) { $('totalValue').innerText = formatCurrency(cur); $('realValue').innerText = formatCurrency(dReal[dReal.length-1]); $('valUSD').innerText = '$' + fmtDots(dReal[dReal.length-1] / currentRate); }
+            else { animateNumber($('totalValue'), cur); animateNumber($('realValue'), dReal[dReal.length-1]); animateNumber($('valUSD'), dReal[dReal.length-1] / currentRate, true); }
+            $('quoteBox').innerText = '"' + quotes[Math.floor(Math.random() * quotes.length)] + '"';
+            updateComparison(cur); updateChart(labels, dNom, dReal);
         }
 
         function animateNumber(el, target, isUSD = false) {
-            const start = parseNum(el.innerText);
-            const duration = 800, startTime = performance.now();
+            const start = parseFloat(el.innerText.replace(/[^0-9.-]/g, "")) || 0;
+            const duration = 1000, startTime = performance.now();
             function up(now) {
                 const p = Math.min((now - startTime) / duration, 1);
-                const val = start + (target - start) * p;
-                el.innerText = isUSD ? '$' + Math.floor(val).toLocaleString() : formatCurrency(val);
+                const val = start + (target - start) * (1 - Math.pow(1 - p, 3));
+                el.innerText = isUSD ? '$' + fmtDots(val) : formatCurrency(val);
                 if (p < 1) requestAnimationFrame(up);
             }
             requestAnimationFrame(up);
         }
 
         function updateChart(labels, nominal, real) {
-            const ctx = $('assetChart').getContext('2d');
-            if (myChart) myChart.destroy();
-            myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels,
-                    datasets: [
-                        { label: '명목 자산', data: nominal, borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.1)', fill: true },
-                        { label: '실질 가치', data: real, borderColor: '#db2777', borderDash: [5, 5] }
-                    ]
-                },
-                options: { responsive: true, maintainAspectRatio: false }
-            });
+            const ctx = $('assetChart').getContext('2d'); if (myChart) myChart.destroy();
+            myChart = new Chart(ctx, { type: 'line', data: { labels, datasets: [{ label: '명목 자산', data: nominal, borderColor: '#2563eb', fill: true, tension: 0.3, backgroundColor: 'rgba(37,99,235,0.1)' }, { label: '실질 가치', data: real, borderColor: '#db2777', borderDash: [5, 5] }] }, options: { responsive: true, maintainAspectRatio: false } });
         }
 
-        function toggleMode() {
-            document.body.classList.toggle('dark-mode');
-            calculate(true);
+        async function updateExchangeRate() {
+            try { const res = await fetch('https://open.er-api.com/v6/latest/USD'), data = await res.json(); if (data?.rates?.KRW) { currentRate = Math.floor(data.rates.KRW); $('headerUSD').innerText = fmtDots(currentRate); const now = new Date(); $('rateTime').innerText = `(${now.getHours()}:${now.getMinutes().toString().padStart(2,'0')} 기준)`; calculate(true); } } catch (e) { $('headerUSD').innerText = "1.350"; calculate(true); }
+        }
+
+        function findGoal() {
+            const target = getVal('targetAmt'), years = getVal('targetYears'), rate = getVal('targetRate')/100/12;
+            if (years <= 0 || rate <= 0) return;
+            const months = years * 12, required = (target * rate) / (Math.pow(1 + rate, months) - 1);
+            $('goalResult').style.display = 'block'; $('goalResult').innerText = "매달 필요한 저축액: " + formatCurrency(required);
         }
 
         function openCompare() {
-            $('compareModal').classList.add('active');
-            // 단순 구현
+            $('compareModal').classList.add('active'); const P = getVal('principal'), PMT = getVal('monthly'), years = getVal('years'), r = getVal('rate')/100;
+            const labels = [], dCompound = [], dSimple = []; let compound = P, simple = P;
+            for(let y=0; y<=years; y++) { labels.push(y+'년'); dCompound.push(compound); dSimple.push(simple); simple = P + (PMT * 12 * (y+1)) + ((P + (PMT * 12 * y)) * r * (y+1)); compound = (compound + PMT*12) * (1+r); }
+            if(compareChart) compareChart.destroy();
+            compareChart = new Chart($('compareChart').getContext('2d'), { type: 'line', data: { labels, datasets: [ { label: '복리', data: dCompound, borderColor: '#2563eb', fill: true, backgroundColor: 'rgba(37,99,235,0.1)' }, { label: '단리', data: dSimple, borderColor: '#94a3b8' } ] }, options: { responsive: true, maintainAspectRatio: false } });
         }
+
+        function playCalc() { calculate(); if (getVal('totalValue') >= 1e12) triggerNatureShower(); }
+        function toggleMode() { document.body.classList.toggle('dark-mode'); $('modeBtn').innerText = document.body.classList.contains('dark-mode') ? '☀️ 라이트 모드' : '🌙 다크 모드'; calculate(true); }
+        function handleInput(el) { let val = el.value.replace(/[^0-9]/g, ""); el.value = val.replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
         function openGoal() { $('goalModal').classList.add('active'); }
         function closeSubModal(id) { $(id).classList.remove('active'); }
         function closeAlert() { $('customAlert').style.display = 'none'; }
-        function showInfo(t) { $('modalBody').innerHTML = t === 'privacy' ? '<h3>개인정보처리방침</h3><p>데이터를 저장하지 않습니다.</p>' : ''; $('customAlert').style.display = 'flex'; }
+        function toggleFaq(el) { const a = el.nextElementSibling; a.style.display = a.style.display === 'block' ? 'none' : 'block'; }
+        function updateComparison(val) { $('comparisonBanner').style.display = 'block'; let t = '', d = '', bg = '#dcfce7', c = '#166534'; if (val >= 1e12) { t = "👑 재벌 3세 수준"; d = "대기업 쇼핑이 가능한 자산입니다."; bg = "#f3e8ff"; c = "#6b21a8"; } else if (val >= 1e8) { t = "🏢 강남 건물주 후보"; d = "강남 빌딩 소유가 꿈이 아닙니다."; bg = "#fef3c7"; c = "#92400e"; } $('bannerTitle').innerText = t; $('bannerDesc').innerText = d; $('comparisonBanner').style.background = bg; $('comparisonBanner').style.color = c; }
+        function growIcon() { iconSize *= 1.25; $('magicIcon').style.transform = `scale(${Math.min(iconSize, 10)})`; if (iconTimer) clearTimeout(iconTimer); iconTimer = setTimeout(() => { iconSize = 1; $('magicIcon').style.transform = 'scale(1)'; }, 1000); if (iconSize > 10) triggerNatureShower(); }
+        function triggerNatureShower() { const emojis = ['🍃', '🍎', '🌿', '🌱', '🍀', '✨']; for(let i=0; i<50; i++) { setTimeout(() => { const el = document.createElement('div'); el.className = 'money-particle'; el.innerText = emojis[Math.floor(Math.random() * emojis.length)]; el.style.left = Math.random() * 100 + 'vw'; el.style.animationDuration = (Math.random() * 2 + 1) + 's'; document.body.appendChild(el); setTimeout(() => el.remove(), 3000); }, i * 40); } }
+        function showInfo(type) { let h = type === 'privacy' ? '개인정보처리방침' : '이용약관', c = '<p>본 서비스는 데이터를 서버에 저장하지 않습니다.</p>'; $('modalBody').innerHTML = `<h2>${h}</h2>${c}`; $('customAlert').style.display = 'flex'; }
 
-        window.onload = () => { calculate(true); };
+        window.onload = () => { updateExchangeRate(); };
     </script>
 </body>
 </html>
