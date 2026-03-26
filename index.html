@@ -4,20 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <!-- SEO 기본 메타 태그 -->
+    <!-- 파비콘 (새싹 이모지) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌱</text></svg>">
+
+    <!-- SEO 메타 태그 -->
     <title>간편한 복리 계산기 - 금융의 마법으로 만드는 미래 자산</title>
     <meta name="description" content="초기 투자금, 월 적립액, 수익률만 입력하면 미래의 자산을 한눈에 확인하세요. 복리와 단리 비교, 목표 금액 역계산 기능까지 제공하는 가장 직관적인 복리 계산기입니다.">
     <meta name="keywords" content="복리 계산기, 복리의 마법, 재테크 계산기, 은퇴 설계, 자산 관리, 단리 복리 비교, 투자 수익률 계산">
     <meta name="author" content="금융의 마법">
     <link rel="canonical" href="https://product-bulider-lecture-djm.pages.dev/">
 
-    <!-- Open Graph (Facebook, KakaoTalk 등 SNS 공유용) -->
+    <!-- Open Graph (SNS 공유용) -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="간편한 복리 계산기 - 금융의 마법">
     <meta property="og:description" content="복리의 힘으로 당신의 미래 자산이 얼마나 불어날지 지금 바로 확인해 보세요!">
     <meta property="og:url" content="https://product-bulider-lecture-djm.pages.dev/">
     <meta property="og:site_name" content="금융의 마법 복리 계산기">
-    <meta property="og:image" content="https://product-bulider-lecture-djm.pages.dev/og-image.png"> <!-- 나중에 이미지 파일 업로드 필요 -->
+    <meta property="og:image" content="https://product-bulider-lecture-djm.pages.dev/og-image.png">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
@@ -113,7 +116,7 @@
         <div class="container">
             <h2 style="font-size: 1.8em; text-align: center; margin-bottom: 30px;">단리 vs 복리, 격차의 실체</h2>
             <div class="card">
-                <p style="font-size: 1em; margin-bottom: 20px; text-align: center;">시간이 지날수록 벌어지는 이 격차를 보세요.</p>
+                <p style="font-size: 1em; margin-bottom: 20px; text-align: center;">시간이 지날수록 벌어지는 이 격차를 보세요. 이것이 바로 복리의 마법입니다.</p>
                 <div style="height: 350px;"><canvas id="compareChart"></canvas></div>
                 <div class="ad-area" style="margin-top: 30px; border-style: solid; background: rgba(37, 99, 235, 0.05); border-radius: 24px;">
                     <span style="font-weight: 800; color: var(--accent-color);">금융 지식 스폰서</span>
@@ -192,7 +195,6 @@
             </main>
         </div>
 
-        <!-- 서비스 문의 섹션 -->
         <section class="contact-section">
             <h2 class="contact-title">📩 서비스 문의</h2>
             <p class="contact-desc">앱 사용 중 불편한 점이나 제안하고 싶은 기능이 있다면 언제든 말씀해 주세요.</p>
@@ -222,7 +224,6 @@
         const els = { principal: $('principal'), monthly: $('monthly'), rate: $('rate'), years: $('years'), inflation: $('inflation'), taxType: $('taxType'), totalValue: $('totalValue'), realValue: $('realValue'), modal: $('customAlert'), modalTitle: $('modalTitle'), modalMsg: $('modalMsg'), banner: $('comparisonBanner'), quote: $('quoteBox'), valUSD: $('valUSD'), magic: $('magicIcon'), headerUSD: $('headerUSD'), calcBtn: $('mainCalcBtn') };
         
         let myChart = null, compareChart = null, currentRate = 1350, iconSize = 1, iconTimer = null;
-
         const quotes = ["인내심은 부를 일구는 가장 강력한 도구다.", "복리는 세계 8대 불가사의다. - 아인슈타인", "투자의 제1원칙은 돈을 잃지 않는 것이다. - 워런 버핏", "오늘 심은 나무가 내일 그늘을 만들어준다.", "가장 좋은 투자 시기는 바로 '지금'이다.", "시간이 흐를수록 복리의 힘은 무서워진다."];
 
         const fmtDots = n => Math.floor(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -231,11 +232,7 @@
             if (num < 10000) return '₩ ' + fmtDots(num);
             const units = ['', '만', '억', '조', '경', '해', '자', '양'];
             let parts = [], temp = num, idx = 0;
-            while (temp > 0.9 && idx < units.length) {
-                let rem = Math.floor(temp % 10000);
-                if (rem > 0) parts.push(fmtDots(rem) + units[idx]);
-                temp /= 10000; idx++;
-            }
+            while (temp > 0.9 && idx < units.length) { let rem = Math.floor(temp % 10000); if (rem > 0) parts.push(fmtDots(rem) + units[idx]); temp /= 10000; idx++; }
             return parts.reverse().slice(0, 2).join(' ') + ' 원';
         }
 
