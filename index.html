@@ -140,21 +140,20 @@
                         <div id="requiredMonthly" style="font-size: 1.8em; font-weight: 900; color: var(--accent-color); margin: 10px 0;">₩ 0</div>
                     </div>
 
-                    <!-- A4 광고 영역 -->
+                    <!-- A4 광고 영역 - 전용 코드로 업데이트 -->
                     <div class="ad-area" id="A4" style="margin-top: 30px; border-style: solid; background: rgba(219, 39, 119, 0.05); border-color: var(--real-value-color); border-radius: 24px;">
                         <span style="font-weight: 800; color: var(--real-value-color);">A4 - 목표 달성 가이드</span>
                         <div class="ads-container">
-                            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="1764207728" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="1998910394" data-ad-format="auto" data-full-width-responsive="true"></ins>
                             <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
                         </div>
                     </div>
                 </div>
 
-                <!-- A5 멀티플렉스 광고 영역 (가로 폭 확대) -->
+                <!-- A5 멀티플렉스 광고 영역 -->
                 <div class="vertical-ad-wide" id="A5">
                     <span style="font-weight: 800; color: var(--text-secondary); font-size: 0.85em; margin-bottom: 15px;">A5 - 멀티플렉스 추천 상품</span>
                     <div class="ads-container" style="width: 100%; height: 600px;">
-                        <!-- 멀티플렉스 전용 코드 자리 -->
                         <ins class="adsbygoogle"
                              style="display:block"
                              data-ad-format="autorelaxed"
@@ -255,7 +254,7 @@
         const els = { principal: $('principal'), monthly: $('monthly'), rate: $('rate'), years: $('years'), inflation: $('inflation'), taxType: $('taxType'), totalValue: $('totalValue'), realValue: $('realValue'), modal: $('customAlert'), modalTitle: $('modalTitle'), modalMsg: $('modalMsg'), banner: $('comparisonBanner'), quote: $('quoteBox'), valUSD: $('valUSD'), magic: $('magicIcon'), headerUSD: $('headerUSD'), calcBtn: $('mainCalcBtn') };
         
         let myChart = null, compareChart = null, currentRate = 1350, iconSize = 1, iconTimer = null;
-        const quotes = ["인내심은 부를 일구는 가장 강력한 도구다.", "복리는 세계 8대 불가사의다. - 아인슈타인", "투자의 제1원칙은 돈을 잃지 않는 것이다. - 워런 버핏", "오늘 심은 나무가 내일 그늘을 만들어준다.", "가장 좋은 투자 시기는 바로 '지금'이다.", "시간이 흐를수록 복리의 힘은 무서워진다."];
+        const quotes = ["인내심은 부를 일구는 가장 강력한 도구다.", "복리는 세계 8대 불가사의다. - 아인슈타인", "투자의 제1원칙은 돈을 잃지 않는 것이다. - 워런 버핏", "오늘 심은 나무가 내일 그늘을 만들어준다.", "가장 좋은 투자 시기는 바로 '지금'이다.", "시간이 흐를수록 복리의 힘은 무서워진다.", "부자가 되는 비결은 간단하다. 남들보다 적게 쓰고 남는 것을 투자하라.", "시장의 변동성은 친구이지 적이 아니다."];
 
         const fmtDots = n => Math.floor(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         const getVal = el => parseFloat(el.value.replace(/\./g, "")) || 0;
