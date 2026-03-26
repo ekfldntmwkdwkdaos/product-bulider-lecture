@@ -97,6 +97,7 @@
 <body>
     <div id="customAlert"><div class="modal-content"><div class="modal-title" id="modalTitle" style="font-size:1.6em; font-weight:900; color:#ef4444; margin-bottom:15px;">⚠️ 알림</div><div class="modal-msg" id="modalMsg" style="margin-bottom:30px; font-size:1.1em;"></div><button class="btn-modal" onclick="closeAlert()" style="background:var(--accent-color); color:#fff; border:none; padding:14px 50px; border-radius:16px; font-weight:800; cursor:pointer;">확인</button></div></div>
 
+    <!-- 서브 페이지: 단리 vs 복리 -->
     <div id="compareModal" class="sub-modal">
         <button class="close-sub" onclick="closeSubModal('compareModal')">← 돌아가기</button>
         <div class="container">
@@ -104,10 +105,16 @@
             <div class="card">
                 <p style="font-size: 1.2em; margin-bottom: 30px; text-align: center;">시간이 지날수록 벌어지는 이 격차를 보세요. 이것이 바로 복리의 마법입니다.</p>
                 <div style="height: 500px;"><canvas id="compareChart"></canvas></div>
+                <!-- 새로운 광고 배치: 분석 결과 하단 -->
+                <div class="ad-area" style="margin-top: 50px; border-style: solid; background: rgba(37, 99, 235, 0.05);">
+                    <span style="font-weight: 800; color: var(--accent-color);">금융 지식 스폰서</span>
+                    <div class="ad-placeholder" style="height: 100px;">이 그래프가 도움이 되셨나요? 관련 금융 상품 보기</div>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- 서브 페이지: 역계산기 -->
     <div id="goalModal" class="sub-modal">
         <button class="close-sub" onclick="closeSubModal('goalModal')">← 돌아가기</button>
         <div class="container" style="max-width: 600px;">
@@ -117,10 +124,15 @@
                 <div class="input-group"><label>투자기간 (년)</label><input type="number" id="targetYears" value="10"></div>
                 <div class="input-group"><label>연 예상 수익률 (%)</label><input type="number" id="targetRate" value="8"></div>
                 <button class="btn-calc" onclick="findGoal()">필요한 저축액 계산하기</button>
-                <div id="goalResult" style="margin-top: 30px; display: none; text-align: center;">
+                <div id="goalResult" style="margin-top: 30px; display: none; text-align: center; border-bottom: 1px solid var(--border-color); padding-bottom: 30px; margin-bottom: 30px;">
                     <div style="font-size: 1.1em; opacity: 0.8;">매달 저축해야 할 금액은</div>
                     <div id="requiredMonthly" style="font-size: 2.2em; font-weight: 900; color: var(--accent-color); margin: 10px 0;">₩ 0</div>
                     <div style="font-size: 1em;">입니다. 꾸준히 하시면 목표에 도달할 수 있어요! 🚀</div>
+                </div>
+                <!-- 새로운 광고 배치: 결과값 바로 아래 -->
+                <div class="ad-area" style="border-style: solid; background: rgba(219, 39, 119, 0.05); border-color: var(--real-value-color);">
+                    <span style="font-weight: 800; color: var(--real-value-color);">목표 달성 가이드</span>
+                    <div class="ad-placeholder" style="height: 100px; border-color: var(--real-value-color);">목표 달성을 앞당기는 투자 팁 확인하기</div>
                 </div>
             </div>
         </div>
@@ -171,7 +183,6 @@
                 </div>
                 <div id="comparisonBanner"><div class="banner-title" id="bannerTitle" style="font-size:1.4em; font-weight:900; margin-bottom:10px;"></div><div class="banner-desc" id="bannerDesc" style="font-size:1.1em; font-weight:600;"></div></div>
                 <div class="chart-container"><canvas id="assetChart"></canvas></div>
-                <!-- 명언 출력 영역 -->
                 <div id="quoteBox" style="margin-top:20px; padding:15px 20px; border-left:6px solid var(--accent-color); background:rgba(37,99,235,0.05); font-style:italic; font-size:1.05em; border-radius:0 20px 20px 0; line-height:1.5; min-height:50px; color: var(--text-primary);"></div>
                 <div class="ad-area"><span>Sponsored Content</span><div class="ad-placeholder" id="adPlaceholder">여기에 광고가 표시됩니다</div></div>
             </main>
@@ -184,7 +195,6 @@
         let myChart = null, compareChart = null, prankCounter = 0, unlocked = false, isModalActive = false, lastTier = '';
         let currentRate = 1350; 
 
-        // 명언 목록
         const quotes = [
             "인내심은 부를 일구는 가장 강력한 도구다.",
             "복리는 세계 8대 불가사의다. - 알베르트 아인슈타인",
@@ -279,10 +289,7 @@
             for (let y = 1; y <= years; y++) { for (let m = 1; m <= 12; m++) { let intr = cur * mRate, tax = intr * tRate; cur += (intr - tax + PMT); totalP += PMT; } dNom.push(cur); dReal.push(cur / Math.pow(1 + getVal(els.inflation)/100, y)); dPriz.push(totalP); labels.push(y + '년'); }
             animateNumber(els.totalValue, cur); animateNumber(els.realValue, dReal[dReal.length-1]);
             els.valUSD.innerText = '$' + fmtDots(cur / currentRate);
-            
-            // 명목 출력 로직 복구
             els.quote.innerText = '"' + quotes[Math.floor(Math.random() * quotes.length)] + '"';
-            
             updateTierTheme(cur); updateComparison(cur); updateChart(labels, dNom, dReal, dPriz);
         }
 
