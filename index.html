@@ -227,19 +227,20 @@
         let myChart = null, compareChart = null, currentRate = 1350, iconSize = 1, iconTimer = null;
         const quotes = ["인내심은 부를 일구는 가장 강력한 도구다.", "복리는 세계 8대 불가사의다. - 아인슈타인", "투자의 제1원칙은 돈을 잃지 않는 것이다. - 워런 버핏", "오늘 심은 나무가 내일 그늘을 만들어준다.", "가장 좋은 투자 시기는 바로 '지금'이다.", "부자가 되는 비결은 간단하다. 남들보다 적게 쓰고 남는 것을 투자하라."];
 
-        const fmtDots = n => Math.floor(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        const fmtCommas = n => Math.floor(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         const getVal = id => {
             const el = $(id);
             if (!el) return 0;
-            const val = el.value.replace(/[^0-9.-]/g, "");
+            // 쉼표를 제거하고 숫자로 변환
+            const val = el.value.replace(/,/g, "");
             return parseFloat(val) || 0;
         };
 
         function formatCurrency(num) {
-            if (num < 10000) return '₩ ' + fmtDots(num);
+            if (num < 10000) return '₩ ' + fmtCommas(num);
             const units = ['', '만', '억', '조', '경'];
             let parts = [], temp = Math.floor(num), idx = 0;
-            while (temp > 0 && idx < units.length) { let rem = temp % 10000; if (rem > 0) parts.push(fmtDots(rem) + units[idx]); temp = Math.floor(temp / 10000); idx++; }
+            while (temp > 0 && idx < units.length) { let rem = temp % 10000; if (rem > 0) parts.push(fmtCommas(rem) + units[idx]); temp = Math.floor(temp / 10000); idx++; }
             return parts.length ? parts.reverse().slice(0, 2).join(' ') + ' 원' : '₩ 0';
         }
 
@@ -247,7 +248,7 @@
             const P = getVal('principal'), PMT = getVal('monthly'), R = getVal('rate')/100/12, Y = getVal('years'), INF = getVal('inflation')/100, TAX = $('taxType').value === 'general' ? 0.154 : 0;
             let cur = P, labels = ['현재'], dNom = [P], dReal = [P];
             for (let y = 1; y <= Y; y++) { for (let m = 1; m <= 12; m++) { let intr = cur * R; cur += (intr * (1 - TAX)) + PMT; } labels.push(y + '년'); dNom.push(cur); dReal.push(cur / Math.pow(1 + INF, y)); }
-            if (noAnim) { $('totalValue').innerText = formatCurrency(cur); $('realValue').innerText = formatCurrency(dReal[dReal.length-1]); $('valUSD').innerText = '$' + fmtDots(dReal[dReal.length-1] / currentRate); }
+            if (noAnim) { $('totalValue').innerText = formatCurrency(cur); $('realValue').innerText = formatCurrency(dReal[dReal.length-1]); $('valUSD').innerText = '$' + fmtCommas(dReal[dReal.length-1] / currentRate); }
             else { animateNumber($('totalValue'), cur); animateNumber($('realValue'), dReal[dReal.length-1]); animateNumber($('valUSD'), dReal[dReal.length-1] / currentRate, true); }
             $('quoteBox').innerText = '"' + quotes[Math.floor(Math.random() * quotes.length)] + '"';
             updateComparison(cur); updateChart(labels, dNom, dReal);
@@ -259,7 +260,7 @@
             function up(now) {
                 const p = Math.min((now - startTime) / duration, 1);
                 const val = start + (target - start) * (1 - Math.pow(1 - p, 3));
-                el.innerText = isUSD ? '$' + fmtDots(val) : formatCurrency(val);
+                el.innerText = isUSD ? '$' + fmtCommas(val) : formatCurrency(val);
                 if (p < 1) requestAnimationFrame(up);
             }
             requestAnimationFrame(up);
@@ -271,7 +272,7 @@
         }
 
         async function updateExchangeRate() {
-            try { const res = await fetch('https://open.er-api.com/v6/latest/USD'), data = await res.json(); if (data?.rates?.KRW) { currentRate = Math.floor(data.rates.KRW); $('headerUSD').innerText = fmtDots(currentRate); const now = new Date(); $('rateTime').innerText = `(${now.getHours()}:${now.getMinutes().toString().padStart(2,'0')} 기준)`; calculate(true); } } catch (e) { $('headerUSD').innerText = "1.350"; calculate(true); }
+            try { const res = await fetch('https://open.er-api.com/v6/latest/USD'), data = await res.json(); if (data?.rates?.KRW) { currentRate = Math.floor(data.rates.KRW); $('headerUSD').innerText = fmtCommas(currentRate); const now = new Date(); $('rateTime').innerText = `(${now.getHours()}:${now.getMinutes().toString().padStart(2,'0')} 기준)`; calculate(true); } } catch (e) { $('headerUSD').innerText = "1,350"; calculate(true); }
         }
 
         function findGoal() {
@@ -291,7 +292,7 @@
 
         function playCalc() { calculate(); if (getVal('totalValue') >= 1e12) triggerNatureShower(); }
         function toggleMode() { document.body.classList.toggle('dark-mode'); $('modeBtn').innerText = document.body.classList.contains('dark-mode') ? '☀️ 라이트 모드' : '🌙 다크 모드'; calculate(true); }
-        function handleInput(el) { let val = el.value.replace(/[^0-9]/g, ""); el.value = val.replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
+        function handleInput(el) { let val = el.value.replace(/[^0-9]/g, ""); el.value = val.replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
         function openGoal() { $('goalModal').classList.add('active'); }
         function closeSubModal(id) { $(id).classList.remove('active'); }
         function closeAlert() { $('customAlert').style.display = 'none'; }
