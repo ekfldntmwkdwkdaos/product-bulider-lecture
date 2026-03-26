@@ -46,10 +46,9 @@
         }
         header h1 { font-family: 'Noto Serif KR', serif; margin: 0; font-size: 3.2em; color: var(--accent-color); display: flex; align-items: center; justify-content: center; gap: 15px; font-weight: 900; }
         
-        /* 마법의 눈덩이 아이콘 스타일 */
-        #magicIcon { cursor: pointer; display: inline-block; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); user-select: none; z-index: 10; position: relative; }
-        #magicIcon:hover { transform: scale(1.1) rotate(10deg); }
-        #magicIcon:active { transform: scale(0.9); }
+        #magicIcon { cursor: pointer; display: inline-block; transition: transform 0.2s ease-out; user-select: none; z-index: 10; position: relative; }
+        #magicIcon:hover { transform: scale(1.1); }
+        #magicIcon:active { transform: scale(0.95); }
 
         .usd-ticker { display: inline-block; font-size: 1em; background: rgba(37, 99, 235, 0.1); padding: 8px 20px; border-radius: 20px; color: var(--accent-color); font-weight: 700; margin-top: 20px; }
         
@@ -58,8 +57,9 @@
         }
         
         .container { width: 95%; max-width: 1200px; margin: 40px auto 80px; padding: 0 20px; box-sizing: border-box; }
-        .main-grid { display: grid; grid-template-columns: 380px 1fr; gap: 30px; align-items: start; }
-        .card { background-color: var(--card-bg); padding: 30px; border-radius: 32px; box-shadow: var(--shadow); border: 1px solid var(--border-color); transition: all 0.3s; }
+        /* 그리드 레이아웃 수정: 세로 길이를 맞추기 위해 align-items: stretch 사용 */
+        .main-grid { display: grid; grid-template-columns: 380px 1fr; gap: 30px; align-items: stretch; }
+        .card { background-color: var(--card-bg); padding: 30px; border-radius: 32px; box-shadow: var(--shadow); border: 1px solid var(--border-color); transition: all 0.3s; display: flex; flex-direction: column; }
         
         .input-group { margin-bottom: 20px; }
         .input-group label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.9em; color: var(--text-secondary); }
@@ -76,6 +76,9 @@
         .res-value { font-size: 2em; font-weight: 900; word-break: break-all; }
         
         #comparisonBanner { display: none; margin-top: 24px; padding: 30px; border-radius: 32px; text-align: center; animation: slideUp 0.5s ease-out; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        
+        /* 그래프 컨테이너가 남은 공간을 꽉 채우도록 설정 */
+        .chart-container { position: relative; flex-grow: 1; min-height: 450px; width: 100%; margin-top: 25px; border-radius: 24px; overflow: hidden; }
         
         .ad-area { margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.02); border: 1px dashed var(--border-color); border-radius: 24px; text-align: center; color: var(--text-secondary); font-size: 0.85em; box-sizing: border-box; }
         .ad-placeholder { width: 100%; height: 90px; margin: 15px auto 0; background: rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; border-radius: 16px; border: 1px solid var(--border-color); font-weight: 600; color: var(--text-secondary); }
@@ -137,7 +140,6 @@
     <header id="mainHeader">
         <button class="mode-toggle" id="modeBtn" onclick="toggleMode()">🌙 다크 모드</button>
         <h1>
-            <!-- 클릭하면 복리로 커지는 마법의 아이콘 -->
             <span id="magicIcon" onclick="growIcon()">🌱</span> 
             간편한 복리 계산기
         </h1>
@@ -195,18 +197,12 @@
         let myChart = null, compareChart = null, prankCounter = 0, unlocked = false, isModalActive = false, lastTier = '';
         let currentRate = 1350, iconSize = 1;
 
-        // 마법의 아이콘 성장 함수
         function growIcon() {
-            iconSize *= 1.25; // 복리로 커짐!
-            els.magic.style.transform = `scale(${iconSize}) rotate(${iconSize * 5}deg)`;
-            
-            if (iconSize > 15) {
-                triggerMoneyShower();
-                showAlert("이것이 바로 복리의 마법입니다! 기하급수적인 성장을 경험해 보세요. 🪄", "🪄 복리의 신비");
-                resetIcon();
-            }
+            iconSize *= 1.25;
+            els.magic.style.transform = `scale(${iconSize})`;
+            if (iconSize > 15) { triggerMoneyShower(); resetIcon(); }
         }
-        function resetIcon() { iconSize = 1; setTimeout(() => els.magic.style.transform = `scale(1) rotate(0deg)`, 1000); }
+        function resetIcon() { iconSize = 1; setTimeout(() => els.magic.style.transform = `scale(1)`, 1000); }
 
         const quotes = ["인내심은 부를 일구는 가장 강력한 도구다.", "복리는 세계 8대 불가사의다. - 알베르트 아인슈타인", "투자의 제1원칙은 돈을 잃지 않는 것이다. - 워런 버핏", "오늘 심은 나무가 내일 그늘을 만들어준다.", "가장 좋은 투자 시기는 바로 '지금'이다.", "시간이 흐를수록 복리의 힘은 무서워진다.", "부자가 되는 비결은 간단하다. 남들보다 적게 쓰고 남는 것을 투자하라.", "시장의 변동성은 친구이지 적이 아니다."];
 
