@@ -47,6 +47,23 @@
         .coffee-btn { width: 100%; background: linear-gradient(135deg, #713f12 0%, #451a03 100%); color: #fef3c7; border: none; padding: 14px; border-radius: 16px; font-weight: 800; cursor: pointer; margin-bottom: 25px; transition: 0.3s; }
         .btn-calc { width: 100%; background: var(--accent-color); color: white; border: none; padding: 20px; border-radius: 20px; font-size: 1.2em; font-weight: 900; cursor: pointer; transition: 0.3s; margin-top: 15px; box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2); }
         
+        /* ❓ 툴팁(말풍선) 디자인 */
+        .tooltip-container { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 4px; cursor: help; }
+        .tooltip-icon { font-size: 1.1em; opacity: 0.6; transition: 0.2s; }
+        .tooltip-container:hover .tooltip-icon { opacity: 1; transform: scale(1.1); }
+        .tooltip-text {
+            visibility: hidden; width: 240px; background-color: var(--text-primary); color: var(--bg-color);
+            text-align: left; border-radius: 12px; padding: 12px; position: absolute; z-index: 100;
+            bottom: 130%; left: 50%; transform: translateX(-50%); opacity: 0; transition: all 0.3s;
+            font-size: 0.85rem; font-weight: 500; line-height: 1.5; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            pointer-events: none; word-break: keep-all;
+        }
+        .tooltip-text::after {
+            content: ""; position: absolute; top: 100%; left: 50%; margin-left: -6px;
+            border-width: 6px; border-style: solid; border-color: var(--text-primary) transparent transparent transparent;
+        }
+        .tooltip-container:hover .tooltip-text, .tooltip-container:active .tooltip-text { visibility: visible; opacity: 1; bottom: 140%; }
+
         /* 버튼 효과 및 로딩 애니메이션 추가 */
         .btn-calc:active { transform: scale(0.96); }
         .btn-calc.calculating { opacity: 0.8; cursor: wait; animation: pulseBtn 0.8s infinite; }
@@ -210,7 +227,10 @@
                         <div class="res-value val-nominal" id="totalValue">₩ 0</div>
                     </div>
                     <div class="res-box" id="boxReal" style="border-color: var(--real-value-color)">
-                        <div class="res-label" style="font-size:0.85em; opacity:0.8; font-weight:600; margin-bottom:5px;">물가 반영 실질 가치</div>
+                        <div class="res-label tooltip-container" style="font-size:0.85em; opacity:0.8; font-weight:600; margin-bottom:5px;">
+                            물가 반영 실질 가치 <span class="tooltip-icon">❓</span>
+                            <div class="tooltip-text">💡 수익률이 물가상승률을 이기고 있기 때문에 실질 가치도 우상향합니다. (만약 물가상승률이 더 높으면 그래프는 아래로 꺾입니다.)</div>
+                        </div>
                         <div class="res-value val-real" id="realValue">₩ 0</div>
                         <div style="font-size:0.95em; font-weight:800; margin-top:10px; color:var(--accent-color);">달러 환산: <span id="valUSD">$0</span></div>
                     </div>
