@@ -520,6 +520,35 @@
         function showInfo(type) { showAlert(type === 'privacy' ? '개인정보처리방침' : '이용약관', '본 서비스는 사용자의 데이터를 서버에 저장하지 않습니다.'); }
 
         window.onload = () => { updateExchangeRate(); };
+        // 🌱 새싹 키우기 이스터에그 로직
+        let iconScale = 1;
+        let clickCount = 0;
+
+        function growIcon() {
+            const icon = $('magicIcon');
+            if (!icon) return;
+
+            // 클릭할 때마다 크기 증가
+            iconScale += 0.3; 
+            clickCount++;
+            icon.style.transform = `scale(${iconScale})`;
+
+            // 5번 클릭 시 이스터에그 발동!
+            if (clickCount >= 5) {
+                // 1. 나뭇잎/열매 떨어지는 기존 함수 호출
+                triggerNatureShower(); 
+
+                // 2. 모바일 진동 효과 (손맛)
+                if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
+
+                // 3. 0.5초 뒤에 크기 다시 원래대로 초기화
+                setTimeout(() => {
+                    iconScale = 1;
+                    clickCount = 0;
+                    icon.style.transform = `scale(1)`;
+                }, 500);
+            }
+        }
     </script>
 </body>
 </html>
