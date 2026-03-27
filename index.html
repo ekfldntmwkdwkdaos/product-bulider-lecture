@@ -51,7 +51,7 @@
         @keyframes pulseBtn { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
 
         .res-box { padding: 25px; border-radius: 24px; background: rgba(0,0,0,0.03); border: 1px solid var(--border-color); margin-bottom: 20px; transition: all 0.4s; }
-        .res-box.highlight-flash { animation: flashResult 0.7s ease-out; border-color: var(--accent-color); box-shadow: 0 0 20px rgba(37, 99, 235, 0.2); }
+        .res-box.highlight-flash { animation: flashResult 0.7s ease-out; border-color: var(--accent-color) !important; box-shadow: 0 0 20px rgba(37, 99, 235, 0.2); }
         @keyframes flashResult { 0% { background-color: rgba(37, 99, 235, 0.2); transform: translateY(-5px); } 100% { background-color: rgba(0,0,0,0.03); transform: translateY(0); } }
 
         .extra-btns { margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 25px; }
@@ -63,7 +63,6 @@
         
         .ad-area { margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.02); border: 1px dashed var(--border-color); border-radius: 24px; text-align: center; color: var(--text-secondary); font-size: 0.85em; box-sizing: border-box; }
         .ads-container { margin-top: 15px; min-height: 90px; overflow: hidden; }
-        .vertical-ad-wide { width: 336px; min-height: 600px; background: rgba(0,0,0,0.02); border: 1px dashed var(--border-color); border-radius: 24px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 20px 10px; box-sizing: border-box; }
 
         .knowledge-section { margin-top: 60px; }
         .knowledge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px; }
@@ -77,15 +76,6 @@
         footer { text-align: center; padding: 60px 20px; border-top: 1px solid var(--border-color); margin-top: 80px; color: var(--text-secondary); font-size: 0.9em; }
         .footer-links { margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
         .footer-links a { color: var(--text-primary); text-decoration: none; font-weight: 700; cursor: pointer; }
-
-        @media (max-width: 1100px) { .main-grid { grid-template-columns: 1fr; } .vertical-ad-wide { display: none; } }
-        @media (max-width: 650px) {
-            header h1 { font-size: 1.8em; }
-            .mode-toggle { position: relative; top: 0; right: 0; margin-bottom: 20px; width: 100%; display: block; }
-            .card { padding: 20px; border-radius: 24px; }
-            .res-value { font-size: 1.5em !important; }
-            .chart-container { min-height: 350px; }
-        }
 
         .sub-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 3000; overflow-y: auto; padding: 40px 20px; box-sizing: border-box; }
         .sub-modal.active { display: block; animation: slideIn 0.4s ease-out; }
@@ -106,18 +96,6 @@
             <h2 style="font-size: 1.8em; text-align: center; margin-bottom: 30px;">단리 vs 복리 차이 분석</h2>
             <div class="card">
                 <div style="height: 350px;"><canvas id="compareChart"></canvas></div>
-                <div class="ad-area" id="A3" style="margin-top: 30px; border-style: solid; background: rgba(37, 99, 235, 0.05); border-radius: 24px;">
-                    <span style="font-weight: 800; color: var(--accent-color);">A3 - 금융 지식 스폰서</span>
-                    <div class="ads-container">
-                        <ins class="adsbygoogle"
-                             style="display:block"
-                             data-ad-client="ca-pub-6421966697163453"
-                             data-ad-slot="6595397429"
-                             data-ad-format="auto"
-                             data-full-width-responsive="true"></ins>
-                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -126,39 +104,14 @@
         <button class="close-sub" onclick="closeSubModal('goalModal')">← 돌아가기</button>
         <div class="container" style="max-width: 1100px;">
             <h2 style="font-size: 1.8em; text-align: center; margin-bottom: 30px;">미래 목표 금액 역산기</h2>
-            <div style="display: flex; gap: 40px; align-items: flex-start; justify-content: center;">
-                <div class="card" style="flex: 1; max-width: 600px;">
-                    <div class="input-group"><label>최종 목표 금액 (원)</label><input type="text" id="targetAmt" placeholder="예: 1,000,000,000" oninput="handleInput(this)"></div>
-                    <div class="input-group"><label>투자기간 (년)</label><input type="number" id="targetYears" value="10" oninput="limitNumInput(this, 100)"></div>
-                    <div class="input-group"><label>연 예상 수익률 (%)</label><input type="number" id="targetRate" value="8" oninput="limitNumInput(this, 100)"></div>
-                    <button class="btn-calc" onclick="findGoal()">필요 저축액 계산하기</button>
-                    <div id="goalResult" style="margin-top: 30px; display: none; text-align: center;">
-                        <div style="font-size: 1.1em; opacity: 0.8;">매달 필요한 저축액은</div>
-                        <div id="requiredMonthly" style="font-size: 1.8em; font-weight: 900; color: var(--accent-color); margin: 10px 0;">₩ 0</div>
-                    </div>
-                    <div class="ad-area" id="A4" style="margin-top: 30px; border-style: solid; background: rgba(219, 39, 119, 0.05); border-color: var(--real-value-color); border-radius: 24px;">
-                        <span style="font-weight: 800; color: var(--real-value-color);">A4 - 맞춤형 자산 가이드</span>
-                        <div class="ads-container">
-                            <ins class="adsbygoogle"
-                                 style="display:block"
-                                 data-ad-client="ca-pub-6421966697163453"
-                                 data-ad-slot="1998910394"
-                                 data-ad-format="auto"
-                                 data-full-width-responsive="true"></ins>
-                            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-                        </div>
-                    </div>
-                </div>
-                <div class="vertical-ad-wide" id="A5">
-                    <span style="font-weight: 800; color: var(--text-secondary); font-size: 0.85em; margin-bottom: 15px;">A5 - 추천 금융 서비스</span>
-                    <div class="ads-container" style="width: 100%; height: 600px;">
-                        <ins class="adsbygoogle"
-                             style="display:block"
-                             data-ad-client="ca-pub-6421966697163453"
-                             data-ad-slot="1601256897"
-                             data-ad-format="autorelaxed"></ins>
-                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-                    </div>
+            <div class="card" style="max-width: 600px; margin: 0 auto;">
+                <div class="input-group"><label>최종 목표 금액 (원)</label><input type="text" id="targetAmt" placeholder="예: 1,000,000,000" oninput="handleInput(this)"></div>
+                <div class="input-group"><label>투자기간 (년)</label><input type="number" id="targetYears" value="10" oninput="limitNumInput(this, 100)"></div>
+                <div class="input-group"><label>연 예상 수익률 (%)</label><input type="number" id="targetRate" value="8" oninput="limitNumInput(this, 100)"></div>
+                <button class="btn-calc" onclick="findGoal()">필요 저축액 계산하기</button>
+                <div id="goalResult" style="margin-top: 30px; display: none; text-align: center;">
+                    <div style="font-size: 1.1em; opacity: 0.8;">매달 필요한 저축액은</div>
+                    <div id="requiredMonthly" style="font-size: 1.8em; font-weight: 900; color: var(--accent-color); margin: 10px 0;">₩ 0</div>
                 </div>
             </div>
         </div>
@@ -166,7 +119,7 @@
 
     <header id="mainHeader">
         <button class="mode-toggle" id="modeBtn" onclick="toggleMode()">🌙 다크 모드</button>
-        <h1><span id="magicIcon" onclick="growIcon()">🌱</span> 간편한 복리 계산기</h1>
+        <h1><span id="magicIcon">🌱</span> 간편한 복리 계산기</h1>
         <div class="usd-ticker">기준 환율: 1 USD = <span id="headerUSD">...</span> KRW <span id="rateTime" style="font-weight:400; opacity:0.8; font-size:0.85em; margin-left:5px;"></span></div>
     </header>
 
@@ -184,18 +137,6 @@
                 <div class="extra-btns">
                     <button class="btn-sub" onclick="openCompare()">단리 vs 복리 차이 분석</button>
                     <button class="btn-sub" onclick="openGoal()">미래 목표 금액 역산기</button>
-                </div>
-                <div class="ad-area" id="A1" style="margin-top: 30px; background: rgba(37, 99, 235, 0.05); border-style: solid; border-radius: 24px;">
-                    <span style="font-weight: 800; color: var(--accent-color);">A1 - Premium Sponsor</span>
-                    <div class="ads-container">
-                        <ins class="adsbygoogle"
-                             style="display:block"
-                             data-ad-client="ca-pub-6421966697163453"
-                             data-ad-slot="1764207728"
-                             data-ad-format="auto"
-                             data-full-width-responsive="true"></ins>
-                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-                    </div>
                 </div>
             </aside>
 
@@ -216,36 +157,15 @@
                 </div>
                 <div class="chart-container"><canvas id="assetChart"></canvas></div>
                 <div id="quoteBox" style="margin-top:20px; padding:15px 20px; border-left:6px solid var(--accent-color); background:rgba(37,99,235,0.05); font-style:italic; font-size:1em; border-radius:0 20px 20px 0; line-height:1.5; min-height:50px;"></div>
-                <div class="ad-area" id="A2">
-                    <span>A2 - Sponsored Content</span>
-                    <div class="ads-container">
-                        <ins class="adsbygoogle"
-                             style="display:block"
-                             data-ad-client="ca-pub-6421966697163453"
-                             data-ad-slot="9997920969"
-                             data-ad-format="auto"
-                             data-full-width-responsive="true"></ins>
-                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-                    </div>
-                </div>
             </main>
         </div>
 
         <section class="knowledge-section">
-            <h2 style="text-align: center; font-size: 2.2em; font-weight: 900; margin-bottom: 40px;">🔥 실전 포트폴리오 전략 (건물주를 향한 로드맵)</h2>
+            <h2 style="text-align: center; font-size: 2.2em; font-weight: 900; margin-bottom: 40px;">🔥 실전 포트폴리오 전략</h2>
             <div class="knowledge-grid">
-                <div class="knowledge-card">
-                    <h3>공격적 자산 증식 (80%)</h3>
-                    <p>자산 규모를 빠르게 키우기 위해서는 잉여 현금흐름이 뛰어나고 확실한 목표가가 있는 우량 성장주에 전체 시드의 80%를 공격적으로 배분하여 시세 차익을 극대화하는 전략이 유효합니다.</p>
-                </div>
-                <div class="knowledge-card">
-                    <h3>안정적 현금흐름 창출 (20%)</h3>
-                    <p>나머지 20%는 배당 ETF나 리츠(REITs) 등에 투자하여, 주식 시장이 흔들릴 때도 버틸 수 있는 '방어력'과 꾸준히 재투자할 수 있는 '패시브 인컴(Passive Income)'을 만들어야 합니다.</p>
-                </div>
-                <div class="knowledge-card">
-                    <h3>최종 목표: 부동산 실물 자산</h3>
-                    <p>주식 투자의 복리 효과로 불어난 자산을 30대 중반에 레버리지와 결합하여, 도심 내 소형 꼬마빌딩(예: 서울권 등)과 같은 실물 부동산으로 전환하는 것이 인플레이션을 완벽히 방어하는 궁극의 길입니다.</p>
-                </div>
+                <div class="knowledge-card"><h3>공격적 자산 증식 (80%)</h3><p>우량 성장주에 80%를 배분하여 시세 차익을 극대화하는 전략이 유효합니다.</p></div>
+                <div class="knowledge-card"><h3>안정적 현금흐름 (20%)</h3><p>나머지 20%는 배당 ETF나 리츠에 투자하여 패시브 인컴을 만들어야 합니다.</p></div>
+                <div class="knowledge-card"><h3>최종 목표: 실물 자산</h3><p>주식으로 불린 자산을 30대 중반에 서울권 소형 빌딩 등 실물 자산으로 전환하세요.</p></div>
             </div>
         </section>
     </div>
@@ -259,25 +179,15 @@
         const $ = id => document.getElementById(id);
         let myChart = null, compareChart = null, currentRate = 1350, isAlertOpen = false;
         
-        const quotes = ["인내심은 부를 일구는 가장 강력한 도구다.", "복리는 세계 8대 불가사의다. - 아인슈타인", "투자의 제1원칙은 돈을 잃지 않는 것이다. - 워런 버핏", "오늘 심은 나무가 내일 그늘을 만들어준다.", "가장 좋은 투자 시기는 바로 '지금'이다."];
-        const warningMsgs = ["숫자가 너무 커요!", "현실적인 숫자를 입력해볼까요?", "제 계산기가 터지려고 해요!"];
-
+        const quotes = ["인내심은 부를 일구는 가장 강력한 도구다.", "복리는 세계 8대 불가사의다. - 아인슈타인", "투자의 제1원칙은 돈을 잃지 않는 것이다.", "가장 좋은 투자 시기는 바로 '지금'이다."];
         const fmtCommas = n => Math.floor(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        
         const getVal = id => {
             const el = $(id);
             if (!el) return 0;
             const val = el.value.replace(/,/g, "");
             return parseFloat(val) || 0;
         };
-
-        function showAlert(title, msg) {
-            if (isAlertOpen) return;
-            isAlertOpen = true;
-            $('modalBody').innerHTML = `<h2 style="color:var(--accent-color);">${title}</h2><p style="font-size:1.2em; font-weight:800; text-align:center;">${msg}</p>`;
-            $('customAlert').style.display = 'flex';
-        }
-
-        function closeAlert() { $('customAlert').style.display = 'none'; isAlertOpen = false; }
 
         function formatCurrency(num) {
             if (num < 10000) return '₩ ' + fmtCommas(num);
@@ -306,8 +216,6 @@
                 dReal.push(cur / Math.pow(1 + INF, y)); 
                 dPri.push(cumulativePri);
             }
-            
-            if (cur > 1e18) showAlert("경고", "자산 규모가 시스템 한도를 초과했습니다.");
 
             if (noAnim) { 
                 $('totalValue').innerText = formatCurrency(cur); 
@@ -318,12 +226,13 @@
                 animateNumber($('realValue'), dReal[dReal.length-1]); 
                 animateNumber($('valUSD'), dReal[dReal.length-1] / currentRate, true); 
                 
-                // 결과 박스 강조 효과 부여
-                const boxes = [$('boxNominal'), $('boxReal')];
-                boxes.forEach(b => {
-                    b.classList.remove('highlight-flash');
-                    void b.offsetWidth; // 리플로우 강제 (애니메이션 재시작)
-                    b.classList.add('highlight-flash');
+                // 결과 박스 강조 효과 (ID 정확히 일치 확인됨)
+                [$('boxNominal'), $('boxReal')].forEach(b => {
+                    if(b) {
+                        b.classList.remove('highlight-flash');
+                        void b.offsetWidth;
+                        b.classList.add('highlight-flash');
+                    }
                 });
             }
             $('quoteBox').innerText = '"' + quotes[Math.floor(Math.random() * quotes.length)] + '"';
@@ -332,27 +241,23 @@
 
         function playCalc() { 
             const btn = $('mainCalcBtn');
-            const originalText = btn.innerText;
+            if (btn.classList.contains('calculating')) return;
 
-            // 햅틱 피드백 (모바일 진동)
             if (navigator.vibrate) navigator.vibrate(25);
-
-            // 로딩 상태 전환
             btn.innerText = "데이터 분석 중... 💹";
             btn.classList.add('calculating');
 
             setTimeout(() => {
-                calculate(); 
-                if (getVal('totalValue') >= 1e12) triggerNatureShower(); 
-
-                btn.innerText = originalText;
-                btn.classList.remove('calculating');
-
-                // 모바일에서 결과값 보이게 스크롤 이동
-                if(window.innerWidth < 650) {
-                    $('totalValue').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                try {
+                    calculate(); 
+                    if (getVal('totalValue') >= 1e12) triggerNatureShower(); 
+                } finally {
+                    // 무조건 원래대로 복구
+                    btn.innerText = "분석 시작 💰";
+                    btn.classList.remove('calculating');
                 }
-            }, 400); 
+                if(window.innerWidth < 650) $('totalValue').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 500); 
         }
 
         function animateNumber(el, target, isUSD = false) {
@@ -371,38 +276,20 @@
             const ctx = $('assetChart').getContext('2d'); if (myChart) myChart.destroy();
             myChart = new Chart(ctx, { 
                 type: 'line', 
-                data: { 
-                    labels, 
-                    datasets: [
-                        { label: '명목 자산', data: nominal, borderColor: '#2563eb', fill: true, tension: 0.3, backgroundColor: 'rgba(37,99,235,0.1)', pointRadius: 0 }, 
-                        { label: '실질 가치', data: real, borderColor: '#db2777', borderDash: [5, 5], pointRadius: 0 },
-                        { label: '투자 원금', data: principal, borderColor: '#94a3b8', borderDash: [2, 2], pointRadius: 0 }
-                    ] 
-                }, 
-                options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, plugins: { legend: { position: 'top' } } } 
+                data: { labels, datasets: [
+                    { label: '명목 자산', data: nominal, borderColor: '#2563eb', fill: true, tension: 0.3, backgroundColor: 'rgba(37,99,235,0.1)', pointRadius: 0 }, 
+                    { label: '실질 가치', data: real, borderColor: '#db2777', borderDash: [5, 5], pointRadius: 0 },
+                    { label: '투자 원금', data: principal, borderColor: '#94a3b8', borderDash: [2, 2], pointRadius: 0 }
+                ] }, 
+                options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false } } 
             });
         }
 
-        async function updateExchangeRate() {
-            try { 
-                const res = await fetch('https://open.er-api.com/v6/latest/USD'), data = await res.json(); 
-                if (data?.rates?.KRW) { 
-                    currentRate = Math.floor(data.rates.KRW); 
-                    $('headerUSD').innerText = fmtCommas(currentRate); 
-                    const now = new Date(); 
-                    $('rateTime').innerText = `(${now.getHours()}:${now.getMinutes().toString().padStart(2,'0')} 기준)`; 
-                    calculate(true); 
-                } 
-            } catch (e) { $('headerUSD').innerText = "1,350"; calculate(true); }
+        function handleInput(el) { 
+            let val = el.value.replace(/[^0-9]/g, ""); 
+            el.value = val ? parseInt(val).toLocaleString() : ""; 
         }
-
-        function findGoal() {
-            const target = getVal('targetAmt'), years = getVal('targetYears'), rate = getVal('targetRate')/100/12;
-            if (years <= 0 || rate <= 0) return;
-            const months = years * 12, required = (target * rate) / (Math.pow(1 + rate, months) - 1);
-            $('goalResult').style.display = 'block'; $('requiredMonthly').innerText = formatCurrency(required);
-        }
-
+        function limitNumInput(el, max) { if (el.value > max) el.value = max; }
         function openCompare() {
             $('compareModal').classList.add('active'); 
             const P = getVal('principal'), PMT = getVal('monthly'), years = getVal('years'), r = getVal('rate')/100;
@@ -419,27 +306,17 @@
             if(compareChart) compareChart.destroy();
             compareChart = new Chart($('compareChart').getContext('2d'), { type: 'line', data: { labels, datasets: [ { label: '복리', data: dCompound, borderColor: '#2563eb', fill: true, backgroundColor: 'rgba(37,99,235,0.1)' }, { label: '단리', data: dSimple, borderColor: '#94a3b8' } ] }, options: { responsive: true, maintainAspectRatio: false } });
         }
-
-        function toggleMode() { document.body.classList.toggle('dark-mode'); $('modeBtn').innerText = document.body.classList.contains('dark-mode') ? '☀️ 라이트 모드' : '🌙 다크 모드'; calculate(true); }
-        function handleInput(el) { 
-            let val = el.value.replace(/[^0-9]/g, ""); 
-            if (val.length > 15) { val = val.substring(0, 15); if (!isAlertOpen) { el.blur(); showAlert("입력 제한", warningMsgs[Math.floor(Math.random() * warningMsgs.length)]); } }
-            el.value = val ? parseInt(val).toLocaleString() : ""; 
-        }
-        function limitNumInput(el, max) { if (el.value > max) { el.value = max; if (!isAlertOpen) { el.blur(); showAlert("한도 초과", "최대 수치에 도달했습니다."); } } }
         function openGoal() { $('goalModal').classList.add('active'); }
         function closeSubModal(id) { $(id).classList.remove('active'); }
-        function toggleFaq(el) { const a = el.nextElementSibling; a.style.display = a.style.display === 'block' ? 'none' : 'block'; }
-        
+        function toggleMode() { document.body.classList.toggle('dark-mode'); $('modeBtn').innerText = document.body.classList.contains('dark-mode') ? '☀️ 라이트 모드' : '🌙 다크 모드'; calculate(true); }
         function updateComparison(val) { 
             $('comparisonBanner').style.display = 'block'; 
             let t = '', d = '', bg = '#dcfce7', c = '#166534'; 
-            if (val >= 1e12) { t = "👑 재벌 3세 수준"; d = "대기업 쇼핑이 가능한 자산입니다."; bg = "#f3e8ff"; c = "#6b21a8"; } 
+            if (val >= 1e12) { t = "👑 재벌 3세 수준"; d = "대기업 쇼핑이 가능합니다."; bg = "#f3e8ff"; c = "#6b21a8"; } 
             else if (val >= 1e8) { t = "🏢 건물주 후보"; d = "자산 성장의 기초를 다지셨습니다."; bg = "#fef3c7"; c = "#92400e"; } 
             $('bannerTitle').innerText = t; $('bannerDesc').innerText = d; 
             $('comparisonBanner').style.background = bg; $('comparisonBanner').style.color = c; 
         }
-
         function triggerNatureShower() {
             const emojis = ['🍃', '🍎', '🌿', '🌱', '🍀'];
             for(let i=0; i<30; i++) {
@@ -452,15 +329,29 @@
                 }, i * 100);
             }
         }
-
         function setCoffeeMiracle() {
             $('principal').value = '0'; $('monthly').value = '150,000'; $('rate').value = '10'; $('years').value = '20';
-            showAlert("☕ 커피 한 잔의 기적", "매달 15만 원씩 20년간 연 10% 수익률로 투자하는 습관!");
             calculate();
         }
-
-        function showInfo(type) { showAlert(type === 'privacy' ? '개인정보처리방침' : '이용약관', '본 서비스는 사용자의 데이터를 서버에 저장하지 않습니다.'); }
-        window.onload = () => { updateExchangeRate(); };
+        function findGoal() {
+            const target = getVal('targetAmt'), years = getVal('targetYears'), rate = getVal('targetRate')/100/12;
+            if (years <= 0 || rate <= 0) return;
+            const months = years * 12, required = (target * rate) / (Math.pow(1 + rate, months) - 1);
+            $('goalResult').style.display = 'block'; $('requiredMonthly').innerText = formatCurrency(required);
+        }
+        async function updateExchangeRate() {
+            try { 
+                const res = await fetch('https://open.er-api.com/v6/latest/USD'), data = await res.json(); 
+                if (data?.rates?.KRW) { 
+                    currentRate = Math.floor(data.rates.KRW); 
+                    $('headerUSD').innerText = fmtCommas(currentRate); 
+                    calculate(true); 
+                } 
+            } catch (e) { $('headerUSD').innerText = "1,350"; calculate(true); }
+        }
+        function showAlert(t, m) { $('modalBody').innerHTML = `<h2>${t}</h2><p>${m}</p>`; $('customAlert').style.display='flex'; }
+        function closeAlert() { $('customAlert').style.display='none'; }
+        window.onload = () => updateExchangeRate();
     </script>
 </body>
 </html>
