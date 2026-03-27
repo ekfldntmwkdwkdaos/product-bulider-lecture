@@ -45,7 +45,7 @@
         .input-group input, .input-group select { width: 100%; padding: 15px; border-radius: 14px; border: 1px solid var(--border-color); background-color: var(--input-bg); color: var(--text-primary); font-size: 1.1em; outline: none; transition: 0.2s; box-sizing: border-box; font-family: inherit; }
         
         .coffee-btn { width: 100%; background: linear-gradient(135deg, #713f12 0%, #451a03 100%); color: #fef3c7; border: none; padding: 14px; border-radius: 16px; font-weight: 800; cursor: pointer; margin-bottom: 25px; transition: 0.3s; }
-        .btn-calc { width: 100%; background: var(--accent-color); color: white; border: none; padding: 20px; border-radius: 20px; font-size: 1.2em; font-weight: 900; cursor: pointer; transition: all 0.2s; margin-top: 15px; box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2); position: relative; overflow: hidden; }
+        .btn-calc { width: 100%; background: var(--accent-color); color: white; border: none; padding: 20px; border-radius: 20px; font-size: 1.2em; font-weight: 900; cursor: pointer; transition: all 0.2s; margin-top: 15px; box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2); }
         .btn-calc:active { transform: scale(0.96); }
         .btn-calc.calculating { opacity: 0.8; cursor: wait; animation: pulseBtn 0.8s infinite; }
         @keyframes pulseBtn { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
@@ -80,11 +80,21 @@
         .sub-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 3000; overflow-y: auto; padding: 40px 20px; box-sizing: border-box; }
         .sub-modal.active { display: block; animation: slideIn 0.4s ease-out; }
         .close-sub { position: absolute; top: 20px; left: 20px; background: var(--text-primary); color: var(--bg-color); border: none; padding: 10px 20px; border-radius: 12px; cursor: pointer; font-weight: 800; z-index: 3100; }
+        
+        /* 모달 스타일 유지 */
         #customAlert { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 4000; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
         .modal-content { background: var(--card-bg); padding: 30px; border-radius: 32px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; text-align: left; border: 1px solid var(--border-color); }
+        
         .money-particle { position: fixed; top: -50px; font-size: 24px; pointer-events: none; z-index: 9999; animation: fall linear forwards; }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
         @keyframes slideIn { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        @media (max-width: 1100px) { .main-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 650px) {
+            header h1 { font-size: 1.8em; }
+            .mode-toggle { position: relative; top: 0; right: 0; margin-bottom: 20px; width: 100%; display: block; }
+            .res-value { font-size: 1.5em !important; }
+        }
     </style>
 </head>
 <body>
@@ -96,6 +106,13 @@
             <h2 style="font-size: 1.8em; text-align: center; margin-bottom: 30px;">단리 vs 복리 차이 분석</h2>
             <div class="card">
                 <div style="height: 350px;"><canvas id="compareChart"></canvas></div>
+                <div class="ad-area" id="A3" style="margin-top: 30px; border-style: solid; background: rgba(37, 99, 235, 0.05); border-radius: 24px;">
+                    <span style="font-weight: 800; color: var(--accent-color);">A3 - 금융 지식 스폰서</span>
+                    <div class="ads-container">
+                        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="6595397429" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -119,7 +136,7 @@
 
     <header id="mainHeader">
         <button class="mode-toggle" id="modeBtn" onclick="toggleMode()">🌙 다크 모드</button>
-        <h1><span id="magicIcon">🌱</span> 간편한 복리 계산기</h1>
+        <h1><span id="magicIcon" onclick="growIcon()">🌱</span> 간편한 복리 계산기</h1>
         <div class="usd-ticker">기준 환율: 1 USD = <span id="headerUSD">...</span> KRW <span id="rateTime" style="font-weight:400; opacity:0.8; font-size:0.85em; margin-left:5px;"></span></div>
     </header>
 
@@ -133,10 +150,20 @@
                 <div class="input-group"><label>투자 기간 (년)</label><input type="number" id="years" value="10" oninput="limitNumInput(this, 100)"></div>
                 <div class="input-group"><label>연 물가상승률 (%)</label><input type="number" id="inflation" value="2.5" step="0.1" oninput="limitNumInput(this, 50)"></div>
                 <div class="input-group"><label>세제 혜택</label><select id="taxType"><option value="general">일반 과세 (15.4%)</option><option value="isa">ISA/비과세 (0%)</option></select></div>
+                
                 <button class="btn-calc" id="mainCalcBtn" onclick="playCalc()">분석 시작 💰</button>
+
                 <div class="extra-btns">
                     <button class="btn-sub" onclick="openCompare()">단리 vs 복리 차이 분석</button>
                     <button class="btn-sub" onclick="openGoal()">미래 목표 금액 역산기</button>
+                </div>
+
+                <div class="ad-area" id="A1" style="margin-top: 30px; background: rgba(37, 99, 235, 0.05); border-style: solid; border-radius: 24px;">
+                    <span style="font-weight: 800; color: var(--accent-color);">A1 - Premium Sponsor</span>
+                    <div class="ads-container">
+                        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="1764207728" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                    </div>
                 </div>
             </aside>
 
@@ -157,15 +184,40 @@
                 </div>
                 <div class="chart-container"><canvas id="assetChart"></canvas></div>
                 <div id="quoteBox" style="margin-top:20px; padding:15px 20px; border-left:6px solid var(--accent-color); background:rgba(37,99,235,0.05); font-style:italic; font-size:1em; border-radius:0 20px 20px 0; line-height:1.5; min-height:50px;"></div>
+                
+                <div class="ad-area" id="A2">
+                    <span>A2 - Sponsored Content</span>
+                    <div class="ads-container">
+                        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6421966697163453" data-ad-slot="9997920969" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                    </div>
+                </div>
             </main>
         </div>
 
         <section class="knowledge-section">
-            <h2 style="text-align: center; font-size: 2.2em; font-weight: 900; margin-bottom: 40px;">🔥 실전 포트폴리오 전략</h2>
+            <h2 style="text-align: center; font-size: 2.2em; font-weight: 900; margin-bottom: 40px;">🔥 실전 포트폴리오 전략 (건물주 로드맵)</h2>
             <div class="knowledge-grid">
-                <div class="knowledge-card"><h3>공격적 자산 증식 (80%)</h3><p>우량 성장주에 80%를 배분하여 시세 차익을 극대화하는 전략이 유효합니다.</p></div>
-                <div class="knowledge-card"><h3>안정적 현금흐름 (20%)</h3><p>나머지 20%는 배당 ETF나 리츠에 투자하여 패시브 인컴을 만들어야 합니다.</p></div>
-                <div class="knowledge-card"><h3>최종 목표: 실물 자산</h3><p>주식으로 불린 자산을 30대 중반에 서울권 소형 빌딩 등 실물 자산으로 전환하세요.</p></div>
+                <div class="knowledge-card"><h3>공격적 자산 증식 (80%)</h3><p>전체 시드의 80%를 우량 성장주에 배분하여 시세 차익을 극대화하세요.</p></div>
+                <div class="knowledge-card"><h3>안정적 현금흐름 (20%)</h3><p>20%는 배당 ETF나 리츠에 투자하여 패시브 인컴을 만듭니다.</p></div>
+                <div class="knowledge-card"><h3>최종 목표: 실물 자산</h3><p>30대 중반에 불어난 자산을 서울권 소형 빌딩으로 전환하는 것이 인플레이션 방어의 핵심입니다.</p></div>
+            </div>
+        </section>
+
+        <section class="knowledge-section">
+            <h2 style="text-align: center; font-size: 2.2em; font-weight: 900; margin-bottom: 40px;">금융의 핵심, 복리의 이해</h2>
+            <div class="knowledge-grid">
+                <div class="knowledge-card"><h3>72의 법칙</h3><p>72를 연수익률로 나누면 원금이 두 배가 되는 예상 기간이 나옵니다.</p></div>
+                <div class="knowledge-card"><h3>실질 가치</h3><p>물가 상승률을 제외하고 현재 시점의 돈의 가치로 환산한 금액입니다.</p></div>
+                <div class="knowledge-card"><h3>시간의 힘</h3><p>복리는 후반부로 갈수록 급격히 성장합니다. 빨리 시작하는 것이 최고의 무기입니다.</p></div>
+            </div>
+        </section>
+
+        <section class="knowledge-section">
+            <h2 style="text-align: center; font-size: 2em; font-weight: 900; margin-bottom: 30px;">자주 묻는 질문 (FAQ)</h2>
+            <div class="card" style="max-width: 800px; margin: 0 auto;">
+                <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Q. 세금 계산은 어떻게 이루어지나요? <span>▼</span></div><div class="faq-a">일반 과세의 경우 이자 소득에 대해 15.4%의 세율을 매달 차감하여 계산합니다.</div></div>
+                <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Q. 실질 가치는 무엇을 의미하나요? <span>▼</span></div><div class="faq-a">입력하신 물가상승률을 바탕으로 미래 자산을 현재 화폐 가치로 환산한 금액입니다.</div></div>
             </div>
         </section>
     </div>
@@ -179,15 +231,44 @@
         const $ = id => document.getElementById(id);
         let myChart = null, compareChart = null, currentRate = 1350, isAlertOpen = false;
         
-        const quotes = ["인내심은 부를 일구는 가장 강력한 도구다.", "복리는 세계 8대 불가사의다. - 아인슈타인", "투자의 제1원칙은 돈을 잃지 않는 것이다.", "가장 좋은 투자 시기는 바로 '지금'이다."];
+        const quotes = ["인내심은 부를 일구는 가장 강력한 도구다.", "복리는 세계 8대 불가사의다. - 아인슈타인", "투자의 제1원칙은 돈을 잃지 않는 것이다.", "오늘 심은 나무가 내일 그늘을 만들어준다.", "가장 좋은 투자 시기는 바로 '지금'이다."];
+        const warningMsgs = ["숫자가 너무 커요!", "현실적인 숫자를 입력해볼까요?", "제 계산기가 터지려고 해요!"];
+
         const fmtCommas = n => Math.floor(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         
-        const getVal = id => {
+        function getVal(id) {
             const el = $(id);
             if (!el) return 0;
-            const val = el.value.replace(/,/g, "");
-            return parseFloat(val) || 0;
-        };
+            return parseFloat(el.value.replace(/,/g, "")) || 0;
+        }
+
+        // 입력 제한 로직 (복구 완료 ✅)
+        function handleInput(el) { 
+            let val = el.value.replace(/[^0-9]/g, ""); 
+            if (val.length > 15) { 
+                val = val.substring(0, 15); 
+                el.blur();
+                if (!isAlertOpen) showAlert("입력 제한", warningMsgs[Math.floor(Math.random() * warningMsgs.length)]);
+            }
+            el.value = val ? parseInt(val).toLocaleString() : ""; 
+        }
+
+        function limitNumInput(el, max) {
+            if (parseFloat(el.value) > max) { 
+                el.value = max; 
+                el.blur();
+                if (!isAlertOpen) showAlert("한도 초과", `최대 ${max}까지 입력 가능합니다.`); 
+            }
+        }
+
+        function showAlert(title, msg) {
+            if (isAlertOpen) return;
+            isAlertOpen = true;
+            $('modalBody').innerHTML = `<h2 style="color:var(--accent-color);">${title}</h2><p style="font-size:1.2em; font-weight:800; text-align:center;">${msg}</p>`;
+            $('customAlert').style.display = 'flex';
+        }
+
+        function closeAlert() { $('customAlert').style.display = 'none'; isAlertOpen = false; }
 
         function formatCurrency(num) {
             if (num < 10000) return '₩ ' + fmtCommas(num);
@@ -216,7 +297,7 @@
                 dReal.push(cur / Math.pow(1 + INF, y)); 
                 dPri.push(cumulativePri);
             }
-
+            
             if (noAnim) { 
                 $('totalValue').innerText = formatCurrency(cur); 
                 $('realValue').innerText = formatCurrency(dReal[dReal.length-1]); 
@@ -226,8 +307,9 @@
                 animateNumber($('realValue'), dReal[dReal.length-1]); 
                 animateNumber($('valUSD'), dReal[dReal.length-1] / currentRate, true); 
                 
-                // 결과 박스 강조 효과 (ID 정확히 일치 확인됨)
-                [$('boxNominal'), $('boxReal')].forEach(b => {
+                // 결과 박스 강조 효과 (ID 정확히 타겟팅)
+                const boxes = [$('boxNominal'), $('boxReal')];
+                boxes.forEach(b => {
                     if(b) {
                         b.classList.remove('highlight-flash');
                         void b.offsetWidth;
@@ -239,6 +321,7 @@
             updateComparison(cur); updateChart(labels, dNom, dReal, dPri);
         }
 
+        // 버튼 멈춤 해결 로직 (복구 완료 ✅)
         function playCalc() { 
             const btn = $('mainCalcBtn');
             if (btn.classList.contains('calculating')) return;
@@ -252,11 +335,13 @@
                     calculate(); 
                     if (getVal('totalValue') >= 1e12) triggerNatureShower(); 
                 } finally {
-                    // 무조건 원래대로 복구
+                    // 무조건 원래대로 복구 (0.5초 뒤)
                     btn.innerText = "분석 시작 💰";
                     btn.classList.remove('calculating');
                 }
-                if(window.innerWidth < 650) $('totalValue').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                if(window.innerWidth < 650) {
+                    $('totalValue').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
             }, 500); 
         }
 
@@ -276,20 +361,38 @@
             const ctx = $('assetChart').getContext('2d'); if (myChart) myChart.destroy();
             myChart = new Chart(ctx, { 
                 type: 'line', 
-                data: { labels, datasets: [
-                    { label: '명목 자산', data: nominal, borderColor: '#2563eb', fill: true, tension: 0.3, backgroundColor: 'rgba(37,99,235,0.1)', pointRadius: 0 }, 
-                    { label: '실질 가치', data: real, borderColor: '#db2777', borderDash: [5, 5], pointRadius: 0 },
-                    { label: '투자 원금', data: principal, borderColor: '#94a3b8', borderDash: [2, 2], pointRadius: 0 }
-                ] }, 
-                options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false } } 
+                data: { 
+                    labels, 
+                    datasets: [
+                        { label: '명목 자산', data: nominal, borderColor: '#2563eb', fill: true, tension: 0.3, backgroundColor: 'rgba(37,99,235,0.1)', pointRadius: 0 }, 
+                        { label: '실질 가치', data: real, borderColor: '#db2777', borderDash: [5, 5], pointRadius: 0 },
+                        { label: '투자 원금', data: principal, borderColor: '#94a3b8', borderDash: [2, 2], pointRadius: 0 }
+                    ] 
+                }, 
+                options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, plugins: { legend: { position: 'top' } } } 
             });
         }
 
-        function handleInput(el) { 
-            let val = el.value.replace(/[^0-9]/g, ""); 
-            el.value = val ? parseInt(val).toLocaleString() : ""; 
+        async function updateExchangeRate() {
+            try { 
+                const res = await fetch('https://open.er-api.com/v6/latest/USD'), data = await res.json(); 
+                if (data?.rates?.KRW) { 
+                    currentRate = Math.floor(data.rates.KRW); 
+                    $('headerUSD').innerText = fmtCommas(currentRate); 
+                    const now = new Date(); 
+                    $('rateTime').innerText = `(${now.getHours()}:${now.getMinutes().toString().padStart(2,'0')} 기준)`; 
+                    calculate(true); 
+                } 
+            } catch (e) { $('headerUSD').innerText = "1,350"; calculate(true); }
         }
-        function limitNumInput(el, max) { if (el.value > max) el.value = max; }
+
+        function findGoal() {
+            const target = getVal('targetAmt'), years = getVal('targetYears'), rate = getVal('targetRate')/100/12;
+            if (years <= 0 || rate <= 0) return;
+            const months = years * 12, required = (target * rate) / (Math.pow(1 + rate, months) - 1);
+            $('goalResult').style.display = 'block'; $('requiredMonthly').innerText = formatCurrency(required);
+        }
+
         function openCompare() {
             $('compareModal').classList.add('active'); 
             const P = getVal('principal'), PMT = getVal('monthly'), years = getVal('years'), r = getVal('rate')/100;
@@ -306,9 +409,12 @@
             if(compareChart) compareChart.destroy();
             compareChart = new Chart($('compareChart').getContext('2d'), { type: 'line', data: { labels, datasets: [ { label: '복리', data: dCompound, borderColor: '#2563eb', fill: true, backgroundColor: 'rgba(37,99,235,0.1)' }, { label: '단리', data: dSimple, borderColor: '#94a3b8' } ] }, options: { responsive: true, maintainAspectRatio: false } });
         }
+
+        function toggleMode() { document.body.classList.toggle('dark-mode'); $('modeBtn').innerText = document.body.classList.contains('dark-mode') ? '☀️ 라이트 모드' : '🌙 다크 모드'; calculate(true); }
         function openGoal() { $('goalModal').classList.add('active'); }
         function closeSubModal(id) { $(id).classList.remove('active'); }
-        function toggleMode() { document.body.classList.toggle('dark-mode'); $('modeBtn').innerText = document.body.classList.contains('dark-mode') ? '☀️ 라이트 모드' : '🌙 다크 모드'; calculate(true); }
+        function toggleFaq(el) { const a = el.nextElementSibling; a.style.display = a.style.display === 'block' ? 'none' : 'block'; }
+        
         function updateComparison(val) { 
             $('comparisonBanner').style.display = 'block'; 
             let t = '', d = '', bg = '#dcfce7', c = '#166534'; 
@@ -317,6 +423,7 @@
             $('bannerTitle').innerText = t; $('bannerDesc').innerText = d; 
             $('comparisonBanner').style.background = bg; $('comparisonBanner').style.color = c; 
         }
+
         function triggerNatureShower() {
             const emojis = ['🍃', '🍎', '🌿', '🌱', '🍀'];
             for(let i=0; i<30; i++) {
@@ -329,29 +436,15 @@
                 }, i * 100);
             }
         }
+
         function setCoffeeMiracle() {
             $('principal').value = '0'; $('monthly').value = '150,000'; $('rate').value = '10'; $('years').value = '20';
+            showAlert("☕ 커피 한 잔의 기적", "매달 15만 원씩 20년간 연 10% 수익률로 투자하는 습관!");
             calculate();
         }
-        function findGoal() {
-            const target = getVal('targetAmt'), years = getVal('targetYears'), rate = getVal('targetRate')/100/12;
-            if (years <= 0 || rate <= 0) return;
-            const months = years * 12, required = (target * rate) / (Math.pow(1 + rate, months) - 1);
-            $('goalResult').style.display = 'block'; $('requiredMonthly').innerText = formatCurrency(required);
-        }
-        async function updateExchangeRate() {
-            try { 
-                const res = await fetch('https://open.er-api.com/v6/latest/USD'), data = await res.json(); 
-                if (data?.rates?.KRW) { 
-                    currentRate = Math.floor(data.rates.KRW); 
-                    $('headerUSD').innerText = fmtCommas(currentRate); 
-                    calculate(true); 
-                } 
-            } catch (e) { $('headerUSD').innerText = "1,350"; calculate(true); }
-        }
-        function showAlert(t, m) { $('modalBody').innerHTML = `<h2>${t}</h2><p>${m}</p>`; $('customAlert').style.display='flex'; }
-        function closeAlert() { $('customAlert').style.display='none'; }
-        window.onload = () => updateExchangeRate();
+
+        function showInfo(type) { showAlert(type === 'privacy' ? '개인정보처리방침' : '이용약관', '데이터는 저장되지 않습니다.'); }
+        window.onload = () => { updateExchangeRate(); };
     </script>
 </body>
 </html>
