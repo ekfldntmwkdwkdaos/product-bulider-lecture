@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NV1R00SGES"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -194,6 +193,26 @@
         </div>
     </div>
 
+    <div id="contactModal" class="sub-modal">
+        <button class="close-sub" onclick="closeSubModal('contactModal')">← 돌아가기</button>
+        <div class="container" style="max-width: 600px;">
+            <h2 style="font-size: 1.8em; text-align: center; margin-bottom: 30px;">💬 개발자에게 문의하기</h2>
+            <div class="card">
+                <form action="https://formspree.io/f/xqegkydw" method="POST">
+                    <div class="input-group">
+                        <label>답변 받으실 이메일</label>
+                        <input type="email" name="email" required placeholder="예: user@example.com">
+                    </div>
+                    <div class="input-group">
+                        <label>문의 내용</label>
+                        <textarea name="message" required placeholder="버그 제보, 기능 제안 등 자유롭게 남겨주세요!" style="width: 100%; padding: 15px; border-radius: 14px; border: 1px solid var(--border-color); background-color: var(--input-bg); color: var(--text-primary); font-size: 1.1em; outline: none; transition: 0.2s; box-sizing: border-box; font-family: inherit; resize: vertical; min-height: 150px;"></textarea>
+                    </div>
+                    <button type="submit" class="btn-calc">메시지 보내기 🚀</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <header id="mainHeader">
         <button class="mode-toggle" id="modeBtn" onclick="toggleMode()">🌙 다크 모드</button>
         <h1><span id="magicIcon" onclick="growIcon()">🌱</span> 간편한 복리 계산기</h1>
@@ -302,14 +321,18 @@
                 <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Q. 연 수익률 8%~10%는 현실적인 수치인가요? <span>▼</span></div><div class="faq-a">미국 S&P 500 지수의 장기 평균 수익률은 연 10% 내외였습니다. 개별 종목 투자나 공격적인 포트폴리오를 구성한다면 가능하지만, 시장 상황에 따라 변동성이 크므로 보수적인 관점(5~7%)과 공격적인 관점 모두 시뮬레이션해 보는 것이 좋습니다.</div></div>
                 <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Q. 왜 포트폴리오의 20%를 배당주에 투자하나요? <span>▼</span></div><div class="faq-a">하락장에서 심리적 방어선 역할을 하기 때문입니다. 주가가 떨어져도 배당금이 들어오면 그 금액으로 주식을 저가 매수(추가 적립)할 수 있어 복리의 바퀴를 멈추지 않게 도와줍니다.</div></div>
                 <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Q. 건물주가 되기 위한 자본금은 보통 얼마인가요? <span>▼</span></div><div class="faq-a">서울권 꼬마빌딩의 경우 대출(레버리지)을 활용한다면 매매가의 약 30~50% 정도의 현금이 필요합니다. 주식 복리로 시드머니를 10억~20억 원 이상 확보하는 것이 첫 번째 로드맵이 될 수 있습니다.</div></div>
-                <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Q. 달러 환산 가치를 확인하는 이유는 무엇인가요? <span>▼</span></div><div class="faq-a">글로벌 경제 위기 시 달러는 안전 자산으로서 가치가 오르는 경향이 있습니다. 자산의 일부를 달러 기준으로 파악하고 투자하는 것은 통화 분산 차원에서 자산의 안전성을 높여줍니다.</div></div>
+                <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Q. 달러 환산 가치를 확인하는 이유는 무엇인가요? <span>▼</span></div><div class="faq-a">글로벌 경제 위기 시 달러는 안전 자산으로서 가치가 오르는 경향이 있습니다. 자산의 일부를 달러 기준으로 파악하고 투자하는 환 분산 차원에서 자산의 안전성을 높여줍니다.</div></div>
                 <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Q. 목표 금액 역산기는 언제 사용하면 좋나요? <span>▼</span></div><div class="faq-a">막연한 투자가 아닌, '구체적인 꿈'을 수치화할 때 유용합니다. 예를 들어 "35세에 20억을 모으겠다"는 목표가 있다면, 역산기를 통해 지금 당장 매달 얼마를 저축하고 몇 %의 수익을 내야 하는지 행동 지침을 얻을 수 있습니다.</div></div>
             </div>
         </section>
     </div>
 
     <footer>
-        <div class="footer-links"><a onclick="showInfo('privacy')">개인정보처리방침</a><a onclick="showInfo('terms')">이용약관</a></div>
+        <div class="footer-links">
+            <a onclick="showInfo('privacy')">개인정보처리방침</a>
+            <a onclick="showInfo('terms')">이용약관</a>
+            <a onclick="openContact()">문의하기</a>
+        </div>
         <p>&copy; 2026 복리 마법 계산기. All rights reserved.</p>
     </footer>
 
@@ -393,7 +416,6 @@
             updateComparison(cur); updateChart(labels, dNom, dReal, dPri);
         }
 
-        // 버튼 오류 및 안전장치 추가
         function playCalc() {
             const btn = $('mainCalcBtn');
             if (!btn || btn.classList.contains('calculating')) return;
@@ -495,7 +517,6 @@
 
         function toggleMode() { document.body.classList.toggle('dark-mode'); $('modeBtn').innerText = document.body.classList.contains('dark-mode') ? '☀️ 라이트 모드' : '🌙 다크 모드'; calculate(true); }
         
-        // 원본과 동일한 경고 로직
         function handleInput(el) { 
             let val = el.value.replace(/[^0-9]/g, ""); 
             if (val.length > 15) { 
@@ -513,9 +534,10 @@
         }
 
         function openGoal() { $('goalModal').classList.add('active'); }
+        // 문의하기 모달 함수 추가됨
+        function openContact() { $('contactModal').classList.add('active'); }
         function closeSubModal(id) { $(id).classList.remove('active'); }
         
-        // 원본과 동일한 FAQ 토글 로직
         function toggleFaq(el) { const a = el.nextElementSibling; a.style.display = a.style.display === 'block' ? 'none' : 'block'; }
         
         function updateComparison(val) { 
@@ -527,16 +549,16 @@
                 d = "대기업 쇼핑이 가능한 자산입니다."; 
                 bg = "#f3e8ff"; 
                 c = "#6b21a8"; 
-                banner.style.display = 'block'; // 1조 이상일 때만 보여줌
+                banner.style.display = 'block';
             } else if (val >= 1e8) { 
                 t = "🏢 건물주 후보"; 
                 d = "자산 성장의 기초를 다지셨습니다."; 
                 bg = "#fef3c7"; 
                 c = "#92400e"; 
-                banner.style.display = 'block'; // 1억 이상일 때만 보여줌
+                banner.style.display = 'block'; 
             } else {
-                banner.style.display = 'none'; // 1억 미만이면 아예 숨김 (빈 박스 방지)
-                return; // 밑에 코드 실행 안 하고 여기서 끝냄
+                banner.style.display = 'none';
+                return; 
             }
     
             $('bannerTitle').innerText = t; 
@@ -566,9 +588,6 @@
 
         function showInfo(type) { showAlert(type === 'privacy' ? '개인정보처리방침' : '이용약관', '본 서비스는 사용자의 데이터를 서버에 저장하지 않습니다.'); }
 
-        
-
-        // 🌱 새싹 키우기 이스터에그 로직
         let iconScale = 1;
         let clickCount = 0;
 
@@ -576,20 +595,15 @@
             const icon = $('magicIcon');
             if (!icon) return;
 
-            // 클릭할 때마다 0.3배씩 크기 증가
             iconScale += 0.3; 
             clickCount++;
             icon.style.transform = `scale(${iconScale})`;
 
-            // 5번 클릭 시 이스터에그 발동!
             if (clickCount >= 5) {
-                // 1. 이미 구현되어 있는 나뭇잎/열매 떨어지는 함수 호출!
                 triggerNatureShower(); 
 
-                // 2. 모바일 진동 효과 (손맛)
                 if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
 
-                // 3. 0.5초 뒤에 크기 다시 원래대로 초기화
                 setTimeout(() => {
                     iconScale = 1;
                     clickCount = 0;
@@ -598,7 +612,6 @@
             }
         }
         window.onload = () => { updateExchangeRate(); };
-        
         
     </script>
 </body>
