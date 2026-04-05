@@ -594,7 +594,7 @@
         function growIcon() {
             const icon = $('magicIcon');
             if (!icon) return;
-
+            document.title = "복리 계산기";
             iconScale += 0.3; 
             clickCount++;
             icon.style.transform = `scale(${iconScale})`;
