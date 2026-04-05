@@ -594,13 +594,12 @@
         function growIcon() {
             const icon = $('magicIcon');
             if (!icon) return;
-            document.title = "복리 계산기";
             iconScale += 0.3; 
             clickCount++;
             icon.style.transform = `scale(${iconScale})`;
 
             if (clickCount >= 5) {
-                triggerNatureShower(); 
+                document.querySelector('title').innerText = "복리 계산기";
 
                 if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
 
