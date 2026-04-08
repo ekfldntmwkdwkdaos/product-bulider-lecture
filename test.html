@@ -336,10 +336,18 @@
     </footer>
 
     <script>
+        function applySavedTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const isDark = savedTheme === 'dark';
+            document.body.classList.toggle('dark-mode', isDark);
+            document.getElementById('modeBtn').textContent = isDark ? '☀️ 라이트모드' : '🌙 다크모드';
+        }
+
         function toggleMode() {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
             document.getElementById('modeBtn').textContent = isDark ? '☀️ 라이트모드' : '🌙 다크모드';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
         }
 
         const RESULT_MAP = {
@@ -523,22 +531,15 @@
 
         const MASTER_ORDER = ["0000","0001","0010","0011","0100","0101","0110","0111","1000","1001","1010","1011","1100","1101","1110","1111"];
         const PORTFOLIO_LINKS = {
-            "0000": "https://www.dataroma.com/m/holdings.php?m=BRK",
-            "0001": "https://www.bogleheads.org/wiki/Lazy_portfolios",
-            "0010": "https://whalewisdom.com/filer/oaktree-capital-management-lp",
-            "0011": "https://whalewisdom.com/filer/bridgewater-associates-lp",
+            "0010": "https://whalewisdom.com/filer/marks-howard-s",
+            "0011": "https://whalewisdom.com/filer/bridgewater-associates-inc",
             "0100": "https://whalewisdom.com/filer/berkshire-hathaway-inc",
-            "0101": "https://www.dataroma.com/m/holdings.php?m=DJCO",
             "0110": "https://whalewisdom.com/filer/baupost-group-llc-ma",
-            "0111": "https://www.dataroma.com/m/holdings.php?m=TEMFX",
-            "1000": "https://www.dataroma.com/m/holdings.php?m=FMAGX",
             "1001": "https://whalewisdom.com/filer/soros-fund-management-llc",
             "1010": "https://whalewisdom.com/filer/renaissance-technologies-llc",
             "1011": "https://whalewisdom.com/filer/duquesne-family-office-llc",
-            "1100": "https://www.dataroma.com/m/holdings.php?m=FSCSX",
             "1101": "https://whalewisdom.com/filer/fisher-asset-management-llc",
-            "1110": "https://whalewisdom.com/filer/pershing-square-capital-management-l-p",
-            "1111": "https://www.reit.com/investing/reit-directory"
+            "1110": "https://whalewisdom.com/filer/pershing-square-capital-management-l-p"
         };
         const mastersGrid = document.getElementById('mastersGrid');
         MASTER_ORDER.forEach((key) => {
@@ -595,6 +596,8 @@
         scrollBottomBtn.addEventListener('click', function () {
             window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         });
+
+        applySavedTheme();
     </script>
 </body>
 </html>

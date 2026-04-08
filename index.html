@@ -92,8 +92,8 @@
 
         .chart-container { position: relative; flex-grow: 1; min-height: 500px; width: 100%; margin-top: 25px; border-radius: 24px; overflow: hidden; }
         .export-capture-area {
-            background: #ffffff;
-            color: #111827;
+            background: var(--card-bg);
+            color: var(--text-primary);
             border-radius: 24px;
             border: 1px solid #e5e7eb;
             padding: 30px 28px 34px;
@@ -121,6 +121,16 @@
             color: #334155;
             font-weight: 700;
             white-space: nowrap;
+        }
+        body.dark-mode .export-branding {
+            background: rgba(15, 23, 42, 0.58);
+            border-color: #334155;
+        }
+        body.dark-mode .export-branding-title {
+            color: #e2e8f0;
+        }
+        body.dark-mode .export-branding-logo {
+            color: #cbd5e1;
         }
         .export-actions {
             margin-top: 18px;
@@ -662,7 +672,20 @@
             compareChart = new Chart($('compareChart').getContext('2d'), { type: 'line', data: { labels, datasets: [ { label: '복리', data: dCompound, borderColor: '#2563eb', fill: true, backgroundColor: 'rgba(37,99,235,0.1)' }, { label: '단리', data: dSimple, borderColor: '#94a3b8' } ] }, options: { responsive: true, maintainAspectRatio: false } });
         }
 
-        function toggleMode() { document.body.classList.toggle('dark-mode'); $('modeBtn').innerText = document.body.classList.contains('dark-mode') ? '☀️ 라이트 모드' : '🌙 다크 모드'; calculate(true); }
+        function applySavedTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const isDark = savedTheme === 'dark';
+            document.body.classList.toggle('dark-mode', isDark);
+            $('modeBtn').innerText = isDark ? '☀️ 라이트 모드' : '🌙 다크 모드';
+        }
+
+        function toggleMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            $('modeBtn').innerText = isDark ? '☀️ 라이트 모드' : '🌙 다크 모드';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            calculate(true);
+        }
         
         function handleInput(el) { 
             let val = el.value.replace(/[^0-9]/g, ""); 
@@ -735,6 +758,58 @@
 
         function showInfo(type) { showAlert(type === 'privacy' ? '개인정보처리방침' : '이용약관', '본 서비스는 사용자의 데이터를 서버에 저장하지 않습니다.'); }
 
+        function waitForNextPaint() {
+            return new Promise((resolve) => requestAnimationFrame(() => resolve()));
+        }
+
+        function beginCaptureThemeOverride() {
+            const captureEl = $('exportCaptureArea');
+            const rightPane = document.querySelector('.main-grid main.card');
+            const modeBtn = $('modeBtn');
+            const state = {
+                wasDarkMode: document.body.classList.contains('dark-mode'),
+                modeBtnText: modeBtn ? modeBtn.innerText : '',
+                captureStyle: captureEl ? captureEl.getAttribute('style') : null,
+                rightPaneStyle: rightPane ? rightPane.getAttribute('style') : null
+            };
+
+            if (captureEl) {
+                captureEl.style.background = '#FFFFFF';
+                captureEl.style.color = '#111827';
+            }
+            if (rightPane) {
+                rightPane.style.background = '#FFFFFF';
+                rightPane.style.color = '#111827';
+            }
+            document.body.classList.remove('dark-mode');
+            if (modeBtn) modeBtn.innerText = '🌙 다크 모드';
+            return state;
+        }
+
+        function restoreCaptureThemeOverride(state) {
+            const captureEl = $('exportCaptureArea');
+            const rightPane = document.querySelector('.main-grid main.card');
+            const modeBtn = $('modeBtn');
+
+            if (captureEl) {
+                if (state.captureStyle === null) captureEl.removeAttribute('style');
+                else captureEl.setAttribute('style', state.captureStyle);
+            }
+            if (rightPane) {
+                if (state.rightPaneStyle === null) rightPane.removeAttribute('style');
+                else rightPane.setAttribute('style', state.rightPaneStyle);
+            }
+            if (state.wasDarkMode) {
+                document.body.classList.add('dark-mode');
+                if (modeBtn) modeBtn.innerText = '☀️ 라이트 모드';
+            } else {
+                document.body.classList.remove('dark-mode');
+                if (modeBtn) modeBtn.innerText = '🌙 다크 모드';
+            }
+            // 테마 복구 뒤 차트/수치 UI를 현재 테마 기준으로 다시 그립니다.
+            calculate(true);
+        }
+
         async function captureResultCanvas() {
             const captureEl = $('exportCaptureArea');
             if (!captureEl) throw new Error('캡처 영역을 찾을 수 없습니다.');
@@ -748,8 +823,11 @@
         async function downloadResultAsPng() {
             const btn = $('savePngBtn');
             const originalText = btn ? btn.innerText : '';
+            let captureState = null;
             try {
                 if (btn) { btn.disabled = true; btn.innerText = 'PNG 생성 중...'; }
+                captureState = beginCaptureThemeOverride();
+                await waitForNextPaint();
                 const canvas = await captureResultCanvas();
                 const link = document.createElement('a');
                 link.download = '나의_투자_시뮬레이션.png';
@@ -759,6 +837,10 @@
                 console.error(e);
                 showAlert('저장 실패', 'PNG 저장 중 문제가 발생했습니다. 다시 시도해 주세요.');
             } finally {
+                if (captureState) {
+                    restoreCaptureThemeOverride(captureState);
+                    await waitForNextPaint();
+                }
                 if (btn) { btn.disabled = false; btn.innerText = originalText; }
             }
         }
@@ -766,8 +848,11 @@
         async function downloadResultAsPdf() {
             const btn = $('savePdfBtn');
             const originalText = btn ? btn.innerText : '';
+            let captureState = null;
             try {
                 if (btn) { btn.disabled = true; btn.innerText = 'PDF 생성 중...'; }
+                captureState = beginCaptureThemeOverride();
+                await waitForNextPaint();
                 const canvas = await captureResultCanvas();
                 const imgData = canvas.toDataURL('image/png');
                 const { jsPDF } = window.jspdf;
@@ -804,6 +889,10 @@
                 console.error(e);
                 showAlert('저장 실패', 'PDF 저장 중 문제가 발생했습니다. 다시 시도해 주세요.');
             } finally {
+                if (captureState) {
+                    restoreCaptureThemeOverride(captureState);
+                    await waitForNextPaint();
+                }
                 if (btn) { btn.disabled = false; btn.innerText = originalText; }
             }
         }
@@ -831,7 +920,10 @@
                 }, 500);
             }
         }
-        window.onload = () => { updateExchangeRate(); };
+        window.onload = () => {
+            applySavedTheme();
+            updateExchangeRate();
+        };
         
     </script>
 </body>
