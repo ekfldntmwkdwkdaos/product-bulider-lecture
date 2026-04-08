@@ -22,6 +22,8 @@
     <link rel="canonical" href="https://product-bulider-lecture-djm.pages.dev/">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700&family=Pretendard:wght@400;600;700&display=swap');
         :root {
@@ -88,7 +90,49 @@
         .res-box.highlight-flash { animation: flashResult 0.7s ease-out; border-color: var(--accent-color); box-shadow: 0 0 20px rgba(37, 99, 235, 0.2); }
         @keyframes flashResult { 0% { background-color: rgba(37, 99, 235, 0.2); transform: translateY(-5px); } 100% { background-color: rgba(0,0,0,0.03); transform: translateY(0); } }
 
-        .chart-container { position: relative; flex-grow: 1; min-height: 450px; width: 100%; margin-top: 25px; border-radius: 24px; overflow: hidden; }
+        .chart-container { position: relative; flex-grow: 1; min-height: 500px; width: 100%; margin-top: 25px; border-radius: 24px; overflow: hidden; }
+        .export-capture-area {
+            background: #ffffff;
+            color: #111827;
+            border-radius: 24px;
+            border: 1px solid #e5e7eb;
+            padding: 30px 28px 34px;
+            box-sizing: border-box;
+        }
+        .export-branding {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 18px;
+            padding: 10px 14px;
+            border-radius: 14px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+        .export-branding-title {
+            font-weight: 900;
+            font-size: 1rem;
+            color: #0f172a;
+            letter-spacing: -0.01em;
+        }
+        .export-branding-logo {
+            font-size: 0.86rem;
+            color: #334155;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .export-actions {
+            margin-top: 18px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .export-actions .btn-sub {
+            width: auto;
+            margin-bottom: 0;
+            flex: 1 1 220px;
+        }
         
         .ad-area { margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.02); border: 1px dashed var(--border-color); border-radius: 24px; text-align: center; color: var(--text-secondary); font-size: 0.85em; box-sizing: border-box; }
         .ads-container { margin-top: 15px; min-height: 90px; overflow: hidden; }
@@ -177,6 +221,10 @@
             .card { padding: 20px; border-radius: 24px; }
             .res-value { font-size: 1.5em !important; }
             .chart-container { min-height: 350px; }
+            .export-capture-area { padding: 22px 16px 24px; }
+            .export-branding { padding: 8px 10px; }
+            .export-branding-title { font-size: 0.88rem; }
+            .export-branding-logo { font-size: 0.78rem; }
             .invest-banner-wrap { margin-top: 32px; }
             .invest-banner-card { width: 100%; padding: 26px 18px; border-radius: 20px; }
             .invest-banner-text { font-size: 1.18rem; line-height: 1.4; }
@@ -317,25 +365,35 @@
             </aside>
 
             <main class="card">
-                <div class="result-header" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div class="res-box" id="boxNominal">
-                        <div class="res-label" style="font-size:0.85em; opacity:0.8; font-weight:600; margin-bottom:5px;">최종 세후 명목 자산</div>
-                        <div class="res-value val-nominal" id="totalValue">₩ 0</div>
+                <div id="exportCaptureArea" class="export-capture-area">
+                    <div class="export-branding">
+                        <div class="export-branding-title">나의 10억 만들기 시뮬레이션</div>
+                        <div class="export-branding-logo">투자 MBTI 사이트 로고 🌱</div>
                     </div>
-                    <div class="res-box" id="boxReal" style="border-color: var(--real-value-color)">
-                        <div class="res-label tooltip-container" style="font-size:0.85em; opacity:0.8; font-weight:600; margin-bottom:5px;">
-                            물가 반영 실질 가치 <span class="tooltip-icon">❓</span>
-                            <div class="tooltip-text">💡 수익률이 물가상승률을 이기고 있기 때문에 실질 가치도 우상향합니다. (만약 물가상승률이 더 높으면 그래프는 아래로 꺾입니다.)</div>
+                    <div class="result-header" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="res-box" id="boxNominal">
+                            <div class="res-label" style="font-size:0.85em; opacity:0.8; font-weight:600; margin-bottom:5px;">최종 세후 명목 자산</div>
+                            <div class="res-value val-nominal" id="totalValue">₩ 0</div>
                         </div>
-                        <div class="res-value val-real" id="realValue">₩ 0</div>
-                        <div style="font-size:0.95em; font-weight:800; margin-top:10px; color:var(--accent-color);">달러 환산: <span id="valUSD">$0</span></div>
+                        <div class="res-box" id="boxReal" style="border-color: var(--real-value-color)">
+                            <div class="res-label tooltip-container" style="font-size:0.85em; opacity:0.8; font-weight:600; margin-bottom:5px;">
+                                물가 반영 실질 가치 <span class="tooltip-icon">❓</span>
+                                <div class="tooltip-text">💡 수익률이 물가상승률을 이기고 있기 때문에 실질 가치도 우상향합니다. (만약 물가상승률이 더 높으면 그래프는 아래로 꺾입니다.)</div>
+                            </div>
+                            <div class="res-value val-real" id="realValue">₩ 0</div>
+                            <div style="font-size:0.95em; font-weight:800; margin-top:10px; color:var(--accent-color);">달러 환산: <span id="valUSD">$0</span></div>
+                        </div>
                     </div>
+                    <div id="comparisonBanner" style="display:none; padding:20px; border-radius:24px; margin-bottom:20px; text-align:center; font-weight:800;">
+                        <div id="bannerTitle"></div><div id="bannerDesc" style="font-size:0.9em; opacity:0.9;"></div>
+                    </div>
+                    <div class="chart-container"><canvas id="assetChart"></canvas></div>
+                    <div id="quoteBox" style="margin-top:20px; padding:15px 20px; border-left:6px solid var(--accent-color); background:rgba(37,99,235,0.05); font-style:italic; font-size:1em; border-radius:0 20px 20px 0; line-height:1.5; min-height:50px;"></div>
                 </div>
-                <div id="comparisonBanner" style="display:none; padding:20px; border-radius:24px; margin-bottom:20px; text-align:center; font-weight:800;">
-                    <div id="bannerTitle"></div><div id="bannerDesc" style="font-size:0.9em; opacity:0.9;"></div>
+                <div class="export-actions">
+                    <button class="btn-sub" id="savePngBtn" onclick="downloadResultAsPng()">결과+그래프 PNG 저장</button>
+                    <button class="btn-sub" id="savePdfBtn" onclick="downloadResultAsPdf()">결과+그래프 PDF 저장</button>
                 </div>
-                <div class="chart-container"><canvas id="assetChart"></canvas></div>
-                <div id="quoteBox" style="margin-top:20px; padding:15px 20px; border-left:6px solid var(--accent-color); background:rgba(37,99,235,0.05); font-style:italic; font-size:1em; border-radius:0 20px 20px 0; line-height:1.5; min-height:50px;"></div>
                 <div class="ad-area" id="A2">
                     <span>A2 - Sponsored Content</span>
                     <div class="ads-container">
@@ -541,7 +599,22 @@
                         { label: '투자 원금', data: principal, borderColor: '#94a3b8', borderDash: [2, 2], pointRadius: 0 }
                     ] 
                 }, 
-                options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, plugins: { legend: { position: 'top' } } } 
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: { legend: { position: 'top' } },
+                    scales: {
+                        x: {
+                            ticks: {
+                                autoSkip: true,
+                                maxTicksLimit: 8,
+                                maxRotation: 0,
+                                minRotation: 0
+                            }
+                        }
+                    }
+                } 
             });
         }
 
@@ -661,6 +734,79 @@
         }
 
         function showInfo(type) { showAlert(type === 'privacy' ? '개인정보처리방침' : '이용약관', '본 서비스는 사용자의 데이터를 서버에 저장하지 않습니다.'); }
+
+        async function captureResultCanvas() {
+            const captureEl = $('exportCaptureArea');
+            if (!captureEl) throw new Error('캡처 영역을 찾을 수 없습니다.');
+            return html2canvas(captureEl, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: '#FFFFFF'
+            });
+        }
+
+        async function downloadResultAsPng() {
+            const btn = $('savePngBtn');
+            const originalText = btn ? btn.innerText : '';
+            try {
+                if (btn) { btn.disabled = true; btn.innerText = 'PNG 생성 중...'; }
+                const canvas = await captureResultCanvas();
+                const link = document.createElement('a');
+                link.download = '나의_투자_시뮬레이션.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            } catch (e) {
+                console.error(e);
+                showAlert('저장 실패', 'PNG 저장 중 문제가 발생했습니다. 다시 시도해 주세요.');
+            } finally {
+                if (btn) { btn.disabled = false; btn.innerText = originalText; }
+            }
+        }
+
+        async function downloadResultAsPdf() {
+            const btn = $('savePdfBtn');
+            const originalText = btn ? btn.innerText : '';
+            try {
+                if (btn) { btn.disabled = true; btn.innerText = 'PDF 생성 중...'; }
+                const canvas = await captureResultCanvas();
+                const imgData = canvas.toDataURL('image/png');
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const pageW = pdf.internal.pageSize.getWidth();
+                const pageH = pdf.internal.pageSize.getHeight();
+                const margin = 10;
+                const usableW = pageW - margin * 2;
+                const imgH = (canvas.height * usableW) / canvas.width;
+
+                if (imgH <= pageH - margin * 2) {
+                    pdf.addImage(imgData, 'PNG', margin, margin, usableW, imgH);
+                } else {
+                    const ratio = usableW / canvas.width;
+                    const pagePxH = Math.floor((pageH - margin * 2) / ratio);
+                    let renderedPx = 0;
+                    const tempCanvas = document.createElement('canvas');
+                    const tempCtx = tempCanvas.getContext('2d');
+                    while (renderedPx < canvas.height) {
+                        const sliceH = Math.min(pagePxH, canvas.height - renderedPx);
+                        tempCanvas.width = canvas.width;
+                        tempCanvas.height = sliceH;
+                        tempCtx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+                        tempCtx.drawImage(canvas, 0, renderedPx, canvas.width, sliceH, 0, 0, canvas.width, sliceH);
+                        const sliceData = tempCanvas.toDataURL('image/png');
+                        const sliceMmH = sliceH * ratio;
+                        pdf.addImage(sliceData, 'PNG', margin, margin, usableW, sliceMmH);
+                        renderedPx += sliceH;
+                        if (renderedPx < canvas.height) pdf.addPage();
+                    }
+                }
+                pdf.save('나의_투자_시뮬레이션.pdf');
+            } catch (e) {
+                console.error(e);
+                showAlert('저장 실패', 'PDF 저장 중 문제가 발생했습니다. 다시 시도해 주세요.');
+            } finally {
+                if (btn) { btn.disabled = false; btn.innerText = originalText; }
+            }
+        }
 
         let iconScale = 1;
         let clickCount = 0;
